@@ -8,6 +8,7 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     var video=document.querySelector('.hero-video--desktop');
     if(!video || video.dataset.no11NewDesktop==='1') return;
     var desktopVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/video-v1/no11-desktop-full-quality.mp4';
+    video.poster='/no11-desktop-poster.webp';
     video.dataset.no11NewDesktop='1';
     video.style.setProperty('display','block','important');
     video.style.setProperty('visibility','visible','important');
@@ -30,6 +31,10 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
   new MutationObserver(swapDesktopHero).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>`;
+
+const mobileStorySpacing = `<style id="no11-mobile-story-spacing">
+@media (max-width:900px){.story h2{margin-bottom:2.75rem!important}}
+</style>`;
 
 const adminPolish = `<style id="no11-admin-polish">
 @media (min-width:761px){.appointment-card{border-radius:18px!important;padding:24px!important;border-color:#e6ded5!important;box-shadow:0 8px 30px rgba(49,40,34,.045)!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important}.appointment-card:hover{transform:translateY(-2px)!important;border-color:#d8c9bd!important;box-shadow:0 16px 40px rgba(49,40,34,.08)!important}}
@@ -101,7 +106,10 @@ async function proxy(request, context) {
     html = html
       .split(`${ORIGIN}/_next/`).join(`${incoming.origin}/__old1/_next/`)
       .split(`${STYLE_ORIGIN}/_next/`).join(`${incoming.origin}/__old2/_next/`);
-    if (path === "") html = html.replace("</body>", `${desktopHeroScript}</body>`);
+    if (path === "") html = html
+      .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
+      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}</head>`)
+      .replace("</body>", `${desktopHeroScript}</body>`);
     if (path === "admin" || path.startsWith("admin/")) html = html.replace("</head>", `${adminPolish}<script src="${incoming.origin}/no11-admin-detail.js" defer></script></head>`);
     return new Response(html, { status: upstream.status, headers: responseHeaders });
   }
