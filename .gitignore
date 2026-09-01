@@ -1,0 +1,6 @@
+node_modules/
+.next/
+.vercel/
+upload/
+preview_frames/
+npm-debug.log*
