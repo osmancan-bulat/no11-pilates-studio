@@ -7,10 +7,7 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     if(!window.matchMedia('(min-width: 901px)').matches) return;
     var video=document.querySelector('.hero-video--desktop');
     if(!video || video.dataset.no11NewDesktop==='1') return;
-    try {
-      var availability=await fetch('/no11-desktop-new.mp4',{method:'HEAD',cache:'no-store'});
-      if(!availability.ok) return;
-    } catch(error) { return; }
+    var desktopVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/video-v1/no11-desktop-full-quality.mp4';
     video.dataset.no11NewDesktop='1';
     video.style.setProperty('display','block','important');
     video.style.setProperty('visibility','visible','important');
@@ -18,7 +15,7 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     var desktopStill=document.querySelector('.hero-desktop-still');
     if(desktopStill) desktopStill.style.setProperty('display','none','important');
     video.querySelectorAll('source').forEach(function(source){source.remove()});
-    video.src='/no11-desktop-new.mp4';
+    video.src=desktopVideoUrl;
     video.muted=true;
     video.loop=true;
     video.autoplay=true;
