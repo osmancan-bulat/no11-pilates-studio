@@ -3,10 +3,14 @@ const STYLE_ORIGIN = "https://no11-pilates-studio-rfj4dz9b5-osmancanbulat197-744
 
 const desktopHeroScript = `<script id="no11-desktop-hero-swap">
 (function(){
-  function swapDesktopHero(){
+  async function swapDesktopHero(){
     if(!window.matchMedia('(min-width: 901px)').matches) return;
     var video=document.querySelector('.hero-video--desktop');
     if(!video || video.dataset.no11NewDesktop==='1') return;
+    try {
+      var availability=await fetch('/no11-desktop-new.mp4',{method:'HEAD',cache:'no-store'});
+      if(!availability.ok) return;
+    } catch(error) { return; }
     video.dataset.no11NewDesktop='1';
     video.querySelectorAll('source').forEach(function(source){source.remove()});
     video.src='/no11-desktop-new.mp4';
