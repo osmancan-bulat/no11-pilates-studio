@@ -133,7 +133,10 @@ async function proxy(request, context) {
       .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
       .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}</head>`)
       .replace("</body>", `${desktopHeroScript}</body>`);
-    if (path === "admin" || path.startsWith("admin/")) html = html.replace("</head>", `${adminPolish}<script src="${incoming.origin}/no11-admin-detail.js" defer></script></head>`);
+    if (path === "admin" || path.startsWith("admin/")) html = html.replace(
+      "</head>",
+      `<link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css"><script src="${incoming.origin}/no11-admin-premium.js" defer></script></head>`,
+    );
     return new Response(html, { status: upstream.status, headers: responseHeaders });
   }
   return new Response(await upstream.arrayBuffer(), { status: upstream.status, headers: responseHeaders });
