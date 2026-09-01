@@ -35,7 +35,7 @@
     root.querySelectorAll('.n11-new-btn,.n11-new-mobile').forEach(function(b){b.addEventListener('click',function(){toast('Yeni randevu formu yakında eklenecek')})});
     root.querySelectorAll('[data-nav]').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.nav==='Günlük Program'){root.classList.remove('detail-open');return}var target=[].slice.call(aside.querySelectorAll('nav button')).find(function(x){return x.textContent.indexOf(b.dataset.nav)>-1});if(target)target.click()})});
   }
-  function showProgram(){originalChildren.forEach(function(el){el.style.display='none'});root.style.display='grid';main.classList.add('n11-program-mode');aside.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('n11-program-active',b.dataset.n11Program==='1')});render()}
+  function showProgram(){originalChildren.forEach(function(el){el.style.display='none'});root.style.display='';main.classList.add('n11-program-mode');aside.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('n11-program-active',b.dataset.n11Program==='1')});render()}
   function hideProgram(){root.style.display='none';originalChildren.forEach(function(el){el.style.display=''});main.classList.remove('n11-program-mode');aside.querySelectorAll('nav button').forEach(function(b){b.classList.remove('n11-program-active')})}
   function start(){
     main=document.querySelector('main');aside=main&&main.querySelector(':scope>aside');if(!main||!aside)return setTimeout(start,300);
