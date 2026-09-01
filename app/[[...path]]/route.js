@@ -3,7 +3,27 @@ const STYLE_ORIGIN = "https://no11-pilates-studio-rfj4dz9b5-osmancanbulat197-744
 
 const desktopHeroScript = `<script id="no11-desktop-hero-swap">
 (function(){
+  function activeVideo(){return document.querySelector(window.matchMedia('(min-width: 901px)').matches?'.hero-video--desktop':'.hero-video--mobile')}
+  function syncControl(){
+    var control=document.querySelector('.no11-video-control'),video=activeVideo();if(!control||!video)return;
+    if(video.paused){control.setAttribute('aria-label','Videoyu oynat');control.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.6v10.8c0 .7.8 1.1 1.4.7l8-5.4a.85.85 0 0 0 0-1.4l-8-5.4A.85.85 0 0 0 4 2.6Z"></path></svg>'}
+    else{control.setAttribute('aria-label','Videoyu durdur');control.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3" height="12" rx="1"></rect><rect x="10" y="2" width="3" height="12" rx="1"></rect></svg>'}
+  }
+  function enhanceControls(){
+    var hero=document.querySelector('.hero'),videos=document.querySelectorAll('.hero-video');if(!hero||!videos.length)return;
+    videos.forEach(function(video){video.defaultPlaybackRate=.9;video.playbackRate=.9;if(!video.dataset.no11ControlEvents){video.dataset.no11ControlEvents='1';video.addEventListener('play',syncControl);video.addEventListener('pause',syncControl)}});
+    if(!document.getElementById('no11-hero-video-controls-style')){
+      var style=document.createElement('style');style.id='no11-hero-video-controls-style';
+      style.textContent='.hero{position:relative!important}.no11-video-control{position:absolute!important;right:28px!important;bottom:28px!important;z-index:999!important;width:44px!important;height:44px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;border:1px solid rgba(255,255,255,.7)!important;border-radius:50%!important;background:rgba(24,20,18,.38)!important;color:#fff!important;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);cursor:pointer!important;pointer-events:auto!important;transition:background .2s ease,transform .2s ease,border-color .2s ease}.no11-video-control:hover{background:rgba(24,20,18,.55)!important;transform:scale(1.04)}.no11-video-control:focus-visible{outline:2px solid #fff;outline-offset:3px}.no11-video-control svg{width:15px;height:15px;fill:currentColor}@media(max-width:900px){.no11-video-control{right:18px!important;bottom:20px!important;width:42px!important;height:42px!important}}';document.head.appendChild(style);
+    }
+    if(!hero.querySelector('.no11-video-control')){
+      var control=document.createElement('button');control.type='button';control.className='no11-video-control';
+      control.addEventListener('click',function(){var video=activeVideo();if(!video)return;if(video.paused)video.play().catch(function(){});else video.pause()});hero.appendChild(control);
+    }
+    syncControl();
+  }
   async function swapDesktopHero(){
+    enhanceControls();
     if(!window.matchMedia('(min-width: 901px)').matches) return;
     var video=document.querySelector('.hero-video--desktop');
     if(!video || video.dataset.no11NewDesktop==='1') return;
@@ -24,34 +44,13 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     video.preload='auto';
     video.defaultPlaybackRate=.9;
     video.playbackRate=.9;
-    if(!document.getElementById('no11-hero-video-controls-style')){
-      var style=document.createElement('style');
-      style.id='no11-hero-video-controls-style';
-      style.textContent='.no11-video-control{position:absolute;right:28px;bottom:28px;z-index:12;width:44px;height:44px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:rgba(24,20,18,.25);color:#fff;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);cursor:pointer;transition:background .2s ease,transform .2s ease,border-color .2s ease}.no11-video-control:hover{background:rgba(24,20,18,.42);border-color:rgba(255,255,255,.85);transform:scale(1.04)}.no11-video-control:focus-visible{outline:2px solid #fff;outline-offset:3px}.no11-video-control svg{width:15px;height:15px;fill:currentColor}@media(max-width:900px){.no11-video-control{right:18px;bottom:20px;width:42px;height:42px}}';
-      document.head.appendChild(style);
-    }
-    if(!video.parentElement.querySelector('.no11-video-control')){
-      var parent=video.parentElement;
-      if(getComputedStyle(parent).position==='static') parent.style.position='relative';
-      var control=document.createElement('button');
-      control.type='button';
-      control.className='no11-video-control';
-      control.setAttribute('aria-label','Videoyu durdur');
-      control.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3" height="12" rx="1"></rect><rect x="10" y="2" width="3" height="12" rx="1"></rect></svg>';
-      function syncControl(){
-        if(video.paused){control.setAttribute('aria-label','Videoyu oynat');control.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.6v10.8c0 .7.8 1.1 1.4.7l8-5.4a.85.85 0 0 0 0-1.4l-8-5.4A.85.85 0 0 0 4 2.6Z"></path></svg>'}
-        else{control.setAttribute('aria-label','Videoyu durdur');control.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3" height="12" rx="1"></rect><rect x="10" y="2" width="3" height="12" rx="1"></rect></svg>'}
-      }
-      control.addEventListener('click',function(){if(video.paused)video.play().catch(function(){});else video.pause()});
-      video.addEventListener('play',syncControl);video.addEventListener('pause',syncControl);
-      parent.appendChild(control);syncControl();
-    }
     video.load();
     var playPromise=video.play();
     if(playPromise && playPromise.catch) playPromise.catch(function(){});
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',swapDesktopHero);
   else swapDesktopHero();
+  window.addEventListener('resize',syncControl);
   new MutationObserver(swapDesktopHero).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>`;
