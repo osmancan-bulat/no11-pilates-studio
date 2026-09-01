@@ -12,6 +12,11 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
       if(!availability.ok) return;
     } catch(error) { return; }
     video.dataset.no11NewDesktop='1';
+    video.style.setProperty('display','block','important');
+    video.style.setProperty('visibility','visible','important');
+    video.style.setProperty('opacity','1','important');
+    var desktopStill=document.querySelector('.hero-desktop-still');
+    if(desktopStill) desktopStill.style.setProperty('display','none','important');
     video.querySelectorAll('source').forEach(function(source){source.remove()});
     video.src='/no11-desktop-new.mp4';
     video.muted=true;
