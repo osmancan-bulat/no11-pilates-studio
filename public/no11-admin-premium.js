@@ -40,6 +40,13 @@
     var modalForm=main.querySelector('.n11-modal-card');if(modalForm)modalForm.onsubmit=function(e){e.preventDefault();var d=new FormData(modalForm),type=modalForm.dataset.type,id=modalForm.dataset.id;if(type==='appointment'){var item={id:'NO11-'+Date.now(),name:d.get('name'),time:d.get('time'),service:d.get('service'),phone:String(d.get('phone')||'').replace(/\D/g,''),studentNote:d.get('studentNote'),managerNote:'',status:'pending'};state.items.unshift(item);state.selected=item;state.page='appointments'}else if(type==='team'){var teamItem={id:id||'team-'+Date.now(),name:d.get('name'),role:d.get('role'),active:d.get('active')==='on'};state.team=id?state.team.map(function(x){return x.id===id?teamItem:x}):state.team.concat(teamItem)}else{var lesson={id:id||'lesson-'+Date.now(),name:d.get('name'),description:d.get('description'),active:d.get('active')==='on'};state.lessons=id?state.lessons.map(function(x){return x.id===id?lesson:x}):state.lessons.concat(lesson)}persist();closeModal();toast('Değişiklik kaydedildi');render()};
     var hf=main.querySelector('.n11-hours-form');if(hf)hf.onsubmit=function(e){e.preventDefault();var d=new FormData(hf);state.hours=state.hours.map(function(x,i){var closed=d.get('closed-'+i)==='on';return {day:x.day,open:closed?'':d.get('open-'+i),close:closed?'':d.get('close-'+i),closed:closed}});state.settings.appointmentInterval=d.get('interval');persist();toast('Ders ve saat ayarları kaydedildi')};var sf=main.querySelector('.n11-settings-v4');if(sf)sf.onsubmit=function(e){e.preventDefault();var d=new FormData(sf);['businessName','description','phone','whatsapp','instagram','address','maps','email'].forEach(function(k){state.settings[k]=d.get(k)||''});state.settings.siteVisible=d.get('siteVisible')==='on';state.settings.contactVisible=d.get('contactVisible')==='on';persist();toast('Site ayarları kaydedildi')}
   }
-  function start(){if(document.body.dataset.n11V4)return;document.body.dataset.n11V4='1';load();render()}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+  var mounted=false,watcher=null;
+  function mount(){
+    var main=document.querySelector('main');
+    if(!main)return setTimeout(mount,250);
+    if(!mounted){mounted=true;document.body.dataset.n11V4='1';load()}
+    render();
+    if(!watcher){watcher=new MutationObserver(function(){var current=document.querySelector('main');if(current&&!current.classList.contains('n11-premium-app'))setTimeout(render,20)});watcher.observe(document.body,{childList:true,subtree:true})}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 })();
