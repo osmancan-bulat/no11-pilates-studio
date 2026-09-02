@@ -135,7 +135,7 @@ async function proxy(request, context) {
       .replace("</body>", `${desktopHeroScript}</body>`);
     if (path === "admin" || path.startsWith("admin/")) html = html.replace(
       "</head>",
-      `<link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=6"><script>window.addEventListener('load',function(){setTimeout(function(){var s=document.createElement('script');s.src='${incoming.origin}/no11-admin-premium.js?v=6';document.body.appendChild(s)},900)})</script></head>`,
+      `<link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=7"><script>window.addEventListener('load',function(){setTimeout(function(){var s=document.createElement('script');s.src='${incoming.origin}/no11-admin-premium.js?v=7';document.body.appendChild(s)},900)})</script></head>`,
     );
     return new Response(html, { status: upstream.status, headers: responseHeaders });
   }
