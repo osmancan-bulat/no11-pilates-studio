@@ -135,7 +135,7 @@ async function proxy(request, context) {
       .replace("</body>", `${desktopHeroScript}</body>`);
     if (path === "admin" || path.startsWith("admin/")) html = html.replace(
       "</head>",
-      `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=10"><script>window.addEventListener('load',function(){var s=document.createElement('script');s.src='${incoming.origin}/no11-admin-premium.js?v=10';document.body.appendChild(s)})</script></head>`,
+      `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=11"><link rel="stylesheet" href="${incoming.origin}/no11-admin-calendar-fix.css?v=11"><script>window.addEventListener('load',function(){var s=document.createElement('script');s.src='${incoming.origin}/no11-admin-premium.js?v=11';document.body.appendChild(s)})</script></head>`,
     );
     return new Response(html, { status: upstream.status, headers: responseHeaders });
   }

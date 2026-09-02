@@ -1,0 +1,29 @@
+/* Calendar geometry: only the selected date is a compact circle. */
+.n11-cal-head button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--n11-ink);
+  font-size: 20px;
+}
+.n11-cal-grid > i { width: 32px; height: 32px; }
+.n11-cal-grid span {
+  inline-size: 32px !important;
+  min-inline-size: 32px !important;
+  max-inline-size: 32px !important;
+  block-size: 32px !important;
+  justify-self: center !important;
+  box-sizing: border-box !important;
+  border-radius: 999px !important;
+}
+.n11-cal-grid .today {
+  border: 0 !important;
+  background: transparent !important;
+}
+.n11-cal-grid .active {
+  background: var(--n11-plum) !important;
+  color: #fff !important;
+  border: 0 !important;
+}
