@@ -32,3 +32,28 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 .n11-v4 .n11-program-v4{grid-template-columns:minmax(300px,.95fr) minmax(310px,1fr) minmax(330px,1.15fr)}
 @media(max-width:1250px){.n11-v4 .n11-program-v4{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.n11-v4 .n11-program-v4{display:block}}
+
+/* General Overview — approved second reference */
+.n11-v4 .n11-dashboard-new{background:var(--n11-plum);color:#fff;border-color:var(--n11-plum);min-width:180px;justify-content:center}
+.n11-v4 .n11-dashboard-summary{grid-template-columns:1.32fr 2.68fr;padding:44px 40px;min-height:230px;align-items:center}
+.n11-v4 .n11-dashboard-summary .n11-summary-copy{padding-right:28px}
+.n11-v4 .n11-dashboard-summary .n11-summary-copy p{margin:0 0 28px;color:#ae752f}
+.n11-v4 .n11-dashboard-summary .n11-summary-copy h2{font:38px/1.08 Georgia,serif;margin:0 0 20px;white-space:nowrap}
+.n11-v4 .n11-dashboard-summary .n11-summary-copy span{font:17px Georgia;color:#6f6870}
+.n11-v4 .n11-dashboard-summary dl{height:142px;display:grid;grid-template-columns:repeat(4,1fr)}
+.n11-v4 .n11-dashboard-summary dl>div{border-left:1px solid var(--n11-line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
+.n11-v4 .n11-dashboard-summary dl i{font:30px Georgia;color:#b9883e;font-style:normal}.n11-v4 .n11-dashboard-summary dl>div:first-child i{color:#6e9a76}.n11-v4 .n11-dashboard-summary dl>div:nth-child(2) i{color:#a63e4d}
+.n11-v4 .n11-dashboard-summary dl dd{font:34px/1 Georgia;margin:0;order:2}.n11-v4 .n11-dashboard-summary dl dt{font:16px Georgia;color:#6f6870;order:3}.n11-v4 .n11-dashboard-summary dl i{order:1}.n11-v4 .n11-dashboard-summary dl small{order:4;font:14px Georgia;color:#706a71}
+.n11-v4 .n11-dashboard-summary dl>div:nth-child(n+3) dt{order:2}.n11-v4 .n11-dashboard-summary dl>div:nth-child(n+3) dd{order:3}
+.n11-v4 .n11-dashboard-kpis{gap:22px;margin:20px 0}
+.n11-v4 .n11-dashboard-kpis button{height:112px;padding:22px 30px;justify-content:flex-start;gap:28px}
+.n11-v4 .n11-dashboard-kpis button i{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;border:2px solid #b69057;color:#b47d2b;font:30px Georgia;font-style:normal}
+.n11-v4 .n11-dashboard-kpis button:first-child i{border-color:#a84855;color:#a84855}.n11-v4 .n11-dashboard-kpis button span{display:grid;gap:5px;text-align:left;font:16px Georgia}.n11-v4 .n11-dashboard-kpis button b{font:31px Georgia;color:var(--n11-ink)}.n11-v4 .n11-dashboard-kpis button em{margin-left:auto;font-size:30px;color:#bf8f4a;font-style:normal}
+.n11-v4 .n11-dashboard-lists{grid-template-columns:1fr 1fr;gap:22px}
+.n11-v4 .n11-dashboard-lists .n11-block{padding:24px 26px;min-height:350px}
+.n11-v4 .n11-dashboard-lists .n11-block header{align-items:center}.n11-v4 .n11-dashboard-lists .n11-block header p{margin:0}.n11-v4 .n11-dashboard-lists .n11-block header button{height:42px;padding:0 16px;border:1px solid #d9b376;border-radius:12px}
+.n11-v4 .n11-dashboard-lists .n11-record{grid-template-columns:9px 62px 1fr auto;min-height:70px}.n11-v4 .n11-dashboard-lists .n11-record time{font-size:19px}.n11-v4 .n11-dashboard-lists .n11-record b{font:700 18px Georgia}.n11-v4 .n11-dashboard-lists .n11-record small{font-size:14px}
+.n11-v4 .n11-flow-list{position:relative}.n11-v4 .n11-flow-list:before{content:"";position:absolute;left:75px;top:35px;bottom:35px;width:1px;background:#d5b27e}.n11-v4 .n11-flow-list .n11-dot{background:#c59d61;z-index:1}
+.n11-v4 .n11-pending-list .n11-record{grid-template-columns:62px 1fr auto auto}.n11-v4 .n11-pending-list .n11-dot{display:none}.n11-v4 .n11-pending-list .n11-record>button{height:44px;border:1px solid #c69756;border-radius:10px;background:transparent;padding:0 18px}
+@media(max-width:1250px){.n11-v4 .n11-dashboard-summary{grid-template-columns:1fr}.n11-v4 .n11-dashboard-summary dl{margin-top:25px}.n11-v4 .n11-dashboard-summary .n11-summary-copy h2{white-space:normal}}
+@media(max-width:760px){.n11-v4 .n11-dashboard-summary{padding:24px 20px}.n11-v4 .n11-dashboard-summary dl{grid-template-columns:1fr 1fr;height:auto}.n11-v4 .n11-dashboard-summary dl>div{padding:18px 8px}.n11-v4 .n11-dashboard-kpis,.n11-v4 .n11-dashboard-lists{grid-template-columns:1fr}.n11-v4 .n11-dashboard-kpis button{height:92px}}
