@@ -41,3 +41,21 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 .n11-v4 .n11-settings-save .n11-action{margin:0;min-width:220px}
 @media(max-width:900px){.n11-v4 .n11-settings-v4{grid-template-columns:180px 1fr}.n11-v4 .n11-settings-head{grid-template-columns:1fr}.n11-v4 .n11-setting-row{grid-template-columns:160px 1fr}}
 @media(max-width:760px){.n11-v4 .n11-settings-v4{grid-template-columns:1fr}.n11-v4 .n11-settings-v4>aside{display:flex;overflow:auto;border-right:0;border-bottom:1px solid var(--n11-line);padding:0}.n11-v4 .n11-settings-v4>aside button{width:auto;min-width:max-content;height:52px}.n11-v4 .n11-settings-v4>section{padding:20px 16px}.n11-v4 .n11-logo-area{grid-template-columns:1fr}.n11-v4 .n11-setting-row{grid-template-columns:1fr;gap:7px}.n11-v4 .n11-settings-save .n11-action{width:100%}}
+
+
+/* Final strict Site Settings layout — matches approved reference */
+.n11-v4 form.n11-settings-v4>section{display:block!important;grid-template-columns:none!important;align-items:initial!important;gap:0!important;padding:24px 30px 30px!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields{display:flex!important;flex-direction:column!important;gap:10px!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row{display:grid!important;grid-template-columns:220px minmax(0,1fr)!important;gap:20px!important;align-items:center!important;width:100%!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row>label{display:block!important;width:auto!important;font-size:13px!important;color:var(--n11-ink)!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row>label:before{content:none!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row>input,
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row>textarea{display:block!important;grid-column:2!important;width:100%!important;margin:0!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-toggle-row{display:flex!important;flex-direction:row!important;grid-template-columns:none!important}
+.n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-toggle-row>input{grid-column:auto!important;width:42px!important}
+@media(max-width:760px){
+ .n11-v4 form.n11-settings-v4>section{padding:18px 15px 22px!important}
+ .n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row{grid-template-columns:1fr!important;gap:6px!important}
+ .n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row>input,
+ .n11-v4 form.n11-settings-v4 .n11-settings-fields .n11-setting-row>textarea{grid-column:1!important}
+}
