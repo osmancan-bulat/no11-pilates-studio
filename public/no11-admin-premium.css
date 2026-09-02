@@ -75,3 +75,14 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 .n11-v4 .n11-appt-summary{min-height:735px}.n11-v4 .n11-appt-summary>div{min-height:118px}.n11-v4 .n11-appt-summary>div:nth-child(3) i{background:#f4e7e9;color:#a53748}.n11-v4 .n11-appt-summary>div:nth-child(4) i{background:#eaf0eb;color:#347048}
 @media(max-width:1500px){.n11-v4 .n11-appointments-layout{grid-template-columns:1fr}.n11-v4 .n11-appt-summary{display:grid;grid-template-columns:repeat(3,1fr);min-height:0}.n11-v4 .n11-appt-summary h3{grid-column:1/-1}.n11-v4 .n11-appt-summary>div{border-right:1px solid var(--n11-line)}.n11-v4 .n11-appt-row{grid-template-columns:9px 62px 125px minmax(110px,1fr) 90px 30px 86px 82px 82px 48px}}
 @media(max-width:900px){.n11-v4 .n11-appt-row{grid-template-columns:9px 58px 1fr auto}.n11-v4 .n11-appt-service{grid-column:3}.n11-v4 .n11-appt-row .n11-status{grid-column:4;grid-row:1/3}.n11-v4 .n11-appt-row .n11-note-icon,.n11-v4 .n11-appt-row button,.n11-v4 .n11-appt-row>a,.n11-v4 .n11-appt-row .n11-dash{grid-row:3}.n11-v4 .n11-appt-summary{grid-template-columns:1fr}.n11-v4 .n11-appt-summary h3{grid-column:1}.n11-v4 .n11-date-field{display:none}}
+
+/* Sidebar and appointments proportions — exact reference correction */
+.n11-v4 .n11-main-side{width:240px;padding:32px 21px 24px}
+.n11-v4 .n11-side-logo{font-size:44px}.n11-v4 .n11-side-logo small{font-size:8px;margin-top:11px}
+.n11-v4 .n11-main-side nav{margin-top:48px;gap:5px}.n11-v4 .n11-main-side nav button{height:58px;padding:0 18px;font-size:16px}.n11-v4 .n11-main-side nav button b{width:18px;font-size:15px}.n11-v4 .n11-main-side nav button.active{border-radius:0 10px 10px 0}
+.n11-v4 .n11-side-user{padding-top:22px}.n11-v4 .n11-side-user i{width:52px;height:52px}.n11-v4 .n11-side-user span b{font-size:12px}
+.n11-v4 .n11-main-content{margin-left:240px;padding:42px 26px 46px}
+.n11-v4 .n11-page-top h1{font-size:43px}.n11-v4 .n11-page-top{margin-bottom:26px}
+.n11-v4 .n11-appointments-layout{grid-template-columns:minmax(0,1fr) 210px;gap:18px}.n11-v4 .n11-appointments{padding:26px 26px 10px}.n11-v4 .n11-appt-row{grid-template-columns:8px 62px 130px minmax(105px,1fr) 88px 28px 82px 80px 80px 46px;gap:8px;min-height:77px}.n11-v4 .n11-appt-row time{font-size:15px}.n11-v4 .n11-appt-row>b{font-size:14px}.n11-v4 .n11-appt-service{font-size:13px}.n11-v4 .n11-appt-row button,.n11-v4 .n11-appt-row>a{height:42px;padding:0 7px;font-size:12px}.n11-v4 .n11-appt-summary{min-height:700px;padding:26px 22px}.n11-v4 .n11-appt-summary>div{padding:30px 0}.n11-v4 .n11-appt-summary i{width:56px;height:56px}.n11-v4 .n11-appt-summary b{font-size:26px}
+@media(max-width:1250px){.n11-v4 .n11-main-side{width:220px}.n11-v4 .n11-main-content{margin-left:220px}}
+@media(max-width:760px){.n11-v4 .n11-main-side{width:min(84vw,315px)}.n11-v4 .n11-main-content{margin-left:0}}
