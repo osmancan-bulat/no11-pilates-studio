@@ -12,6 +12,7 @@
     image.dataset.no11Main='1';image.src=main;image.removeAttribute('srcset');image.alt='No.11 Pilates Studio gün ışığı alan iç mekânı';
     var pair=document.querySelector('#studyo .gallery-pair');
     if(pair){pair.innerHTML=details.map(function(item){return '<button class="gallery-photo" type="button" aria-label="'+item.alt+' fotoğrafını görüntüle"><img src="'+item.src+'" alt="'+item.alt+'" loading="lazy"></button>'}).join('')}
+    var note=document.querySelector('#studyo .gallery-note');if(note)note.remove();
   }
   function close(){var viewer=document.querySelector('.no11-gallery-viewer');if(viewer)viewer.remove();document.body.classList.remove('no11-gallery-open')}
   function open(source){

@@ -5,7 +5,7 @@
 #studyo .gallery-photo{display:block!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;overflow:hidden!important;background:#ddd!important;cursor:zoom-in!important}
 #studyo .gallery-photo img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;transition:transform .7s cubic-bezier(.22,1,.36,1)!important}
 #studyo .gallery-photo:hover img{transform:scale(1.025)!important}
-#studyo .gallery-note{grid-column:1/-1!important;max-width:760px!important;margin:22px 0 0 auto!important;text-align:right!important}
+#studyo .gallery-note{display:none!important}
 body.no11-gallery-open{overflow:hidden!important}
 .no11-gallery-viewer{position:fixed!important;inset:0!important;z-index:2147483647!important;display:grid!important;place-items:center!important;width:100vw!important;height:100svh!important;padding:7vh 8vw!important;overflow:hidden!important;background:rgba(24,18,22,.9)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
 .no11-gallery-viewer-frame{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;width:auto!important;height:auto!important;max-width:78vw!important;max-height:78vh!important}
