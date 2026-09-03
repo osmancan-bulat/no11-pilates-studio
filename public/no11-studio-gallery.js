@@ -4,7 +4,8 @@
   var details=[
     {src:'/no11-studio-detail-01.jpeg',alt:'No.11 Pilates Studio Cadillac ve reformer alanı'},
     {src:'/no11-studio-detail-02.jpeg',alt:'No.11 Pilates Studio gün ışığı alan çalışma bölümü'},
-    {src:'/no11-studio-detail-03.jpeg',alt:'No.11 Pilates Studio karşılama alanı'}
+    {src:'/no11-studio-detail-03.jpeg',alt:'No.11 Pilates Studio karşılama alanı'},
+    {src:'/no11-studio-detail-04.jpeg',alt:'No.11 Pilates Studio ahşap bölmeli iç mekânı'}
   ];
   function prepare(){
     var image=document.querySelector('#studyo .gallery-main img');
