@@ -51,7 +51,7 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',swapDesktopHero);
   else swapDesktopHero();
   window.addEventListener('resize',syncControl);
-  new MutationObserver(swapDesktopHero).observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener('pageshow',swapDesktopHero,{once:true});
 })();
 </script>`;
 
@@ -131,7 +131,7 @@ async function proxy(request, context) {
       .split(`${STYLE_ORIGIN}/_next/`).join(`${incoming.origin}/__old2/_next/`);
     if (path === "") html = html
       .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
-      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}</head>`)
+      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script></head>`)
       .replace("</body>", `${desktopHeroScript}</body>`);
     if (path === "admin" || path.startsWith("admin/")) html = html.replace(
       "</head>",
