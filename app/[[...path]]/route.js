@@ -1,8 +1,25 @@
 const ORIGIN = "https://no11-pilates-studio-aihbdj6zg-osmancanbulat197-7442s-projects.vercel.app";
 const STYLE_ORIGIN = "https://no11-pilates-studio-rfj4dz9b5-osmancanbulat197-7442s-projects.vercel.app";
 
+function deferHeroVideos(html) {
+  return html.replace(
+    /<video([^>]*\bhero-video--(?:desktop|mobile)\b[^>]*)>([\s\S]*?)<\/video>/gi,
+    (_match, rawAttributes, rawContent) => {
+      let attributes = rawAttributes
+        .replace(/\sautoplay(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, "")
+        .replace(/\spreload=(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+        .replace(/\ssrc=("[^"]*"|'[^']*')/gi, " data-no11-src=$1");
+      const content = rawContent.replace(/\ssrc=("[^"]*"|'[^']*')/gi, " data-no11-src=$1");
+      attributes += ' preload="none"';
+      return `<video${attributes}>${content}</video>`;
+    },
+  );
+}
+
 const desktopHeroScript = `<script id="no11-desktop-hero-swap">
 (function(){
+  var desktopVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/video-v1/no11-desktop-full-quality.mp4';
+  var desktopQuery=window.matchMedia('(min-width: 901px)');
   function activeVideo(){return document.querySelector(window.matchMedia('(min-width: 901px)').matches?'.hero-video--desktop':'.hero-video--mobile')}
   function syncControl(){
     var control=document.querySelector('.no11-video-control'),video=activeVideo();if(!control||!video)return;
@@ -22,21 +39,16 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     }
     syncControl();
   }
-  async function swapDesktopHero(){
-    enhanceControls();
-    if(!window.matchMedia('(min-width: 901px)').matches) return;
-    var video=document.querySelector('.hero-video--desktop');
-    if(!video || video.dataset.no11NewDesktop==='1') return;
-    var desktopVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/video-v1/no11-desktop-full-quality.mp4';
-    video.poster='/no11-desktop-poster.webp';
-    video.dataset.no11NewDesktop='1';
-    video.style.setProperty('display','block','important');
-    video.style.setProperty('visibility','visible','important');
-    video.style.setProperty('opacity','1','important');
-    var desktopStill=document.querySelector('.hero-desktop-still');
-    if(desktopStill) desktopStill.style.setProperty('display','none','important');
-    video.querySelectorAll('source').forEach(function(source){source.remove()});
-    video.src=desktopVideoUrl;
+  function unloadVideo(video){
+    if(!video)return;
+    video.pause();video.removeAttribute('src');video.querySelectorAll('source').forEach(function(source){source.removeAttribute('src')});
+    video.autoplay=false;video.preload='none';video.load();video.dataset.no11Active='0';
+  }
+  function loadVideo(video,forcedUrl){
+    if(!video||video.dataset.no11Active==='1')return;
+    if(forcedUrl){video.querySelectorAll('source').forEach(function(source){source.remove()});video.src=forcedUrl}
+    else if(video.dataset.no11Src){video.src=video.dataset.no11Src}
+    else video.querySelectorAll('source[data-no11-src]').forEach(function(source){source.src=source.dataset.no11Src});
     video.muted=true;
     video.loop=true;
     video.autoplay=true;
@@ -44,14 +56,29 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     video.preload='auto';
     video.defaultPlaybackRate=.9;
     video.playbackRate=.9;
+    video.dataset.no11Active='1';
     video.load();
     var playPromise=video.play();
     if(playPromise && playPromise.catch) playPromise.catch(function(){});
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',swapDesktopHero);
-  else swapDesktopHero();
+  function selectHeroVideo(){
+    var desktop=document.querySelector('.hero-video--desktop'),mobile=document.querySelector('.hero-video--mobile');
+    if(!desktop&&!mobile)return;
+    if(desktopQuery.matches){
+      unloadVideo(mobile);
+      if(desktop){desktop.poster='/no11-desktop-poster.webp';desktop.style.setProperty('display','block','important');desktop.style.setProperty('visibility','visible','important');desktop.style.setProperty('opacity','1','important')}
+      var desktopStill=document.querySelector('.hero-desktop-still');if(desktopStill)desktopStill.style.setProperty('display','none','important');
+      loadVideo(desktop,desktopVideoUrl);
+    }else{
+      unloadVideo(desktop);loadVideo(mobile);
+    }
+    enhanceControls();syncControl();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',selectHeroVideo);
+  else selectHeroVideo();
   window.addEventListener('resize',syncControl);
-  window.addEventListener('pageshow',swapDesktopHero,{once:true});
+  if(desktopQuery.addEventListener)desktopQuery.addEventListener('change',selectHeroVideo);else desktopQuery.addListener(selectHeroVideo);
+  window.addEventListener('pageshow',selectHeroVideo,{once:true});
 })();
 </script>`;
 
@@ -129,10 +156,13 @@ async function proxy(request, context) {
     html = html
       .split(`${ORIGIN}/_next/`).join(`${incoming.origin}/__old1/_next/`)
       .split(`${STYLE_ORIGIN}/_next/`).join(`${incoming.origin}/__old2/_next/`);
-    if (path === "") html = html
+    if (path === "") {
+      html = deferHeroVideos(html);
+      html = html
       .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
       .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script></head>`)
       .replace("</body>", `${desktopHeroScript}</body>`);
+    }
     if (path === "admin" || path.startsWith("admin/")) {
       // The premium admin owns the page. Prevent the proxied Next.js client from
       // hydrating the same DOM and repeatedly fighting the admin renderer.
