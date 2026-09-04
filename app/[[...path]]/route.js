@@ -169,7 +169,7 @@ async function proxy(request, context) {
       html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
       html = html.replace(
         "</head>",
-        `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=12"><link rel="stylesheet" href="${incoming.origin}/no11-admin-calendar-fix.css?v=12"><script src="${incoming.origin}/no11-admin-premium.js?v=12" defer></script></head>`,
+        `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=13"><link rel="stylesheet" href="${incoming.origin}/no11-admin-calendar-fix.css?v=13"><script src="${incoming.origin}/no11-admin-premium.js?v=13" defer></script></head>`,
       );
     }
     return new Response(html, { status: upstream.status, headers: responseHeaders });
