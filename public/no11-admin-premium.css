@@ -104,3 +104,23 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 .n11-v4 .n11-theme-menu b{opacity:0;color:var(--n11-gold);font-size:13px}
 .n11-v4 .n11-theme-menu button.active b{opacity:1}
 @media(max-width:760px){.n11-v4 .n11-theme-menu{position:fixed;top:72px;right:14px;width:min(210px,calc(100vw - 28px))}.n11-v4 .n11-theme{width:42px!important;height:42px!important}}
+
+/* Complete dark appearance */
+body:has(.n11-v4.n11-dark){background:#171419!important}
+.n11-v4.n11-dark{background:linear-gradient(135deg,#171419,#1d1920 58%,#171419)!important;color:#f6f1f5}
+.n11-v4.n11-dark .n11-main-content{background:transparent!important;color:var(--n11-ink)}
+.n11-v4.n11-dark .n11-page-top h1,.n11-v4.n11-dark .n11-page-top div,.n11-v4.n11-dark h2,.n11-v4.n11-dark h3,.n11-v4.n11-dark b,.n11-v4.n11-dark time,.n11-v4.n11-dark dd{color:#f6f1f5!important}
+.n11-v4.n11-dark .n11-page-top p,.n11-v4.n11-dark .n11-eyebrow,.n11-v4.n11-dark .n11-block header p{color:#d5a14c!important}
+.n11-v4.n11-dark .n11-summary-copy>span,.n11-v4.n11-dark small,.n11-v4.n11-dark .n11-record small,.n11-v4.n11-dark .n11-appt-service,.n11-v4.n11-dark .n11-empty span,.n11-v4.n11-dark dt{color:#bdb4c0!important}
+.n11-v4.n11-dark .n11-panel,.n11-v4.n11-dark .n11-kpis button,.n11-v4.n11-dark .n11-theme-menu,.n11-v4.n11-dark .n11-theme{background:#242126!important;border-color:#403a43!important}
+.n11-v4.n11-dark .n11-new,.n11-v4.n11-dark .n11-action.primary{background:#b67d28!important;border-color:#cf9b4b!important;color:#fff!important}
+.n11-v4.n11-dark .n11-page-actions>a{color:#e1b768!important;border-color:#a77a39!important}
+.n11-v4.n11-dark .n11-dashboard-summary{background:linear-gradient(125deg,#272329,#211e23)!important;border-color:#443c46!important}
+.n11-v4.n11-dark .n11-program-card{background:linear-gradient(90deg,#252b27,#29262b)!important;border-color:#405046!important}
+.n11-v4.n11-dark input,.n11-v4.n11-dark textarea,.n11-v4.n11-dark select,.n11-v4.n11-dark .n11-note,.n11-v4.n11-dark .n11-date-field{background:#1d1a1f!important;color:#f4eff4!important;border-color:#474149!important}
+.n11-v4.n11-dark .n11-filter,.n11-v4.n11-dark .n11-theme-menu button:hover,.n11-v4.n11-dark .n11-theme-menu button.active{background:#312c33!important}
+.n11-v4.n11-dark .n11-filter button,.n11-v4.n11-dark .n11-record-actions button,.n11-v4.n11-dark .n11-record-actions a,.n11-v4.n11-dark .n11-team-card button,.n11-v4.n11-dark .n11-lessons button,.n11-v4.n11-dark .n11-appt-row button,.n11-v4.n11-dark .n11-appt-row>a{background:#29252b!important;color:#eee7ef!important;border-color:#49424b!important}
+.n11-v4.n11-dark .n11-status.confirmed{color:#91c8a0!important;background:#243329!important;border-color:#395542!important}
+.n11-v4.n11-dark .n11-status.pending{color:#e6a0aa!important;background:#38252a!important;border-color:#62404a!important}
+.n11-v4.n11-dark .n11-theme-menu i{color:#cbc2cd!important}
+@media(max-width:760px){.n11-v4.n11-dark .n11-main-content{background:#171419!important}}
