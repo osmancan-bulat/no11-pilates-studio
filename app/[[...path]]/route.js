@@ -162,7 +162,7 @@ async function proxy(request, context) {
       html = deferHeroVideos(html);
       html = html
       .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
-      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script><script src="${incoming.origin}/no11-schedule-live.js?v=1" defer></script></head>`)
+      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script><script src="${incoming.origin}/no11-schedule-live.js?v=1" defer></script><script src="${incoming.origin}/no11-settings-live.js?v=1" defer></script></head>`)
       .replace("</body>", `${desktopHeroScript}</body>`);
     }
     if (path === "admin" || path.startsWith("admin/")) {
@@ -171,7 +171,7 @@ async function proxy(request, context) {
       html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
       html = html.replace(
         "</head>",
-        `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=20"><link rel="stylesheet" href="${incoming.origin}/no11-admin-calendar-fix.css?v=20"><script src="${incoming.origin}/no11-admin-premium.js?v=20" defer></script></head>`,
+        `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=21"><link rel="stylesheet" href="${incoming.origin}/no11-admin-calendar-fix.css?v=21"><script src="${incoming.origin}/no11-admin-premium.js?v=21" defer></script></head>`,
       );
       responseHeaders.set("cache-control", "no-store, no-cache, must-revalidate");
     }
