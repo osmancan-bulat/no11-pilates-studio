@@ -1,5 +1,5 @@
-const ORIGIN = "https://no11-pilates-studio-aihbdj6zg-osmancanbulat197-7442s-projects.vercel.app";
-const STYLE_ORIGIN = "https://no11-pilates-studio-rfj4dz9b5-osmancanbulat197-7442s-projects.vercel.app";
+const ORIGIN = "https://no11-pilates-studio-ro9kcm7fd-osmancanbulat197-7442s-projects.vercel.app";
+const STYLE_ORIGIN = "https://no11-pilates-studio-ro9kcm7fd-osmancanbulat197-7442s-projects.vercel.app";
 
 function deferHeroVideos(html) {
   return html.replace(
