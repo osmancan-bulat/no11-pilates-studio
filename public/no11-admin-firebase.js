@@ -63,7 +63,7 @@
 
   function mergeAndMigrate(remote){
     var local=parse(localStorage.getItem(APPOINTMENTS_KEY));
-    var localMap=byId(local),remoteMap=byId(remote),merged=[];
+    var remoteMap=byId(remote),merged=[];
     remote.forEach(function(item){if(item&&item.id)merged.push(item)});
     local.forEach(function(item){
       if(!item||!item.id)return;
@@ -77,7 +77,7 @@
   function loadPremium(){
     if(document.querySelector('script[data-no11-premium-loader]'))return;
     var script=document.createElement('script');
-    script.src='/no11-admin-premium.js?v=22';
+    script.src='/no11-admin-premium.js?v=31';
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
     document.head.appendChild(script);
