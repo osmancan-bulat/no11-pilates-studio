@@ -1,6 +1,6 @@
-import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { firebaseConfigured, listAppointments, saveAppointment, deleteAppointment } from '../../../lib/firebase-firestore.js';
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,18 +9,6 @@ function json(data, status = 200) {
     status,
     headers: { 'cache-control': 'no-store, max-age=0' },
   });
-}
-
-function safeEqual(a, b) {
-  const left = Buffer.from(String(a || ''));
-  const right = Buffer.from(String(b || ''));
-  return left.length === right.length && left.length > 0 && crypto.timingSafeEqual(left, right);
-}
-
-function isAdmin(request) {
-  const expected = String(process.env.NO11_ADMIN_API_KEY || '').trim();
-  const supplied = String(request.headers.get('x-no11-admin-key') || '').trim();
-  return Boolean(expected && supplied && safeEqual(expected, supplied));
 }
 
 function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
@@ -48,7 +36,7 @@ function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
 }
 
 export async function GET(request) {
-  if (!isAdmin(request)) return json({ error: 'unauthorized' }, 401);
+  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ configured: false, appointments: [] }, 503);
   try {
     const appointments = await listAppointments();
@@ -74,7 +62,7 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  if (!isAdmin(request)) return json({ error: 'unauthorized' }, 401);
+  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
@@ -88,7 +76,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
-  if (!isAdmin(request)) return json({ error: 'unauthorized' }, 401);
+  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const { searchParams } = new URL(request.url);
