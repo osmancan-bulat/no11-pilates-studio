@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { firebaseConfigured, listAppointments, saveAppointment, deleteAppointment } from '../../../lib/firebase-firestore.js';
 
@@ -10,9 +11,21 @@ function json(data, status = 200) {
   });
 }
 
-function normalizeAppointment(input = {}) {
+function safeEqual(a, b) {
+  const left = Buffer.from(String(a || ''));
+  const right = Buffer.from(String(b || ''));
+  return left.length === right.length && left.length > 0 && crypto.timingSafeEqual(left, right);
+}
+
+function isAdmin(request) {
+  const expected = String(process.env.NO11_ADMIN_API_KEY || '').trim();
+  const supplied = String(request.headers.get('x-no11-admin-key') || '').trim();
+  return Boolean(expected && supplied && safeEqual(expected, supplied));
+}
+
+function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
   const id = String(input.id || `apt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`);
-  return {
+  const normalized = {
     ...input,
     id,
     name: String(input.name || '').trim(),
@@ -25,9 +38,17 @@ function normalizeAppointment(input = {}) {
     managerNote: String(input.managerNote || '').trim(),
     createdAt: input.createdAt || new Date().toISOString(),
   };
+
+  if (publicCreate) {
+    normalized.status = 'pending';
+    normalized.managerNote = '';
+  }
+
+  return normalized;
 }
 
-export async function GET() {
+export async function GET(request) {
+  if (!isAdmin(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ configured: false, appointments: [] }, 503);
   try {
     const appointments = await listAppointments();
@@ -42,10 +63,10 @@ export async function POST(request) {
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
-    const appointment = normalizeAppointment(body);
+    const appointment = normalizeAppointment(body, { publicCreate: true });
     if (!appointment.name || !appointment.phone) return json({ error: 'missing_required_fields' }, 400);
     const saved = await saveAppointment(appointment);
-    return json({ ok: true, appointment: saved }, 201);
+    return json({ ok: true, appointment: { id: saved.id, status: saved.status } }, 201);
   } catch (error) {
     console.error('Appointments POST failed:', error);
     return json({ error: 'appointment_create_failed' }, 500);
@@ -53,6 +74,7 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
+  if (!isAdmin(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
@@ -66,6 +88,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
+  if (!isAdmin(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const { searchParams } = new URL(request.url);
