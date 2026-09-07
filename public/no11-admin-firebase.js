@@ -72,7 +72,7 @@
   }
 
   function loadPremium(){
-    if(document.querySelector('script[data-no11-premium-loader]'))return;
+    if(document.querySelector('script[data-no11-premium-loader],script[src*="/no11-admin-premium.js"]'))return;
     var script=document.createElement('script');
     script.src='/no11-admin-premium.js?v=52';
     script.defer=true;
