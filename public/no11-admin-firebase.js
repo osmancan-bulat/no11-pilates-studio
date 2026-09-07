@@ -6,7 +6,6 @@
   var authenticated=false;
   var polling=false;
   var knownPendingIds={};
-  var knownRemoteSignature='';
   var pollTimer=null;
   var nativeSetItem=Storage.prototype.setItem;
   var nativeRemoveItem=Storage.prototype.removeItem;
@@ -65,16 +64,23 @@
     return nativeRemoveItem.call(this,k);
   };
 
-  function applyRemote(remote){
+  function mergeAndMigrate(remote){
+    var local=parse(localStorage.getItem(APPOINTMENTS_KEY));
+    var remoteMap=byId(remote),merged=[];
+    remote.forEach(function(item){if(item&&item.id)merged.push(item)});
+    local.forEach(function(item){
+      if(!item||!item.id)return;
+      if(!remoteMap[String(item.id)]){merged.push(item);saveOne(item)}
+    });
     syncing=true;
-    nativeSetItem.call(localStorage,APPOINTMENTS_KEY,JSON.stringify(Array.isArray(remote)?remote:[]));
+    nativeSetItem.call(localStorage,APPOINTMENTS_KEY,JSON.stringify(merged));
     syncing=false;
   }
 
   function loadPremium(){
-    if(document.querySelector('script[data-no11-premium-loader],script[src*="/no11-admin-premium.js"]'))return;
+    if(document.querySelector('script[data-no11-premium-loader]'))return;
     var script=document.createElement('script');
-    script.src='/no11-admin-premium.js?v=52';
+    script.src='/no11-admin-premium.js?v=31';
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
     document.head.appendChild(script);
@@ -103,13 +109,11 @@
       .then(function(data){
         var remote=Array.isArray(data.appointments)?data.appointments:[];
         var nextPending=pendingIds(remote);
-        var signature=JSON.stringify(remote);
         var hasNew=Object.keys(nextPending).some(function(id){return !knownPendingIds[id]});
         knownPendingIds=nextPending;
-        if(signature===knownRemoteSignature)return;
-        knownRemoteSignature=signature;
-        applyRemote(remote);
-        if(hasNew)sessionStorage.setItem('no11-new-appointment-toast','1');
+        if(!hasNew)return;
+        mergeAndMigrate(remote);
+        sessionStorage.setItem('no11-new-appointment-toast','1');
         location.reload();
       })
       .catch(function(){})
@@ -181,8 +185,7 @@
         authenticated=true;
         var remote=Array.isArray(data.appointments)?data.appointments:[];
         knownPendingIds=pendingIds(remote);
-        knownRemoteSignature=JSON.stringify(remote);
-        applyRemote(remote);
+        mergeAndMigrate(remote);
         loadPremium();
         consumeNewAppointmentToast();
         startPolling();
