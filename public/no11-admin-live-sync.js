@@ -28,8 +28,22 @@
   }
 
   function signature(items){
-    return JSON.stringify((Array.isArray(items)?items:[]).slice().sort(function(a,b){
-      return String(a&&a.id||'').localeCompare(String(b&&b.id||''));
+    return JSON.stringify((Array.isArray(items)?items:[]).map(function(item){
+      item=item||{};
+      return {
+        id:String(item.id||''),
+        name:String(item.name||''),
+        phone:String(item.phone||''),
+        service:String(item.service||item.lesson||'Pilates'),
+        date:String(item.date||''),
+        time:String(item.time||''),
+        studentNote:String(item.studentNote||item.note||''),
+        managerNote:String(item.managerNote||''),
+        status:String(item.status||'pending').toLowerCase(),
+        createdAt:String(item.createdAt||'')
+      };
+    }).sort(function(a,b){
+      return a.id.localeCompare(b.id);
     }));
   }
 
