@@ -21,7 +21,7 @@
     toast.className='n11-toast n11-new-booking-toast';
     toast.textContent='Yeni randevu geldi';
     document.body.appendChild(toast);
-    setTimeout(function(){toast.remove()},2200);
+    setTimeout(function(){toast.remove()},2500);
   }
 
   function pollBookings(){
@@ -37,7 +37,8 @@
         if(knownRemotePendingIds!==null&&Object.keys(ids).some(function(id){return !knownRemotePendingIds[id]})){
           knownRemotePendingIds=ids;
           showBookingToast();
-          setTimeout(function(){location.reload()},2500);
+          var activePage=document.querySelector('.n11-main-side [data-page].active');
+          if(activePage)setTimeout(function(){activePage.click()},150);
           return;
         }
         knownRemotePendingIds=ids;
