@@ -268,9 +268,7 @@
   function start(){
     if(document.body)observer.observe(document.body,{childList:true,subtree:true});
     apply();
-    pollBookings();
-    setInterval(pollBookings,7000);
-    document.addEventListener('visibilitychange',function(){if(!document.hidden)pollBookings()});
+    /* Appointment polling is handled by the Firebase sync layer. */
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
