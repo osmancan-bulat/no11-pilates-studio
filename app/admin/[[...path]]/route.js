@@ -80,12 +80,11 @@ async function proxy(request, context) {
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/<link rel="stylesheet" href="[^"]*\/no11-admin-premium\.css\?v=\d+">/, `<link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=52">`)
-      .replace(/<script src="[^"]*\/no11-admin-premium\.js\?v=\d+" defer><\/script>/, `<script src="${incoming.origin}/no11-admin-firebase.js?v=6" defer></script><script src="${incoming.origin}/no11-admin-premium.js?v=52" defer></script>`);
+      .replace(/no11-admin-firebase\.js\?v=\d+/, 'no11-admin-firebase.js?v=4');
 
     html = html.replace(
       '</head>',
-      `<script src="${incoming.origin}/no11-admin-fresh.js?v=8" defer></script></head>`,
+      `<script src="${incoming.origin}/no11-admin-fresh.js?v=7" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
