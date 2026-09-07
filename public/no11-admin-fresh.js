@@ -6,11 +6,50 @@
   var viewDate=new Date();
   var busy=false;
   var lastMobileSignature='';
+  var knownRemotePendingIds=null;
+  var bookingPollBusy=false;
 
   function label(date){return date.getDate()+' '+months[date.getMonth()]+' '+days[date.getDay()]}
   function monthTitle(date){return months[date.getMonth()].toLocaleUpperCase('tr-TR')+' '+date.getFullYear()}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function readArray(key){try{var value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch(e){return []}}
+
+  function showBookingToast(){
+    var old=document.querySelector('.n11-new-booking-toast');
+    if(old)old.remove();
+    var toast=document.createElement('div');
+    toast.className='n11-toast n11-new-booking-toast';
+    toast.textContent='Yeni randevu geldi';
+    document.body.appendChild(toast);
+    setTimeout(function(){toast.remove()},2200);
+  }
+
+  function consumeBookingToast(){
+    if(sessionStorage.getItem('no11-new-booking-toast')!=='1')return;
+    sessionStorage.removeItem('no11-new-booking-toast');
+    setTimeout(showBookingToast,600);
+  }
+
+  function pollBookings(){
+    if(bookingPollBusy||document.hidden)return;
+    bookingPollBusy=true;
+    fetch('/api/no11-appointments?ts='+Date.now(),{cache:'no-store'})
+      .then(function(response){if(!response.ok)throw new Error('appointments');return response.json()})
+      .then(function(data){
+        var ids={};
+        (Array.isArray(data.appointments)?data.appointments:[]).forEach(function(item){
+          if(item&&item.id&&normalizedStatus(item)==='pending')ids[String(item.id)]=true;
+        });
+        if(knownRemotePendingIds!==null&&Object.keys(ids).some(function(id){return !knownRemotePendingIds[id]})){
+          sessionStorage.setItem('no11-new-booking-toast','1');
+          location.reload();
+          return;
+        }
+        knownRemotePendingIds=ids;
+      })
+      .catch(function(){})
+      .then(function(){bookingPollBusy=false});
+  }
 
   function turkeyNow(){
     var formatter=new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',weekday:'long',hour:'2-digit',hourCycle:'h23'});
@@ -230,6 +269,13 @@
   window.addEventListener('resize',function(){setTimeout(apply,60)});
   window.addEventListener('storage',function(e){if(e.key==='no11-appointments'||e.key==='no11-appointment-slots')setTimeout(apply,0)});
   var observer=new MutationObserver(function(){setTimeout(apply,0)});
-  function start(){if(document.body)observer.observe(document.body,{childList:true,subtree:true});apply()}
+  function start(){
+    if(document.body)observer.observe(document.body,{childList:true,subtree:true});
+    apply();
+    consumeBookingToast();
+    pollBookings();
+    setInterval(pollBookings,7000);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)pollBookings()});
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
