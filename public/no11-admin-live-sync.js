@@ -71,6 +71,16 @@
     nativeSetItem.call(localStorage,SEEN_PENDING_KEY,JSON.stringify(ids||{}));
   }
 
+  function recentPendingId(items){
+    var cutoff=Date.now()-120000;
+    var recent=(Array.isArray(items)?items:[]).filter(function(item){
+      return item&&item.id&&String(item.status||'pending').toLowerCase()==='pending'&&Date.parse(item.createdAt||0)>=cutoff;
+    }).sort(function(a,b){
+      return Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0);
+    });
+    return recent[0]?String(recent[0].id):'';
+  }
+
   function request(url,options){
     options=options||{};
     options.cache='no-store';
@@ -186,9 +196,12 @@
         var nextPending=pendingIds(remote);
         if(initial){
           var seenPending=readSeenPending();
+          var recentId=recentPendingId(remote);
+          var lastNotified=sessionStorage.getItem('no11-admin-last-notified');
           var hasNewSinceLastVisit=seenPending!==null&&Object.keys(nextPending).some(function(id){
             return !seenPending[id];
           });
+          if(recentId&&recentId!==lastNotified)hasNewSinceLastVisit=true;
           knownSignature=nextSignature;
           knownPending=nextPending;
           rememberPending(nextPending);
@@ -198,6 +211,7 @@
           if(hasNewSinceLastVisit){
             if(localSignature!==nextSignature)applyRemote(remote);
             sessionStorage.removeItem('no11-admin-initial-sync');
+            if(recentId)sessionStorage.setItem('no11-admin-last-notified',recentId);
             showToast();
             reloadOn(activePage(),2450);
             return;
