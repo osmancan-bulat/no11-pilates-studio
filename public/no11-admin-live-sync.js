@@ -195,13 +195,16 @@
           ready=true;
           var localSignature=signature(parse(localStorage.getItem(KEY)));
           var initialMarker=sessionStorage.getItem('no11-admin-initial-sync');
+          if(hasNewSinceLastVisit){
+            if(localSignature!==nextSignature)applyRemote(remote);
+            sessionStorage.removeItem('no11-admin-initial-sync');
+            showToast();
+            reloadOn(activePage(),2450);
+            return;
+          }
           if(localSignature!==nextSignature){
             applyRemote(remote);
-            if(hasNewSinceLastVisit){
-              sessionStorage.removeItem('no11-admin-initial-sync');
-              showToast();
-              reloadOn(activePage(),2450);
-            }else if(initialMarker!==nextSignature){
+            if(initialMarker!==nextSignature){
               sessionStorage.setItem('no11-admin-initial-sync',nextSignature);
               reloadOn(activePage(),80);
             }else{
