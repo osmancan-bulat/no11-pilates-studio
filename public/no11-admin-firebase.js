@@ -4,16 +4,12 @@
   var APPOINTMENTS_KEY='no11-appointments';
   var syncing=false;
   var authenticated=false;
-  var polling=false;
-  var knownPendingIds={};
-  var pollTimer=null;
   var nativeSetItem=Storage.prototype.setItem;
   var nativeRemoveItem=Storage.prototype.removeItem;
 
   function parse(value){try{var data=JSON.parse(value||'[]');return Array.isArray(data)?data:[]}catch(e){return []}}
   function same(a,b){try{return JSON.stringify(a)===JSON.stringify(b)}catch(e){return false}}
   function byId(items){var out={};items.forEach(function(x){if(x&&x.id)out[String(x.id)]=x});return out}
-  function pendingIds(items){var out={};items.forEach(function(x){if(x&&x.id&&String(x.status||'pending').toLowerCase()==='pending')out[String(x.id)]=true});return out}
 
   function request(url,options){
     options=options||{};
@@ -86,46 +82,6 @@
     document.head.appendChild(script);
   }
 
-  function showNewAppointmentToast(){
-    var old=document.querySelector('.n11-new-appointment-toast');
-    if(old)old.remove();
-    var toast=document.createElement('div');
-    toast.className='n11-toast n11-new-appointment-toast';
-    toast.textContent='Yeni randevu geldi';
-    document.body.appendChild(toast);
-    setTimeout(function(){toast.remove()},2200);
-  }
-
-  function consumeNewAppointmentToast(){
-    if(sessionStorage.getItem('no11-new-appointment-toast')!=='1')return;
-    sessionStorage.removeItem('no11-new-appointment-toast');
-    setTimeout(showNewAppointmentToast,500);
-  }
-
-  function pollAppointments(){
-    if(polling||document.hidden)return;
-    polling=true;
-    request('/api/no11-appointments?ts='+Date.now())
-      .then(function(data){
-        var remote=Array.isArray(data.appointments)?data.appointments:[];
-        var nextPending=pendingIds(remote);
-        var hasNew=Object.keys(nextPending).some(function(id){return !knownPendingIds[id]});
-        knownPendingIds=nextPending;
-        if(!hasNew)return;
-        mergeAndMigrate(remote);
-        sessionStorage.setItem('no11-new-appointment-toast','1');
-        location.reload();
-      })
-      .catch(function(){})
-      .then(function(){polling=false});
-  }
-
-  function startPolling(){
-    if(pollTimer)return;
-    pollTimer=setInterval(pollAppointments,7000);
-    document.addEventListener('visibilitychange',function(){if(!document.hidden)pollAppointments()});
-  }
-
   function clearBoot(){
     var boot=document.getElementById('n11-admin-boot');
     if(boot)boot.remove();
@@ -183,12 +139,8 @@
     return request('/api/no11-appointments?ts='+Date.now())
       .then(function(data){
         authenticated=true;
-        var remote=Array.isArray(data.appointments)?data.appointments:[];
-        knownPendingIds=pendingIds(remote);
-        mergeAndMigrate(remote);
+        mergeAndMigrate(Array.isArray(data.appointments)?data.appointments:[]);
         loadPremium();
-        consumeNewAppointmentToast();
-        startPolling();
       })
       .catch(function(err){
         if(err&&err.status===401){authenticated=false;showLogin();return}

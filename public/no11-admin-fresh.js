@@ -6,46 +6,11 @@
   var viewDate=new Date();
   var busy=false;
   var lastMobileSignature='';
-  var knownRemotePendingIds=null;
-  var bookingPollBusy=false;
 
   function label(date){return date.getDate()+' '+months[date.getMonth()]+' '+days[date.getDay()]}
   function monthTitle(date){return months[date.getMonth()].toLocaleUpperCase('tr-TR')+' '+date.getFullYear()}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function readArray(key){try{var value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch(e){return []}}
-
-  function showBookingToast(){
-    var old=document.querySelector('.n11-new-booking-toast');
-    if(old)old.remove();
-    var toast=document.createElement('div');
-    toast.className='n11-toast n11-new-booking-toast';
-    toast.textContent='Yeni randevu geldi';
-    document.body.appendChild(toast);
-    setTimeout(function(){toast.remove()},2500);
-  }
-
-  function pollBookings(){
-    if(bookingPollBusy||document.hidden)return;
-    bookingPollBusy=true;
-    fetch('/api/no11-appointments?ts='+Date.now(),{cache:'no-store'})
-      .then(function(response){if(!response.ok)throw new Error('appointments');return response.json()})
-      .then(function(data){
-        var ids={};
-        (Array.isArray(data.appointments)?data.appointments:[]).forEach(function(item){
-          if(item&&item.id&&normalizedStatus(item)==='pending')ids[String(item.id)]=true;
-        });
-        if(knownRemotePendingIds!==null&&Object.keys(ids).some(function(id){return !knownRemotePendingIds[id]})){
-          knownRemotePendingIds=ids;
-          showBookingToast();
-          var activePage=document.querySelector('.n11-main-side [data-page].active');
-          if(activePage)setTimeout(function(){activePage.click()},150);
-          return;
-        }
-        knownRemotePendingIds=ids;
-      })
-      .catch(function(){})
-      .then(function(){bookingPollBusy=false});
-  }
 
   function turkeyNow(){
     var formatter=new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',weekday:'long',hour:'2-digit',hourCycle:'h23'});
@@ -87,7 +52,7 @@
   .n11-v4 .n11-main-content.n11-final-mobile-host{padding:20px 18px 46px!important;overflow-x:hidden!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top{display:grid!important;grid-template-columns:46px minmax(0,1fr) 46px!important;align-items:start!important;gap:14px!important;margin:0 0 22px!important;min-height:104px!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu{grid-column:1!important;display:grid!important;place-items:center!important;width:46px!important;height:46px!important;margin:0!important;border:1px solid var(--n11-line)!important;border-radius:13px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font-size:0!important;box-shadow:0 5px 18px rgba(30,22,32,.04)!important}\
-  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu:after{content:"";display:block!important;width:18px!important;height:14px!important;background:linear-gradient(var(--n11-ink),var(--n11-ink)) 0 0/18px 1.5px no-repeat,linear-gradient(var(--n11-ink),var(--n11-ink)) 0 6px/18px 1.5px no-repeat,linear-gradient(var(--n11-ink),var(--n11-ink)) 0 12px/18px 1.5px no-repeat}\
+  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu:after{content:"☰";font-size:20px!important;line-height:1!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top>div:nth-of-type(1){grid-column:2!important;min-width:0!important;padding-top:0!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top h1{font:42px/.95 Georgia,serif!important;letter-spacing:-.045em!important;white-space:nowrap!important;margin:0!important;color:var(--n11-ink)!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top>div:nth-of-type(1)>p{margin:17px 0 0!important;color:#b56727!important;font:600 11px/1.35 Arial,sans-serif!important;letter-spacing:.29em!important;text-transform:none!important}\
@@ -226,20 +191,6 @@
     }
   }
 
-  function syncDesktopOccupancy(){
-    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
-    var title=document.querySelector('.n11-page-top h1');
-    if(!title||title.textContent.trim()!=='Genel Bakış')return;
-    var info=turkeyNow();
-    var items=readArray('no11-appointments');
-    var todayConfirmed=items.filter(function(x){return normalizedStatus(x)==='confirmed'&&String(x.date||'')===info.dateKey});
-    var slots=readArray('no11-appointment-slots');
-    var capacity=Math.max(slots.length||6,1);
-    var occupancy=Math.min(100,Math.round(todayConfirmed.length/capacity*100));
-    var value=document.querySelector('.n11-dashboard-kpis button:nth-child(3) b');
-    if(value&&value.textContent!=='%'+occupancy)value.textContent='%'+occupancy;
-  }
-
   function apply(){
     if(busy)return;busy=true;
     try{
@@ -249,7 +200,6 @@
         if(p)p.textContent=label(new Date());
       }
       renderMobileDashboard();
-      syncDesktopOccupancy();
     }finally{busy=false}
   }
 
@@ -265,12 +215,6 @@
   window.addEventListener('resize',function(){setTimeout(apply,60)});
   window.addEventListener('storage',function(e){if(e.key==='no11-appointments'||e.key==='no11-appointment-slots')setTimeout(apply,0)});
   var observer=new MutationObserver(function(){setTimeout(apply,0)});
-  function start(){
-    if(document.body)observer.observe(document.body,{childList:true,subtree:true});
-    apply();
-    pollBookings();
-    setInterval(pollBookings,7000);
-    document.addEventListener('visibilitychange',function(){if(!document.hidden)pollBookings()});
-  }
+  function start(){if(document.body)observer.observe(document.body,{childList:true,subtree:true});apply()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

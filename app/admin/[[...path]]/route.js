@@ -79,12 +79,11 @@ async function proxy(request, context) {
     let html = await upstream.text();
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
-      .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/no11-admin-firebase\.js\?v=\d+/, 'no11-admin-firebase.js?v=4');
+      .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`);
 
     html = html.replace(
       '</head>',
-      `<script src="${incoming.origin}/no11-admin-fresh.js?v=7" defer></script></head>`,
+      `<script src="${incoming.origin}/no11-admin-fresh.js?v=3" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
