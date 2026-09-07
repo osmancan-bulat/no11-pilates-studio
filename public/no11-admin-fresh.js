@@ -24,12 +24,6 @@
     setTimeout(function(){toast.remove()},2200);
   }
 
-  function consumeBookingToast(){
-    if(sessionStorage.getItem('no11-new-booking-toast')!=='1')return;
-    sessionStorage.removeItem('no11-new-booking-toast');
-    setTimeout(showBookingToast,600);
-  }
-
   function pollBookings(){
     if(bookingPollBusy||document.hidden)return;
     bookingPollBusy=true;
@@ -41,8 +35,9 @@
           if(item&&item.id&&normalizedStatus(item)==='pending')ids[String(item.id)]=true;
         });
         if(knownRemotePendingIds!==null&&Object.keys(ids).some(function(id){return !knownRemotePendingIds[id]})){
-          sessionStorage.setItem('no11-new-booking-toast','1');
-          location.reload();
+          knownRemotePendingIds=ids;
+          showBookingToast();
+          setTimeout(function(){location.reload()},2500);
           return;
         }
         knownRemotePendingIds=ids;
@@ -272,7 +267,6 @@
   function start(){
     if(document.body)observer.observe(document.body,{childList:true,subtree:true});
     apply();
-    consumeBookingToast();
     pollBookings();
     setInterval(pollBookings,7000);
     document.addEventListener('visibilitychange',function(){if(!document.hidden)pollBookings()});
