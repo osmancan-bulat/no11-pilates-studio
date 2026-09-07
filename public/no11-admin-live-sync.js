@@ -104,7 +104,7 @@
     setTimeout(function(){
       toast.classList.remove('show');
       setTimeout(function(){toast.remove()},220);
-    },2200);
+    },10000);
   }
 
   function activePage(){
@@ -213,7 +213,7 @@
             sessionStorage.removeItem('no11-admin-initial-sync');
             if(recentId)sessionStorage.setItem('no11-admin-last-notified',recentId);
             showToast();
-            reloadOn(activePage(),2450);
+            reloadOn(activePage(),10250);
             return;
           }
           if(localSignature!==nextSignature){
@@ -237,7 +237,7 @@
         applyRemote(remote);
         if(hasNew){
           showToast();
-          reloadOn(activePage(),2450);
+          reloadOn(activePage(),10250);
         }else{
           reloadOn(activePage(),120);
         }
@@ -250,7 +250,7 @@
     if(document.getElementById('n11-live-sync-style'))return;
     var style=document.createElement('style');
     style.id='n11-live-sync-style';
-    style.textContent='.n11-live-toast{position:fixed;right:24px;bottom:24px;z-index:2147483000;padding:15px 20px;border-radius:13px;background:#281e2b;color:#fff;border:1px solid rgba(211,175,95,.48);box-shadow:0 18px 48px rgba(25,18,28,.28);font:600 14px/1.2 Arial,sans-serif;letter-spacing:.01em;opacity:0;transform:translateY(10px);transition:opacity .2s ease,transform .2s ease}.n11-live-toast.show{opacity:1;transform:none}@media(max-width:760px){.n11-live-toast{left:16px;right:16px;bottom:20px;text-align:center}}';
+    style.textContent='.n11-live-toast{position:fixed;right:24px;top:24px;z-index:2147483000;padding:17px 22px;border-radius:13px;background:#281e2b;color:#fff;border:1px solid rgba(211,175,95,.65);box-shadow:0 18px 48px rgba(25,18,28,.35);font:700 15px/1.2 Arial,sans-serif;letter-spacing:.01em;opacity:0;transform:translateY(-10px);transition:opacity .2s ease,transform .2s ease}.n11-live-toast.show{opacity:1;transform:none}@media(max-width:760px){.n11-live-toast{left:16px;right:16px;top:16px;text-align:center;padding:18px 20px;font-size:16px}}';
     document.head.appendChild(style);
   }
 
