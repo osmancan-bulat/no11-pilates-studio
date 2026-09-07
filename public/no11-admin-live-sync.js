@@ -1,0 +1,208 @@
+(function(){
+  'use strict';
+
+  var KEY='no11-appointments';
+  var syncing=false;
+  var ready=false;
+  var polling=false;
+  var savingUntil=0;
+  var knownSignature='';
+  var knownPending={};
+  var nativeGetItem=Storage.prototype.getItem;
+  var nativeSetItem=Storage.prototype.setItem;
+  var nativeRemoveItem=Storage.prototype.removeItem;
+
+  function parse(value){
+    try{
+      var data=JSON.parse(value||'[]');
+      return Array.isArray(data)?data:[];
+    }catch(e){return []}
+  }
+
+  function byId(items){
+    var out={};
+    items.forEach(function(item){
+      if(item&&item.id)out[String(item.id)]=item;
+    });
+    return out;
+  }
+
+  function signature(items){
+    return JSON.stringify((Array.isArray(items)?items:[]).slice().sort(function(a,b){
+      return String(a&&a.id||'').localeCompare(String(b&&b.id||''));
+    }));
+  }
+
+  function pendingIds(items){
+    var out={};
+    items.forEach(function(item){
+      if(item&&item.id&&String(item.status||'pending').toLowerCase()==='pending'){
+        out[String(item.id)]=true;
+      }
+    });
+    return out;
+  }
+
+  function request(url,options){
+    options=options||{};
+    options.cache='no-store';
+    options.credentials='same-origin';
+    options.headers=Object.assign({'content-type':'application/json'},options.headers||{});
+    return fetch(url,options).then(function(response){
+      if(!response.ok)throw new Error('request_'+response.status);
+      return response.status===204?null:response.json();
+    });
+  }
+
+  function showToast(){
+    var old=document.querySelector('.n11-live-toast');
+    if(old)old.remove();
+    var toast=document.createElement('div');
+    toast.className='n11-live-toast';
+    toast.setAttribute('role','status');
+    toast.textContent='Yeni randevu geldi';
+    document.body.appendChild(toast);
+    requestAnimationFrame(function(){toast.classList.add('show')});
+    setTimeout(function(){
+      toast.classList.remove('show');
+      setTimeout(function(){toast.remove()},220);
+    },2200);
+  }
+
+  function activePage(){
+    var button=document.querySelector('.n11-main-side [data-page].active');
+    return button&&button.dataset.page||'dashboard';
+  }
+
+  function reloadOn(page,delay){
+    sessionStorage.setItem('no11-admin-return-page',page||activePage());
+    setTimeout(function(){location.reload()},delay);
+  }
+
+  function restorePage(){
+    var page=sessionStorage.getItem('no11-admin-return-page');
+    if(!page)return;
+    sessionStorage.removeItem('no11-admin-return-page');
+    var attempts=0;
+    var timer=setInterval(function(){
+      attempts++;
+      var button=document.querySelector('.n11-main-side [data-page="'+page+'"]');
+      if(button){
+        clearInterval(timer);
+        button.click();
+      }else if(attempts>30){
+        clearInterval(timer);
+      }
+    },100);
+  }
+
+  function applyRemote(items){
+    syncing=true;
+    nativeSetItem.call(localStorage,KEY,JSON.stringify(items));
+    syncing=false;
+    window.dispatchEvent(new CustomEvent('no11-appointments-updated'));
+  }
+
+  function saveChanges(previous,next){
+    if(syncing||!ready)return;
+    var before=byId(previous),after=byId(next),jobs=[];
+    Object.keys(after).forEach(function(id){
+      if(!before[id]||signature([before[id]])!==signature([after[id]])){
+        jobs.push(request('/api/no11-appointments',{
+          method:'PUT',
+          body:JSON.stringify(after[id])
+        }));
+      }
+    });
+    Object.keys(before).forEach(function(id){
+      if(!after[id]){
+        jobs.push(request('/api/no11-appointments?id='+encodeURIComponent(id),{method:'DELETE'}));
+      }
+    });
+    if(!jobs.length)return;
+    savingUntil=Date.now()+3500;
+    Promise.allSettled(jobs).then(function(){
+      knownSignature=signature(next);
+      knownPending=pendingIds(next);
+      savingUntil=Date.now()+700;
+    });
+  }
+
+  Storage.prototype.setItem=function(key,value){
+    if(this===localStorage&&key===KEY){
+      var previous=parse(nativeGetItem.call(localStorage,KEY));
+      nativeSetItem.call(this,key,value);
+      saveChanges(previous,parse(value));
+      return;
+    }
+    return nativeSetItem.call(this,key,value);
+  };
+
+  Storage.prototype.removeItem=function(key){
+    if(this===localStorage&&key===KEY){
+      var previous=parse(nativeGetItem.call(localStorage,KEY));
+      nativeRemoveItem.call(this,key);
+      saveChanges(previous,[]);
+      return;
+    }
+    return nativeRemoveItem.call(this,key);
+  };
+
+  function fetchRemote(initial){
+    if(polling||document.hidden||Date.now()<savingUntil)return;
+    polling=true;
+    request('/api/no11-appointments?ts='+Date.now())
+      .then(function(data){
+        var remote=Array.isArray(data&&data.appointments)?data.appointments:[];
+        var nextSignature=signature(remote);
+        var nextPending=pendingIds(remote);
+        if(initial){
+          knownSignature=nextSignature;
+          knownPending=nextPending;
+          ready=true;
+          if(signature(parse(localStorage.getItem(KEY)))!==nextSignature){
+            applyRemote(remote);
+            reloadOn(activePage(),80);
+          }
+          return;
+        }
+        if(nextSignature===knownSignature)return;
+        var hasNew=Object.keys(nextPending).some(function(id){return !knownPending[id]});
+        knownSignature=nextSignature;
+        knownPending=nextPending;
+        applyRemote(remote);
+        if(hasNew){
+          showToast();
+          reloadOn(activePage(),2450);
+        }else{
+          reloadOn(activePage(),120);
+        }
+      })
+      .catch(function(){})
+      .then(function(){polling=false});
+  }
+
+  function addStyle(){
+    if(document.getElementById('n11-live-sync-style'))return;
+    var style=document.createElement('style');
+    style.id='n11-live-sync-style';
+    style.textContent='.n11-live-toast{position:fixed;right:24px;bottom:24px;z-index:2147483000;padding:15px 20px;border-radius:13px;background:#281e2b;color:#fff;border:1px solid rgba(211,175,95,.48);box-shadow:0 18px 48px rgba(25,18,28,.28);font:600 14px/1.2 Arial,sans-serif;letter-spacing:.01em;opacity:0;transform:translateY(10px);transition:opacity .2s ease,transform .2s ease}.n11-live-toast.show{opacity:1;transform:none}@media(max-width:760px){.n11-live-toast{left:16px;right:16px;bottom:20px;text-align:center}}';
+    document.head.appendChild(style);
+  }
+
+  function start(){
+    addStyle();
+    restorePage();
+    fetchRemote(true);
+    setInterval(function(){fetchRemote(false)},6000);
+    document.addEventListener('visibilitychange',function(){
+      if(!document.hidden)fetchRemote(false);
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',start,{once:true});
+  }else{
+    start();
+  }
+})();

@@ -11,6 +11,7 @@
   function monthTitle(date){return months[date.getMonth()].toLocaleUpperCase('tr-TR')+' '+date.getFullYear()}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function readArray(key){try{var value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch(e){return []}}
+  function setText(node,value){value=String(value==null?'':value);if(node&&node.textContent!==value)node.textContent=value}
 
   function turkeyNow(){
     var formatter=new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',weekday:'long',hour:'2-digit',hourCycle:'h23'});
@@ -43,7 +44,7 @@
     grid.innerHTML=html;
   }
 
-  function injectMobileStyle(){
+  function injectEnhancementStyle(){
     if(document.getElementById('n11-final-mobile-dashboard-style'))return;
     var style=document.createElement('style');
     style.id='n11-final-mobile-dashboard-style';
@@ -52,7 +53,7 @@
   .n11-v4 .n11-main-content.n11-final-mobile-host{padding:20px 18px 46px!important;overflow-x:hidden!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top{display:grid!important;grid-template-columns:46px minmax(0,1fr) 46px!important;align-items:start!important;gap:14px!important;margin:0 0 22px!important;min-height:104px!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu{grid-column:1!important;display:grid!important;place-items:center!important;width:46px!important;height:46px!important;margin:0!important;border:1px solid var(--n11-line)!important;border-radius:13px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font-size:0!important;box-shadow:0 5px 18px rgba(30,22,32,.04)!important}\
-  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu:after{content:"☰";font-size:20px!important;line-height:1!important}\
+  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu:after{content:"";display:block!important;width:18px!important;height:14px!important;background:linear-gradient(var(--n11-ink),var(--n11-ink)) 0 0/18px 1.5px no-repeat,linear-gradient(var(--n11-ink),var(--n11-ink)) 0 6px/18px 1.5px no-repeat,linear-gradient(var(--n11-ink),var(--n11-ink)) 0 12px/18px 1.5px no-repeat}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top>div:nth-of-type(1){grid-column:2!important;min-width:0!important;padding-top:0!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top h1{font:42px/.95 Georgia,serif!important;letter-spacing:-.045em!important;white-space:nowrap!important;margin:0!important;color:var(--n11-ink)!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top>div:nth-of-type(1)>p{margin:17px 0 0!important;color:#b56727!important;font:600 11px/1.35 Arial,sans-serif!important;letter-spacing:.29em!important;text-transform:none!important}\
@@ -117,6 +118,16 @@
   .n11-final-first-last{padding-left:7px;padding-right:7px}.n11-final-lesson{grid-template-columns:50px 1fr;padding:0 7px;gap:9px}.n11-final-lesson .n11-final-icon{width:46px;height:46px;font-size:25px}.n11-final-lesson strong{font-size:23px}\
   .n11-final-section{padding:23px 19px}.n11-final-section-head h3{font-size:15px}.n11-final-section-head p{font-size:15px}.n11-final-link{padding:0 12px;font-size:14px}\
 }\
+.n11-v4 .n11-appt-row{position:relative;overflow:visible!important}\
+.n11-v4 .n11-appt-menu{position:relative;grid-column:-2/-1!important;justify-self:end!important;z-index:12}\
+.n11-v4 .n11-appt-more{display:grid!important;place-items:center!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;border:1px solid var(--n11-line)!important;border-radius:11px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font:700 22px/1 Arial,sans-serif!important;letter-spacing:1px!important}\
+.n11-v4 .n11-appt-more>span{display:block!important;width:22px!important;height:22px!important;line-height:16px!important;text-align:center!important;transform:translateY(-3px)!important}\
+.n11-v4 .n11-appt-menu-panel{position:absolute;right:0;top:calc(100% + 7px);display:none;min-width:190px;padding:7px;border:1px solid var(--n11-line);border-radius:12px;background:var(--n11-card);box-shadow:0 18px 45px rgba(30,22,32,.18);z-index:200}\
+.n11-v4 .n11-appt-menu.open .n11-appt-menu-panel{display:grid;gap:5px}\
+.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;height:42px!important;padding:0 13px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:var(--n11-ink)!important;text-decoration:none!important;font:13px Arial,sans-serif!important;white-space:nowrap!important}\
+.n11-v4 .n11-appt-menu-panel button:hover,.n11-v4 .n11-appt-menu-panel a:hover{background:var(--n11-bg)!important}\
+.n11-v4 .n11-appt-menu-panel .danger{color:#a3243f!important}\
+@media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}}\
 ';
     document.head.appendChild(style);
   }
@@ -139,12 +150,12 @@
       return;
     }
 
-    injectMobileStyle();
+    injectEnhancementStyle();
     main.classList.add('n11-final-mobile-host');
     var info=turkeyNow();
     var dateText=turkeyLabel(info);
     var dateNode=title.parentElement&&title.parentElement.querySelector('p');
-    if(dateNode)dateNode.textContent=dateText;
+    setText(dateNode,dateText);
 
     var items=readArray('no11-appointments');
     var signature=mobileSignature(items,info);
@@ -191,19 +202,138 @@
     }
   }
 
+  function desktopMetrics(){
+    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
+    var title=document.querySelector('.n11-page-top h1');
+    if(!title||title.textContent.trim()!=='Genel Bakış')return;
+
+    var info=turkeyNow();
+    var items=readArray('no11-appointments');
+    var pending=items.filter(function(x){return normalizedStatus(x)==='pending'});
+    var todayConfirmed=items.filter(function(x){
+      return normalizedStatus(x)==='confirmed'&&String(x.date||'')===info.dateKey;
+    }).sort(function(a,b){return timeValue(a).localeCompare(timeValue(b))});
+    var monthConfirmed=items.filter(function(x){
+      return normalizedStatus(x)==='confirmed'&&String(x.date||'').indexOf(info.monthKey)===0;
+    });
+    var slots=readArray('no11-appointment-slots');
+    var capacity=Math.max(slots.length||6,1);
+    var occupancy=Math.min(100,Math.round(todayConfirmed.length/capacity*100));
+    var first=todayConfirmed[0]||null;
+    var last=todayConfirmed.length?todayConfirmed[todayConfirmed.length-1]:null;
+
+    var summaryCopy=document.querySelector('.n11-dashboard-summary .n11-summary-copy');
+    if(summaryCopy){
+      var heading=summaryCopy.querySelector('h2');
+      var sub=summaryCopy.querySelector('span');
+      setText(heading,todayConfirmed.length+' onaylı dersiniz var.');
+      setText(sub,pending.length+' yeni talep onayınızı bekliyor.');
+    }
+
+    var summaryItems=document.querySelectorAll('.n11-dashboard-summary dl>div');
+    if(summaryItems[0]){
+      var confirmedValue=summaryItems[0].querySelector('dd');
+      setText(confirmedValue,todayConfirmed.length);
+    }
+    if(summaryItems[1]){
+      var pendingValue=summaryItems[1].querySelector('dd');
+      setText(pendingValue,pending.length);
+    }
+    if(summaryItems[2]){
+      var firstTime=summaryItems[2].querySelector('dd');
+      var firstName=summaryItems[2].querySelector('small');
+      setText(firstTime,first?first.time||'—':'—');
+      setText(firstName,first?first.name||'':'Bugün ders yok');
+    }
+    if(summaryItems[3]){
+      var lastTime=summaryItems[3].querySelector('dd');
+      var lastName=summaryItems[3].querySelector('small');
+      setText(lastTime,last?last.time||'—':'—');
+      setText(lastName,last?last.name||'':'Bugün ders yok');
+    }
+
+    var kpis=document.querySelectorAll('.n11-dashboard-kpis button b');
+    setText(kpis[0],pending.length);
+    setText(kpis[1],monthConfirmed.length);
+    setText(kpis[2],'%'+occupancy);
+
+    var todayIds={};
+    todayConfirmed.forEach(function(item){todayIds[String(item.id)]=true});
+    document.querySelectorAll('.n11-dashboard-lists .n11-flow-list .n11-record').forEach(function(row){
+      var shouldHide=!todayIds[String(row.dataset.id||'')];
+      if(row.hidden!==shouldHide)row.hidden=shouldHide;
+    });
+  }
+
+  function enhanceAppointmentMenus(){
+    document.querySelectorAll('.n11-appt-row').forEach(function(row){
+      if(row.querySelector('.n11-appt-menu'))return;
+      var actions=[];
+      row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp').forEach(function(action){
+        actions.push(action);
+      });
+      if(!actions.length)return;
+      row.querySelectorAll(':scope>.n11-dash').forEach(function(dash){dash.remove()});
+      var wrap=document.createElement('div');
+      wrap.className='n11-appt-menu';
+      var more=document.createElement('button');
+      more.type='button';
+      more.className='n11-appt-more';
+      more.dataset.no11ApptMore='1';
+      more.setAttribute('aria-label','Randevu işlemleri');
+      more.setAttribute('aria-expanded','false');
+      more.innerHTML='<span aria-hidden="true">•••</span>';
+      var panel=document.createElement('div');
+      panel.className='n11-appt-menu-panel';
+      actions.forEach(function(action){
+        if(action.matches('a.n11-whatsapp'))action.textContent='WhatsApp';
+        panel.appendChild(action);
+      });
+      wrap.appendChild(more);
+      wrap.appendChild(panel);
+      row.appendChild(wrap);
+    });
+  }
+
   function apply(){
     if(busy)return;busy=true;
     try{
+      injectEnhancementStyle();
       var title=document.querySelector('.n11-page-top h1');
       if(title&&title.textContent.trim()==='Genel Bakış'){
         var p=title.parentElement&&title.parentElement.querySelector('p');
-        if(p)p.textContent=label(new Date());
+        setText(p,label(new Date()));
       }
       renderMobileDashboard();
+      desktopMetrics();
+      enhanceAppointmentMenus();
     }finally{busy=false}
   }
 
   document.addEventListener('click',function(event){
+    var more=event.target.closest&&event.target.closest('[data-no11-appt-more]');
+    if(more){
+      event.preventDefault();
+      event.stopPropagation();
+      var menu=more.closest('.n11-appt-menu');
+      document.querySelectorAll('.n11-appt-menu.open').forEach(function(other){
+        if(other!==menu){
+          other.classList.remove('open');
+          var otherButton=other.querySelector('[data-no11-appt-more]');
+          if(otherButton)otherButton.setAttribute('aria-expanded','false');
+        }
+      });
+      var open=menu.classList.toggle('open');
+      more.setAttribute('aria-expanded',open?'true':'false');
+      return;
+    }
+    if(!(event.target.closest&&event.target.closest('.n11-appt-menu-panel'))){
+      document.querySelectorAll('.n11-appt-menu.open').forEach(function(menu){
+        menu.classList.remove('open');
+        var button=menu.querySelector('[data-no11-appt-more]');
+        if(button)button.setAttribute('aria-expanded','false');
+      });
+    }
     var finalPage=event.target.closest&&event.target.closest('[data-final-page]');
     if(finalPage){
       var target=document.querySelector('.n11-main-side [data-page="'+finalPage.dataset.finalPage+'"]');
@@ -214,6 +344,7 @@
 
   window.addEventListener('resize',function(){setTimeout(apply,60)});
   window.addEventListener('storage',function(e){if(e.key==='no11-appointments'||e.key==='no11-appointment-slots')setTimeout(apply,0)});
+  window.addEventListener('no11-appointments-updated',function(){setTimeout(apply,0)});
   var observer=new MutationObserver(function(){setTimeout(apply,0)});
   function start(){if(document.body)observer.observe(document.body,{childList:true,subtree:true});apply()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
