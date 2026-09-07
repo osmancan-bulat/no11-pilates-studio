@@ -98,13 +98,32 @@
     var toast=document.createElement('div');
     toast.className='n11-live-toast';
     toast.setAttribute('role','status');
+    toast.setAttribute('aria-live','assertive');
     toast.textContent='Yeni randevu geldi';
+    toast.style.setProperty('position','fixed','important');
+    toast.style.setProperty('left','16px','important');
+    toast.style.setProperty('right','16px','important');
+    toast.style.setProperty('top','max(16px, env(safe-area-inset-top))','important');
+    toast.style.setProperty('bottom','auto','important');
+    toast.style.setProperty('z-index','2147483647','important');
+    toast.style.setProperty('display','block','important');
+    toast.style.setProperty('visibility','visible','important');
+    toast.style.setProperty('opacity','1','important');
+    toast.style.setProperty('transform','none','important');
+    toast.style.setProperty('padding','18px 20px','important');
+    toast.style.setProperty('border-radius','14px','important');
+    toast.style.setProperty('background','#281e2b','important');
+    toast.style.setProperty('color','#ffffff','important');
+    toast.style.setProperty('border','1px solid #d3af5f','important');
+    toast.style.setProperty('box-shadow','0 18px 48px rgba(25,18,28,.4)','important');
+    toast.style.setProperty('font','700 16px/1.25 Arial,sans-serif','important');
+    toast.style.setProperty('text-align','center','important');
     document.body.appendChild(toast);
-    requestAnimationFrame(function(){toast.classList.add('show')});
+    toast.classList.add('show');
     setTimeout(function(){
       toast.classList.remove('show');
       setTimeout(function(){toast.remove()},220);
-    },10000);
+    },15000);
   }
 
   function activePage(){
@@ -213,7 +232,7 @@
             sessionStorage.removeItem('no11-admin-initial-sync');
             if(recentId)sessionStorage.setItem('no11-admin-last-notified',recentId);
             showToast();
-            reloadOn(activePage(),10250);
+            reloadOn(activePage(),15250);
             return;
           }
           if(localSignature!==nextSignature){
@@ -237,7 +256,7 @@
         applyRemote(remote);
         if(hasNew){
           showToast();
-          reloadOn(activePage(),10250);
+          reloadOn(activePage(),15250);
         }else{
           reloadOn(activePage(),120);
         }
