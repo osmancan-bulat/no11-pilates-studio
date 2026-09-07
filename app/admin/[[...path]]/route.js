@@ -1,5 +1,4 @@
-const ORIGIN = 'https://no11-pilates-studio-aihbdj6zg-osmancanbulat197-7442s-projects.vercel.app';
-const STYLE_ORIGIN = 'https://no11-pilates-studio-rfj4dz9b5-osmancanbulat197-7442s-projects.vercel.app';
+const ORIGIN = 'https://no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects.vercel.app';
 
 const mobileSafetyFix = `<style id="n11-mobile-safety-fix">
 @media(max-width:760px){
@@ -79,13 +78,12 @@ async function proxy(request, context) {
   if ((upstream.headers.get('content-type') || '').includes('text/html')) {
     let html = await upstream.text();
     html = html
-      .split(`${ORIGIN}/_next/`).join(`${incoming.origin}/__old1/_next/`)
-      .split(`${STYLE_ORIGIN}/_next/`).join(`${incoming.origin}/__old2/_next/`);
+      .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
+      .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`);
 
-    html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
     html = html.replace(
       '</head>',
-      `<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style><link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=31"><link rel="stylesheet" href="${incoming.origin}/no11-admin-calendar-fix.css?v=31">${mobileSafetyFix}<script src="${incoming.origin}/no11-admin-firebase.js?v=3" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=1" defer></script>${calendarThemeGuard}</head>`,
+      `<script src="${incoming.origin}/no11-admin-fresh.js?v=3" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });

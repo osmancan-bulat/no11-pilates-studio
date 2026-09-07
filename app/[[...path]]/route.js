@@ -1,5 +1,6 @@
 const ORIGIN = "https://no11-pilates-studio-ro9kcm7fd-osmancanbulat197-7442s-projects.vercel.app";
 const STYLE_ORIGIN = "https://no11-pilates-studio-ro9kcm7fd-osmancanbulat197-7442s-projects.vercel.app";
+const ASSET_ORIGIN = "https://no11-pilates-studio-bgda5k3cp-osmancanbulat197-7442s-projects.vercel.app";
 
 function deferHeroVideos(html) {
   return html.replace(
@@ -141,6 +142,7 @@ async function proxy(request, context) {
   const incoming = new URL(request.url);
   let upstreamOrigin = ORIGIN;
   let upstreamPath = path;
+  if (/^no11-(?:desktop-poster\.webp|desktop-new\.mp4|studio-(?:main|detail-0[1-4])\.jpeg)$/.test(path)) upstreamOrigin = ASSET_ORIGIN;
   if (path.startsWith("__old1/")) upstreamPath = path.slice(7);
   if (path.startsWith("__old2/")) { upstreamOrigin = STYLE_ORIGIN; upstreamPath = path.slice(7); }
   const target = new URL(`/${upstreamPath}${incoming.search}`, upstreamOrigin);
