@@ -2,6 +2,7 @@
   'use strict';
 
   var KEY='no11-appointments';
+  var SEEN_PENDING_KEY='no11-admin-seen-pending-v1';
   var syncing=false;
   var ready=false;
   var polling=false;
@@ -55,6 +56,19 @@
       }
     });
     return out;
+  }
+
+  function readSeenPending(){
+    var raw=nativeGetItem.call(localStorage,SEEN_PENDING_KEY);
+    if(raw===null)return null;
+    try{
+      var ids=JSON.parse(raw);
+      return ids&&typeof ids==='object'?ids:{};
+    }catch(e){return {}}
+  }
+
+  function rememberPending(ids){
+    nativeSetItem.call(localStorage,SEEN_PENDING_KEY,JSON.stringify(ids||{}));
   }
 
   function request(url,options){
@@ -171,14 +185,23 @@
         var nextSignature=signature(remote);
         var nextPending=pendingIds(remote);
         if(initial){
+          var seenPending=readSeenPending();
+          var hasNewSinceLastVisit=seenPending!==null&&Object.keys(nextPending).some(function(id){
+            return !seenPending[id];
+          });
           knownSignature=nextSignature;
           knownPending=nextPending;
+          rememberPending(nextPending);
           ready=true;
           var localSignature=signature(parse(localStorage.getItem(KEY)));
           var initialMarker=sessionStorage.getItem('no11-admin-initial-sync');
           if(localSignature!==nextSignature){
             applyRemote(remote);
-            if(initialMarker!==nextSignature){
+            if(hasNewSinceLastVisit){
+              sessionStorage.removeItem('no11-admin-initial-sync');
+              showToast();
+              reloadOn(activePage(),2450);
+            }else if(initialMarker!==nextSignature){
               sessionStorage.setItem('no11-admin-initial-sync',nextSignature);
               reloadOn(activePage(),80);
             }else{
@@ -193,6 +216,7 @@
         var hasNew=Object.keys(nextPending).some(function(id){return !knownPending[id]});
         knownSignature=nextSignature;
         knownPending=nextPending;
+        rememberPending(nextPending);
         applyRemote(remote);
         if(hasNew){
           showToast();
@@ -217,10 +241,13 @@
     addStyle();
     restorePage();
     fetchRemote(true);
-    setInterval(function(){fetchRemote(false)},6000);
+    setInterval(function(){fetchRemote(false)},4000);
     document.addEventListener('visibilitychange',function(){
       if(!document.hidden)fetchRemote(false);
     });
+    window.addEventListener('focus',function(){fetchRemote(false)});
+    window.addEventListener('pageshow',function(){fetchRemote(false)});
+    window.addEventListener('online',function(){fetchRemote(false)});
   }
 
   if(document.readyState==='loading'){
