@@ -92,7 +92,7 @@
     });
   }
 
-  function showToast(){
+  function showToast(appointment){
     var old=document.querySelector('.n11-live-toast');
     if(old)old.remove();
     var toast=document.createElement('div');
@@ -100,30 +100,33 @@
     toast.setAttribute('role','status');
     toast.setAttribute('aria-live','assertive');
     var icon=document.createElement('span');
-    icon.textContent='◷';
-    icon.style.cssText='display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#f7eedf;color:#b87b18;font:700 24px/1 Georgia,serif;flex:none';
+    icon.textContent='11';
+    icon.style.cssText='display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#281e2b;color:#fff;font:700 16px/1 Georgia,serif;flex:none';
     var copy=document.createElement('span');
     copy.style.cssText='display:grid;gap:4px;min-width:0;text-align:left';
+    var appLine=document.createElement('span');
+    appLine.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px';
+    var appName=document.createElement('strong');
+    appName.textContent='No.11';
+    appName.style.cssText='display:block;color:#18151a;font:700 13px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif';
+    var now=document.createElement('small');
+    now.textContent='şimdi';
+    now.style.cssText='color:#77727a;font:400 12px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif';
+    appLine.appendChild(appName);
+    appLine.appendChild(now);
     var title=document.createElement('strong');
     title.textContent='Yeni randevu talebi';
-    title.style.cssText='display:block;color:#fff;font:700 16px/1.2 Georgia,serif;letter-spacing:.01em';
+    title.style.cssText='display:block;color:#18151a;font:600 15px/1.25 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;letter-spacing:0';
     var detail=document.createElement('small');
-    detail.textContent='Yeni bir randevu onayınızı bekliyor.';
-    detail.style.cssText='display:block;color:rgba(255,255,255,.72);font:400 12px/1.35 Arial,sans-serif';
-    var close=document.createElement('button');
-    close.type='button';
-    close.setAttribute('aria-label','Bildirimi kapat');
-    close.textContent='×';
-    close.style.cssText='width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font:300 23px/1 Arial,sans-serif;cursor:pointer';
-    close.onclick=function(){toast.remove()};
-    var progress=document.createElement('span');
-    progress.style.cssText='position:absolute;left:0;bottom:0;width:100%;height:3px;background:#d3af5f;transform-origin:left;animation:n11-toast-progress 15s linear forwards';
+    var person=appointment&&appointment.name?String(appointment.name):'Yeni öğrenci';
+    var time=appointment&&appointment.time?String(appointment.time):'Onay bekliyor';
+    detail.textContent=person+' · '+time;
+    detail.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    copy.appendChild(appLine);
     copy.appendChild(title);
     copy.appendChild(detail);
     toast.appendChild(icon);
     toast.appendChild(copy);
-    toast.appendChild(close);
-    toast.appendChild(progress);
     toast.style.setProperty('position','fixed','important');
     toast.style.setProperty('left','auto','important');
     toast.style.setProperty('right','16px','important');
@@ -131,7 +134,7 @@
     toast.style.setProperty('bottom','auto','important');
     toast.style.setProperty('z-index','2147483647','important');
     toast.style.setProperty('display','grid','important');
-    toast.style.setProperty('grid-template-columns','44px minmax(0,1fr) 32px','important');
+    toast.style.setProperty('grid-template-columns','44px minmax(0,1fr)','important');
     toast.style.setProperty('align-items','center','important');
     toast.style.setProperty('gap','13px','important');
     toast.style.setProperty('width','min(420px, calc(100vw - 32px))','important');
@@ -141,11 +144,13 @@
     toast.style.setProperty('opacity','1','important');
     toast.style.setProperty('transform','none','important');
     toast.style.setProperty('padding','18px 20px','important');
-    toast.style.setProperty('border-radius','14px','important');
-    toast.style.setProperty('background','#281e2b','important');
-    toast.style.setProperty('color','#ffffff','important');
-    toast.style.setProperty('border','1px solid #d3af5f','important');
-    toast.style.setProperty('box-shadow','0 18px 48px rgba(25,18,28,.4)','important');
+    toast.style.setProperty('border-radius','20px','important');
+    toast.style.setProperty('background','rgba(248,248,250,.94)','important');
+    toast.style.setProperty('color','#18151a','important');
+    toast.style.setProperty('border','1px solid rgba(0,0,0,.08)','important');
+    toast.style.setProperty('box-shadow','0 14px 40px rgba(20,16,22,.2)','important');
+    toast.style.setProperty('-webkit-backdrop-filter','blur(18px)','important');
+    toast.style.setProperty('backdrop-filter','blur(18px)','important');
     toast.style.setProperty('font','700 16px/1.25 Arial,sans-serif','important');
     toast.style.setProperty('text-align','center','important');
     document.body.appendChild(toast);
@@ -261,7 +266,7 @@
             if(localSignature!==nextSignature)applyRemote(remote);
             sessionStorage.removeItem('no11-admin-initial-sync');
             if(recentId)sessionStorage.setItem('no11-admin-last-notified',recentId);
-            showToast();
+            showToast(remote.filter(function(item){return String(item&&item.id||'')===recentId})[0]);
             reloadOn(activePage(),15250);
             return;
           }
@@ -279,13 +284,14 @@
           return;
         }
         if(nextSignature===knownSignature)return;
-        var hasNew=Object.keys(nextPending).some(function(id){return !knownPending[id]});
+        var newPendingId=Object.keys(nextPending).filter(function(id){return !knownPending[id]})[0]||'';
+        var hasNew=!!newPendingId;
         knownSignature=nextSignature;
         knownPending=nextPending;
         rememberPending(nextPending);
         applyRemote(remote);
         if(hasNew){
-          showToast();
+          showToast(remote.filter(function(item){return String(item&&item.id||'')===newPendingId})[0]);
           reloadOn(activePage(),15250);
         }else{
           reloadOn(activePage(),120);
@@ -299,7 +305,7 @@
     if(document.getElementById('n11-live-sync-style'))return;
     var style=document.createElement('style');
     style.id='n11-live-sync-style';
-    style.textContent='@keyframes n11-toast-progress{from{transform:scaleX(1)}to{transform:scaleX(0)}}.n11-live-toast.show{opacity:1;transform:none}';
+    style.textContent='.n11-live-toast.show{opacity:1;transform:none}';
     document.head.appendChild(style);
   }
 
