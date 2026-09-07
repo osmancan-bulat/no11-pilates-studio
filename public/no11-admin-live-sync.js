@@ -160,9 +160,18 @@
           knownSignature=nextSignature;
           knownPending=nextPending;
           ready=true;
-          if(signature(parse(localStorage.getItem(KEY)))!==nextSignature){
+          var localSignature=signature(parse(localStorage.getItem(KEY)));
+          var initialMarker=sessionStorage.getItem('no11-admin-initial-sync');
+          if(localSignature!==nextSignature){
             applyRemote(remote);
-            reloadOn(activePage(),80);
+            if(initialMarker!==nextSignature){
+              sessionStorage.setItem('no11-admin-initial-sync',nextSignature);
+              reloadOn(activePage(),80);
+            }else{
+              sessionStorage.removeItem('no11-admin-initial-sync');
+            }
+          }else{
+            sessionStorage.removeItem('no11-admin-initial-sync');
           }
           return;
         }
