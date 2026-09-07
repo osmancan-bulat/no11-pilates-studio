@@ -80,7 +80,8 @@ async function proxy(request, context) {
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/no11-admin-firebase\.js\?v=\d+/, 'no11-admin-firebase.js?v=5');
+      .replace(/<link rel="stylesheet" href="[^"]*\/no11-admin-premium\.css\?v=\d+">/, `<link rel="stylesheet" href="${incoming.origin}/no11-admin-premium.css?v=52">`)
+      .replace(/<script src="[^"]*\/no11-admin-premium\.js\?v=\d+" defer><\/script>/, `<script src="${incoming.origin}/no11-admin-firebase.js?v=5" defer></script><script src="${incoming.origin}/no11-admin-premium.js?v=52" defer></script>`);
 
     html = html.replace(
       '</head>',
