@@ -7,6 +7,7 @@
   var ready=false;
   var polling=false;
   var savingUntil=0;
+  var pendingReloadTimer=0;
   var knownSignature='';
   var knownPending={};
   var nativeGetItem=Storage.prototype.getItem;
@@ -165,6 +166,22 @@
     toast.style.setProperty('backdrop-filter','blur(18px)','important');
     toast.style.setProperty('font','700 16px/1.25 Arial,sans-serif','important');
     toast.style.setProperty('text-align','center','important');
+    toast.style.setProperty('cursor','pointer','important');
+    toast.setAttribute('aria-label','Yeni randevuyu görüntüle');
+    toast.onclick=function(){
+      if(pendingReloadTimer){clearTimeout(pendingReloadTimer);pendingReloadTimer=0}
+      var id=appointment&&appointment.id?String(appointment.id):'';
+      toast.remove();
+      var appointmentsButton=document.querySelector('.n11-main-side [data-page="appointments"]');
+      if(appointmentsButton)appointmentsButton.click();
+      setTimeout(function(){
+        var detailButton=id?document.querySelector('[data-detail="'+id.replace(/"/g,'\\"')+'"]'):null;
+        if(detailButton){
+          detailButton.scrollIntoView({behavior:'smooth',block:'center'});
+          setTimeout(function(){detailButton.click()},250);
+        }
+      },250);
+    };
     document.body.appendChild(toast);
     toast.classList.add('show');
     setTimeout(function(){
@@ -180,7 +197,8 @@
 
   function reloadOn(page,delay){
     sessionStorage.setItem('no11-admin-return-page',page||activePage());
-    setTimeout(function(){location.reload()},delay);
+    if(pendingReloadTimer)clearTimeout(pendingReloadTimer);
+    pendingReloadTimer=setTimeout(function(){pendingReloadTimer=0;location.reload()},delay);
   }
 
   function restorePage(){
