@@ -94,6 +94,14 @@ export async function PUT(request) {
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
+    if (Array.isArray(body?.appointments)) {
+      const saved = await Promise.all(
+        body.appointments
+          .filter((item) => item?.id)
+          .map((item) => saveAppointment(normalizeAppointment(item))),
+      );
+      return json({ ok: true, appointments: saved });
+    }
     if (!body?.id) return json({ error: 'missing_id' }, 400);
     const saved = await saveAppointment(normalizeAppointment(body));
     return json({ ok: true, appointment: saved });
