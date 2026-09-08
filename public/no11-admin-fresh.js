@@ -119,6 +119,9 @@
   .n11-final-section{padding:23px 19px}.n11-final-section-head h3{font-size:15px}.n11-final-section-head p{font-size:15px}.n11-final-link{padding:0 12px;font-size:14px}\
 }\
 .n11-v4 .n11-appt-row{position:relative;overflow:visible!important}\
+.n11-v4 .n11-timeline .n11-time-line>time .n11-program-time-date{display:none!important}\
+.n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
+.n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
