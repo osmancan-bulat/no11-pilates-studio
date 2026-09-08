@@ -124,7 +124,7 @@
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
 .n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
 .n11-v4 .n11-program-v4:has(>.n11-schedule-timeline){grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;align-items:start!important}\
-.n11-v4 .n11-program-v4>.n11-timeline.n11-schedule-timeline{grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))!important;gap:20px!important;padding:24px!important;min-height:0!important}\
+.n11-v4 .n11-program-v4>.n11-timeline.n11-schedule-timeline{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr!important;gap:18px!important;padding:24px!important;min-height:0!important}\
 .n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart{min-width:0!important;padding:18px 18px 8px!important;border:1px solid var(--n11-line)!important;border-radius:16px!important;background:var(--n11-card)!important}\
 .n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart>h3{margin:0 0 10px!important;padding:0 0 14px!important;border-bottom:1px solid var(--n11-line)!important}\
 .n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{grid-template-columns:62px minmax(0,1fr)!important;align-items:center!important;min-height:58px!important;border-bottom:1px solid var(--n11-line)!important}\
