@@ -123,6 +123,16 @@
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
 .n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{min-height:52px!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>time{font-size:17px!important;white-space:nowrap!important}\
+.n11-v4 .n11-program-slot-items{display:grid!important;gap:5px!important;min-width:0!important;width:100%!important}\
+.n11-v4 .n11-program-inline-card{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important;padding:5px 0!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important}\
+.n11-v4 .n11-program-inline-card b{font:700 15px/1.2 Arial,sans-serif!important;overflow:hidden!important;text-overflow:ellipsis!important}\
+.n11-v4 .n11-program-inline-card small{font:500 14px/1.2 Arial,sans-serif!important;color:var(--n11-muted)!important;overflow:hidden!important;text-overflow:ellipsis!important}\
+.n11-v4 .n11-program-inline-status{font:700 13px/1.2 Arial,sans-serif!important;flex:none!important}\
+.n11-v4 .n11-program-inline-status.confirmed{color:#378253!important}\
+.n11-v4 .n11-program-inline-status.pending{color:#b12d49!important}\
+.n11-v4 .n11-program-inline-status.rejected{color:#8a8086!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
@@ -366,6 +376,53 @@
     }
   }
 
+  function selectedProgramDate(){
+    var active=document.querySelector('.n11-calendar [data-program-day].active');
+    var key=active&&active.dataset.programDay;
+    return /^\d{4}-\d{2}-\d{2}$/.test(String(key||''))?key:'';
+  }
+
+  function scheduleForDate(dateKey){
+    var slots=readArray('no11-appointment-slots').filter(function(value){return /^([01]\d|2[0-3]):[0-5]\d$/.test(String(value))}).sort();
+    var hours=readArray('no11-hours');
+    if(!dateKey)return slots;
+    var date=new Date(dateKey+'T12:00:00');
+    var dayIndex=(date.getDay()+6)%7;
+    var day=hours[dayIndex];
+    if(!day||day.closed)return day&&day.closed?[]:slots;
+    var open=String(day.open||''),close=String(day.close||'');
+    if(!open||!close)return slots;
+    return slots.filter(function(slot){return slot>=open&&slot<close});
+  }
+
+  function statusText(status){
+    status=String(status||'pending').toLowerCase();
+    return status==='confirmed'?'Onaylandı':status==='rejected'?'Reddedildi':'Bekliyor';
+  }
+
+  function enhanceDesktopProgram(){
+    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
+    var title=document.querySelector('.n11-program-head h1');
+    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
+    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline)return;
+    var dateKey=selectedProgramDate();
+    if(!dateKey)return;
+    var slots=scheduleForDate(dateKey);
+    var appointments=readArray('no11-appointments').filter(function(item){
+      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
+    }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
+    appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
+    slots.sort();
+    var signature=dateKey+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
+    if(timeline.dataset.n11ScheduleSignature===signature)return;
+    timeline.dataset.n11ScheduleSignature=signature;
+    timeline.classList.add('n11-schedule-timeline');
+    function card(item){var status=normalizedStatus(item);return '<article class="n11-program-inline-card" data-n11-program-id="'+esc(item.id)+'"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small><em class="n11-program-inline-status '+esc(status)+'">'+statusText(status)+'</em></article>'}
+    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span><div class="n11-program-slot-items">'+found.map(card).join('')+'</div></div>'}).join('')+'</div></div>'}
+    timeline.innerHTML=group('SABAH',slots.filter(function(x){return x<'12:00'}))+group('ÖĞLE',slots.filter(function(x){return x>='12:00'&&x<'15:00'}))+group('AKŞAM',slots.filter(function(x){return x>='15:00'}));
+    if(!slots.length)timeline.innerHTML='<div class="n11-empty"><h3>Kapalı gün</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
+  }
+
   function apply(){
     if(busy)return;busy=true;
     try{
@@ -380,6 +437,7 @@
       enhanceAppointmentDateTimes();
       enhanceManagerNote();
       enhanceAppointmentMenus();
+      enhanceDesktopProgram();
     }finally{busy=false}
   }
 
@@ -412,6 +470,11 @@
       var target=document.querySelector('.n11-main-side [data-page="'+finalPage.dataset.finalPage+'"]');
       if(target)target.click();
       return;
+    }
+    var programCard=event.target.closest&&event.target.closest('[data-n11-program-id]');
+    if(programCard){
+      var original=document.querySelector('.n11-today-row[data-id="'+CSS.escape(programCard.dataset.n11ProgramId)+'"]');
+      if(original)original.click();
     }
   },true);
 
