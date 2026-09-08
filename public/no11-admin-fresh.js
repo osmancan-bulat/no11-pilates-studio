@@ -266,6 +266,21 @@
   }
 
   function enhanceAppointmentMenus(){
+    var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
+    if(!mobile){
+      document.querySelectorAll('.n11-appt-menu').forEach(function(menu){
+        var row=menu.closest('.n11-appt-row');
+        var panel=menu.querySelector('.n11-appt-menu-panel');
+        if(row&&panel){
+          Array.from(panel.children).forEach(function(action){
+            if(action.matches('a.n11-whatsapp'))action.textContent='◉';
+            row.insertBefore(action,menu);
+          });
+        }
+        menu.remove();
+      });
+      return;
+    }
     document.querySelectorAll('.n11-appt-row').forEach(function(row){
       if(row.querySelector('.n11-appt-menu'))return;
       var actions=[];
