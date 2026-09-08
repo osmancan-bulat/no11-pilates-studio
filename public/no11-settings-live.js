@@ -16,13 +16,16 @@
   }
   function appointmentPayload(form){
     var data=new FormData(form),now=new Date().toISOString();
+    var selects=form.querySelectorAll('select');
+    var selectedService=selects[0]&&selects[0].value||'';
+    var selectedTime=selects[1]&&selects[1].value||'';
     return {
       id:'apt-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
       name:String(data.get('name')||'').trim(),
       phone:String(data.get('phone')||'').trim(),
-      service:String(data.get('service')||data.get('lesson')||'Pilates').trim(),
+      service:String(data.get('service')||data.get('lesson')||selectedService||'Pilates').trim(),
       date:String(data.get('date')||'').trim(),
-      time:String(data.get('time')||'').trim(),
+      time:String(data.get('time')||selectedTime||'').trim(),
       studentNote:String(data.get('note')||'').trim(),
       managerNote:'',
       status:'pending',
