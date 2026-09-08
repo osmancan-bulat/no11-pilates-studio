@@ -176,10 +176,7 @@
       if(appointmentsButton)appointmentsButton.click();
       setTimeout(function(){
         var detailButton=id?document.querySelector('[data-detail="'+id.replace(/"/g,'\\"')+'"]'):null;
-        if(detailButton){
-          detailButton.scrollIntoView({behavior:'smooth',block:'center'});
-          setTimeout(function(){detailButton.click()},250);
-        }
+        if(detailButton)detailButton.click();
       },250);
     };
     document.body.appendChild(toast);
