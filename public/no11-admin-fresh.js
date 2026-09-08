@@ -122,13 +122,14 @@
 .n11-v4 .n11-timeline .n11-time-line>time .n11-program-time-date{display:none!important}\
 @media(min-width:761px){\
   .n11-v4 .n11-timeline{overflow:hidden!important}\
-  .n11-v4 .n11-timeline .n11-program-card{height:26px!important;min-height:26px!important;width:max-content!important;max-width:none!important;padding:0!important;display:flex!important;gap:8px!important;align-items:center!important;overflow:visible!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;white-space:nowrap!important;transform:none!important}\
+  .n11-v4 .n11-timeline .n11-program-card{left:54px!important;gap:6px!important}\
+  .n11-v4 .n11-timeline .n11-program-card{height:26px!important;min-height:26px!important;width:max-content!important;max-width:none!important;padding:0!important;display:flex!important;gap:6px!important;align-items:center!important;overflow:visible!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;white-space:nowrap!important;transform:none!important}\
   .n11-v4 .n11-timeline .n11-program-card>.n11-dot{display:none!important}\
-  .n11-v4 .n11-timeline .n11-program-card>div{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important;white-space:nowrap!important}\
+  .n11-v4 .n11-timeline .n11-program-card>div{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important;white-space:nowrap!important}\
   .n11-v4 .n11-timeline .n11-program-card>div>b,.n11-v4 .n11-timeline .n11-program-card>div>small{display:block!important;min-width:0!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important}\
-  .n11-v4 .n11-timeline .n11-program-card>div>b{flex:0 0 auto!important;font-size:13px!important}\
-  .n11-v4 .n11-timeline .n11-program-card>div>small{flex:0 0 auto!important;font-size:11px!important}\
-  .n11-v4 .n11-timeline .n11-program-card>.n11-status{height:auto!important;padding:0!important;font-size:11px!important;white-space:nowrap!important;background:transparent!important;border:0!important;border-radius:0!important;color:#2f7d4a!important}\
+  .n11-v4 .n11-timeline .n11-program-card>div>b{flex:0 0 auto!important;font-size:14px!important;font-weight:700!important}\
+  .n11-v4 .n11-timeline .n11-program-card>div>small{flex:0 0 auto!important;font-size:12px!important;font-weight:600!important}\
+  .n11-v4 .n11-timeline .n11-program-card>.n11-status{height:auto!important;padding:0!important;font-size:12px!important;font-weight:600!important;white-space:nowrap!important;background:transparent!important;border:0!important;border-radius:0!important;color:#2f7d4a!important}\
   .n11-v4 .n11-timeline .n11-program-card:after{content:""!important;position:absolute!important;left:calc(100% + 8px)!important;top:50%!important;width:120px!important;height:1px!important;background:#e4dfdc!important;pointer-events:none!important}\
 }\
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
