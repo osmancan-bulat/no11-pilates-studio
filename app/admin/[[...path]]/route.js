@@ -80,11 +80,11 @@ async function proxy(request, context) {
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/https:\/\/no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects\.vercel\.app\/no11-admin-premium\.js\?v=\d+/g, `${incoming.origin}/no11-admin-premium.js?v=52`);
+      .replace(/https:\/\/no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects\.vercel\.app\/no11-admin-premium\.js\?v=\d+/g, `${incoming.origin}/no11-admin-premium.js?v=53`);
 
     html = html.replace(
       '</head>',
-      `<script src="${incoming.origin}/no11-admin-live-sync.js?v=13" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=17" defer></script></head>`,
+      `<script src="${incoming.origin}/no11-admin-live-sync.js?v=13" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=18" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
