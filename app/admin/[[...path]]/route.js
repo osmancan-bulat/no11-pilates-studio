@@ -80,7 +80,6 @@ async function proxy(request, context) {
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/https:\/\/no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects\.vercel\.app\/no11-admin-premium\.css\?v=\d+/g, `${incoming.origin}/no11-admin-premium.css?v=52`)
       .replace(/https:\/\/no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects\.vercel\.app\/no11-admin-premium\.js\?v=\d+/g, `${incoming.origin}/no11-admin-premium.js?v=53`);
 
     html = html.replace(
