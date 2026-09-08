@@ -134,7 +134,7 @@
 .n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;height:42px!important;padding:0 13px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:var(--n11-ink)!important;text-decoration:none!important;font:13px Arial,sans-serif!important;white-space:nowrap!important}\
 .n11-v4 .n11-appt-menu-panel button:hover,.n11-v4 .n11-appt-menu-panel a:hover{background:var(--n11-bg)!important}\
 .n11-v4 .n11-appt-menu-panel .danger{color:#a3243f!important}\
-@media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}}\
+@media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}.n11-v4 .n11-appt-row>time.n11-appt-time-missing>small{width:58px!important;white-space:normal!important;font:600 10px/1.15 Arial,sans-serif!important}}\
 ';
     document.head.appendChild(style);
   }
@@ -339,7 +339,10 @@
       var match=String(item.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
       if(match)dateText=Number(match[3])+' '+months[Number(match[2])-1].slice(0,3);
       timeNode.classList.add('n11-appt-datetime');
-      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(item.time||'—')+'</small>';
+      var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
+      var hasTime=!!String(item.time||'').trim();
+      timeNode.classList.toggle('n11-appt-time-missing',!hasTime&&mobile);
+      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(hasTime?item.time:(mobile?'Saat belirtilmedi':'—'))+'</small>';
     });
   }
 
