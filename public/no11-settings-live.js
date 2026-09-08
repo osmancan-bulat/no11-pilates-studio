@@ -17,18 +17,23 @@
   function appointmentPayload(form){
     var data=new FormData(form),now=new Date().toISOString();
     var selects=form.querySelectorAll('select');
-    var selectedService=selects[0]&&selects[0].value||'';
-    var selectedTime=selects[1]&&selects[1].value||'';
+    var nameInput=form.querySelector('input[name="name"]');
+    var phoneInput=form.querySelector('input[name="phone"]');
+    var dateInput=form.querySelector('input[name="date"]');
+    var selectedService=selects[0]&&(selects[0].value||(selects[0].selectedOptions[0]&&selects[0].selectedOptions[0].textContent))||'';
+    var selectedTime=selects[1]&&(selects[1].value||(selects[1].selectedOptions[0]&&selects[1].selectedOptions[0].textContent))||'';
     var serviceLabel=selects[0]&&selects[0].previousElementSibling&&selects[0].previousElementSibling.textContent.trim()||'';
     var timeLabel=selects[1]&&selects[1].previousElementSibling&&selects[1].previousElementSibling.textContent.trim()||'';
     if(!selectedService&&!/seç/i.test(serviceLabel))selectedService=serviceLabel;
     if(!selectedTime){var timeMatch=timeLabel.match(/(?:^|\s)([0-2]\d:[0-5]\d)(?:\s|$)/);if(timeMatch)selectedTime=timeMatch[1]}
+    var normalizedTime=String(selectedTime).match(/(?:^|\s)([0-2]\d:[0-5]\d)(?:\s|$)/);
+    selectedTime=normalizedTime?normalizedTime[1]:'';
     return {
       id:'apt-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
-      name:String(data.get('name')||'').trim(),
-      phone:String(data.get('phone')||'').trim(),
+      name:String(data.get('name')||(nameInput&&nameInput.value)||'').trim(),
+      phone:String(data.get('phone')||(phoneInput&&phoneInput.value)||'').trim(),
       service:String(data.get('service')||data.get('lesson')||selectedService||'Pilates').trim(),
-      date:String(data.get('date')||'').trim(),
+      date:String(data.get('date')||(dateInput&&dateInput.value)||'').trim(),
       time:String(data.get('time')||selectedTime||'').trim(),
       studentNote:String(data.get('note')||'').trim(),
       managerNote:'',
