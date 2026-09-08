@@ -6,6 +6,8 @@
   var viewDate=new Date();
   var busy=false;
   var lastMobileSignature='';
+  var scheduleData=null;
+  var lastProgramSignature='';
 
   function label(date){return date.getDate()+' '+months[date.getMonth()]+' '+days[date.getDay()]}
   function monthTitle(date){return months[date.getMonth()].toLocaleUpperCase('tr-TR')+' '+date.getFullYear()}
@@ -135,6 +137,16 @@
 .n11-v4 .n11-appt-menu-panel button:hover,.n11-v4 .n11-appt-menu-panel a:hover{background:var(--n11-bg)!important}\
 .n11-v4 .n11-appt-menu-panel .danger{color:#a3243f!important}\
 @media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}.n11-v4 .n11-appt-row>time.n11-appt-time-missing>small{width:58px!important;white-space:normal!important;font:600 10px/1.15 Arial,sans-serif!important}}\
+@media(min-width:761px){\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-time-line{min-height:54px!important;grid-template-columns:116px minmax(0,1fr)!important;align-items:center!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-time-line>time{align-self:center!important;font-size:17px!important;font-weight:600!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-time-line>span{grid-column:2!important;grid-row:1!important;width:100%!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-program-card{grid-column:2!important;grid-row:1!important;position:relative!important;z-index:2!important;display:grid!important;grid-template-columns:10px minmax(0,1fr) auto!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0 8px 0 5px!important;border:0!important;background:var(--n11-card)!important;box-shadow:none!important;white-space:nowrap!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-program-card>div{display:flex!important;align-items:center!important;gap:9px!important;min-width:0!important;overflow:hidden!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-program-card b{display:block!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:15px!important;line-height:1.2!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-program-card small{display:block!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:13px!important;line-height:1.2!important}\
+  .n11-v4 .n11-timeline.n11-schedule-rebuilt .n11-program-card .n11-status{flex:0 0 auto!important;padding:0!important;border:0!important;background:transparent!important;color:#2f7d4d!important;font-size:13px!important;font-weight:600!important;white-space:nowrap!important}\
+}\
 ';
     document.head.appendChild(style);
   }
@@ -366,6 +378,78 @@
     }
   }
 
+  function selectedProgramDate(){
+    var active=document.querySelector('.n11-calendar [data-program-day].active');
+    return active&&active.getAttribute('data-program-day')||'';
+  }
+
+  function scheduleHoursFor(dateKey){
+    if(!scheduleData||!scheduleData.hours||!dateKey)return null;
+    var date=new Date(dateKey+'T12:00:00');
+    if(isNaN(date.getTime()))return null;
+    var aliases=[['sunday','pazar'],['monday','pazartesi'],['tuesday','salı','sali'],['wednesday','çarşamba','carsamba'],['thursday','perşembe','persembe'],['friday','cuma'],['saturday','cumartesi']][date.getDay()];
+    var hours=scheduleData.hours;
+    for(var i=0;i<aliases.length;i++)if(hours[aliases[i]])return hours[aliases[i]];
+    if(Array.isArray(hours))return hours[date.getDay()===0?6:date.getDay()-1]||null;
+    return null;
+  }
+
+  function readSelectedAppointments(){
+    return Array.from(document.querySelectorAll('.n11-today-row')).map(function(row){
+      var time=row.querySelector('time');
+      var clone=time&&time.cloneNode(true);
+      if(clone)clone.querySelectorAll('small').forEach(function(x){x.remove()});
+      var status=row.querySelector('.n11-status');
+      return {id:row.dataset.id||'',time:clone?clone.textContent.trim():'',name:(row.querySelector('b')||{}).textContent||'',service:(row.querySelector('small')||{}).textContent||'',status:status?status.textContent.trim():'Onaylandı',confirmed:!!(status&&status.classList.contains('confirmed'))};
+    }).filter(function(item){return /^\d{2}:\d{2}$/.test(item.time)});
+  }
+
+  function validSlotForDay(time,hours){
+    if(!/^\d{2}:\d{2}$/.test(time))return false;
+    if(!hours)return true;
+    if(hours.closed===true||hours.open===false)return false;
+    var open=String(hours.open||hours.start||hours.opening||'');
+    var close=String(hours.close||hours.end||hours.closing||'');
+    return (!/^\d{2}:\d{2}$/.test(open)||time>=open)&&(!/^\d{2}:\d{2}$/.test(close)||time<=close);
+  }
+
+  function daypartFor(time){return time<'12:00'?'SABAH':time<'15:00'?'ÖĞLE':'AKŞAM'}
+
+  function enhanceDesktopProgram(){
+    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
+    var title=document.querySelector('.n11-page-top h1');
+    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
+    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline||!scheduleData)return;
+    var dateKey=selectedProgramDate();
+    var appointments=readSelectedAppointments();
+    var configured=(Array.isArray(scheduleData.slots)?scheduleData.slots:[]).map(String);
+    var hours=scheduleHoursFor(dateKey);
+    var times=configured.filter(function(time){return validSlotForDay(time,hours)});
+    appointments.forEach(function(item){if(times.indexOf(item.time)<0)times.push(item.time)});
+    times=Array.from(new Set(times)).sort();
+    var signature=dateKey+'|'+times.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
+    if(signature===lastProgramSignature&&timeline.classList.contains('n11-schedule-rebuilt'))return;
+    lastProgramSignature=signature;
+    var html='';
+    ['SABAH','ÖĞLE','AKŞAM'].forEach(function(part){
+      var partTimes=times.filter(function(time){return daypartFor(time)===part});
+      if(!partTimes.length)return;
+      html+='<div class="n11-daypart"><h3>'+part+'</h3><div class="n11-time-grid">';
+      partTimes.forEach(function(time){
+        var booked=appointments.filter(function(item){return item.time===time});
+        if(!booked.length)booked=[null];
+        booked.forEach(function(item){
+          html+='<div class="n11-time-line"><time>'+esc(time)+'</time><span></span>';
+          if(item)html+='<article class="n11-program-card" data-id="'+esc(item.id)+'"><i class="n11-dot '+(item.confirmed?'confirmed':'')+'"></i><div><b>'+esc(item.name.trim()||'İsimsiz')+'</b><small>'+esc(item.service.trim()||'Pilates')+'</small></div><span class="n11-status '+(item.confirmed?'confirmed':'')+'">'+esc(item.status||'Onaylandı')+'</span></article>';
+          html+='</div>';
+        });
+      });
+      html+='</div></div>';
+    });
+    timeline.innerHTML=html;
+    timeline.classList.add('n11-schedule-rebuilt');
+  }
+
   function apply(){
     if(busy)return;busy=true;
     try{
@@ -380,6 +464,7 @@
       enhanceAppointmentDateTimes();
       enhanceManagerNote();
       enhanceAppointmentMenus();
+      enhanceDesktopProgram();
     }finally{busy=false}
   }
 
@@ -413,12 +498,21 @@
       if(target)target.click();
       return;
     }
+    var programCard=event.target.closest&&event.target.closest('.n11-timeline.n11-schedule-rebuilt .n11-program-card[data-id]');
+    if(programCard){
+      var source=document.querySelector('.n11-today-row[data-id="'+CSS.escape(programCard.dataset.id)+'"]');
+      if(source)source.click();
+    }
   },true);
 
   window.addEventListener('resize',function(){setTimeout(apply,60)});
   window.addEventListener('storage',function(e){if(e.key==='no11-appointments'||e.key==='no11-appointment-slots')setTimeout(apply,0)});
   window.addEventListener('no11-appointments-updated',function(){setTimeout(apply,0)});
   var observer=new MutationObserver(function(){setTimeout(apply,0)});
-  function start(){if(document.body)observer.observe(document.body,{childList:true,subtree:true});apply()}
+  function start(){
+    if(document.body)observer.observe(document.body,{childList:true,subtree:true});
+    fetch('/api/no11-schedule?ts='+Date.now(),{cache:'no-store'}).then(function(response){return response.ok?response.json():null}).then(function(data){scheduleData=data||{};lastProgramSignature='';apply()}).catch(function(){scheduleData={slots:readArray('no11-appointment-slots')};apply()});
+    apply();
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
