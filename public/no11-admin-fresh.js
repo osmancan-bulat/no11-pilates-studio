@@ -123,10 +123,10 @@
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
 .n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{min-height:52px!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{grid-template-columns:66px minmax(0,1fr)!important;min-height:52px!important}\
 .n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>time{font-size:17px!important;white-space:nowrap!important}\
 .n11-v4 .n11-program-slot-items{grid-column:2!important;grid-row:1!important;z-index:2!important;display:grid!important;gap:5px!important;min-width:0!important;width:100%!important}\
-.n11-v4 .n11-program-inline-card{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important;width:max-content!important;max-width:100%!important;padding:5px 9px 5px 0!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important}\
+.n11-v4 .n11-program-inline-card{display:grid!important;grid-template-columns:max-content minmax(0,1fr) max-content!important;align-items:center!important;gap:7px!important;min-width:0!important;width:100%!important;max-width:100%!important;padding:5px 8px 5px 0!important;box-sizing:border-box!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important;overflow:hidden!important}\
 .n11-v4 .n11-program-inline-card b{flex:none!important;font:700 15px/1.2 Arial,sans-serif!important}\
 .n11-v4 .n11-program-inline-card small{font:500 14px/1.2 Arial,sans-serif!important;color:var(--n11-muted)!important;overflow:hidden!important;text-overflow:ellipsis!important}\
 .n11-v4 .n11-program-inline-status{font:700 13px/1.2 Arial,sans-serif!important;flex:none!important}\
