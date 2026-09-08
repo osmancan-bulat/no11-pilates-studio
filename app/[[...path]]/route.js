@@ -164,7 +164,7 @@ async function proxy(request, context) {
       html = deferHeroVideos(html);
       html = html
       .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
-      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script><script src="${incoming.origin}/no11-schedule-live.js?v=1" defer></script><script src="${incoming.origin}/no11-settings-live.js?v=2" defer></script></head>`)
+      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script><script src="${incoming.origin}/no11-schedule-live.js?v=2" defer></script><script src="${incoming.origin}/no11-settings-live.js?v=3" defer></script></head>`)
       .replace("</body>", `${desktopHeroScript}</body>`);
     }
     if (path === "admin" || path.startsWith("admin/")) {

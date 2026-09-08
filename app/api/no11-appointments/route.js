@@ -79,9 +79,16 @@ export async function POST(request) {
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const appointment = normalizeAppointment(await request.json(), { publicCreate: true });
-    if (!appointment.name || !appointment.phone) {
+    if (!appointment.name || !appointment.phone || !appointment.date || !appointment.time) {
       return json({ error: 'missing_required_fields' }, 400);
     }
+    const [firebase, legacy] = await Promise.all([listAppointments(), legacyAppointments()]);
+    const occupied = [...firebase, ...legacy].some((item) =>
+      item?.status !== 'rejected' &&
+      String(item?.date || '') === appointment.date &&
+      String(item?.time || '') === appointment.time
+    );
+    if (occupied) return json({ error: 'appointment_slot_occupied' }, 409);
     const saved = await saveAppointment(appointment);
     return json({ ok: true, appointment: saved }, 201);
   } catch (error) {
