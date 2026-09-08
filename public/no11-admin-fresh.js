@@ -128,6 +128,7 @@
   .n11-v4 .n11-timeline .n11-program-card>div>b{flex:0 0 auto!important;font-size:12px!important}\
   .n11-v4 .n11-timeline .n11-program-card>div>small{flex:0 0 auto!important;font-size:10px!important}\
   .n11-v4 .n11-timeline .n11-program-card>.n11-status{height:auto!important;padding:0!important;font-size:10px!important;white-space:nowrap!important;background:transparent!important;border:0!important;border-radius:0!important}\
+  .n11-v4 .n11-timeline .n11-program-card:after{content:""!important;position:absolute!important;left:calc(100% + 8px)!important;top:50%!important;width:100vw!important;height:1px!important;background:#e4dfdc!important;pointer-events:none!important}\
 }\
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
