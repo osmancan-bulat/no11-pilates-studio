@@ -119,12 +119,24 @@
     title.style.cssText='display:block;color:#18151a;font:600 15px/1.25 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;letter-spacing:0';
     var detail=document.createElement('small');
     var person=appointment&&appointment.name?String(appointment.name):'Yeni öğrenci';
-    var time=appointment&&appointment.time?String(appointment.time):'Onay bekliyor';
-    detail.textContent=person+' · '+time;
+    var service=appointment&&appointment.service?String(appointment.service):'Pilates';
+    var time=appointment&&appointment.time?String(appointment.time):'Saat belirtilmedi';
+    var dateText='Tarih belirtilmedi';
+    var rawDate=appointment&&appointment.date?String(appointment.date):'';
+    var match=rawDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(match){
+      var dateValue=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
+      dateText=dateValue.toLocaleDateString('tr-TR',{day:'numeric',month:'long',weekday:'long'});
+    }
+    detail.textContent=person+' · '+service;
     detail.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    var dateLine=document.createElement('small');
+    dateLine.textContent=dateText+' · '+time;
+    dateLine.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
     copy.appendChild(appLine);
     copy.appendChild(title);
     copy.appendChild(detail);
+    copy.appendChild(dateLine);
     toast.appendChild(icon);
     toast.appendChild(copy);
     toast.style.setProperty('position','fixed','important');
