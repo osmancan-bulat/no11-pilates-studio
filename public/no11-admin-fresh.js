@@ -119,6 +119,9 @@
   .n11-final-section{padding:23px 19px}.n11-final-section-head h3{font-size:15px}.n11-final-section-head p{font-size:15px}.n11-final-link{padding:0 12px;font-size:14px}\
 }\
 .n11-v4 .n11-appt-row{position:relative;overflow:visible!important}\
+.n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
+.n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
+.n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
 .n11-v4 .n11-appt-menu{position:relative;grid-column:-2/-1!important;justify-self:end!important;z-index:12}\
 .n11-v4 .n11-appt-more{display:grid!important;place-items:center!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;border:1px solid var(--n11-line)!important;border-radius:11px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font:700 22px/1 Arial,sans-serif!important;letter-spacing:1px!important}\
 .n11-v4 .n11-appt-more>span{display:block!important;width:18px!important;height:4px!important;font-size:0!important;background:radial-gradient(circle at 2px 2px,currentColor 1.7px,transparent 1.8px),radial-gradient(circle at 9px 2px,currentColor 1.7px,transparent 1.8px),radial-gradient(circle at 16px 2px,currentColor 1.7px,transparent 1.8px)}\
@@ -310,6 +313,32 @@
     });
   }
 
+  function enhanceAppointmentDateTimes(){
+    var items=readArray('no11-appointments');
+    var used={};
+    document.querySelectorAll('.n11-appt-row').forEach(function(row){
+      var timeNode=row.querySelector(':scope>time');
+      var nameNode=row.querySelector(':scope>b');
+      var serviceNode=row.querySelector(':scope>.n11-appt-service');
+      if(!timeNode||!nameNode)return;
+      var rawTime=timeNode.dataset.rawTime||timeNode.textContent.trim();
+      timeNode.dataset.rawTime=rawTime;
+      var item=items.find(function(candidate){
+        if(!candidate||!candidate.id||used[String(candidate.id)])return false;
+        if(String(candidate.name||'İsimsiz')!==nameNode.textContent.trim())return false;
+        if(serviceNode&&String(candidate.service||candidate.lesson||'Pilates')!==serviceNode.textContent.trim())return false;
+        return String(candidate.time||'—')===rawTime;
+      });
+      if(!item)return;
+      used[String(item.id)]=true;
+      var dateText='Tarih yok';
+      var match=String(item.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(match)dateText=Number(match[3])+' '+months[Number(match[2])-1].slice(0,3);
+      timeNode.classList.add('n11-appt-datetime');
+      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(item.time||'—')+'</small>';
+    });
+  }
+
   function apply(){
     if(busy)return;busy=true;
     try{
@@ -321,6 +350,7 @@
       }
       renderMobileDashboard();
       desktopMetrics();
+      enhanceAppointmentDateTimes();
       enhanceAppointmentMenus();
     }finally{busy=false}
   }
