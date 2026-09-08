@@ -125,9 +125,9 @@
   .n11-v4 .n11-timeline .n11-program-card>.n11-dot{display:none!important}\
   .n11-v4 .n11-timeline .n11-program-card>div{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important;white-space:nowrap!important}\
   .n11-v4 .n11-timeline .n11-program-card>div>b,.n11-v4 .n11-timeline .n11-program-card>div>small{display:block!important;min-width:0!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important}\
-  .n11-v4 .n11-timeline .n11-program-card>div>b{flex:0 0 auto!important;font-size:12.5px!important}\
-  .n11-v4 .n11-timeline .n11-program-card>div>small{flex:0 0 auto!important;font-size:11px!important}\
-  .n11-v4 .n11-timeline .n11-program-card>.n11-status{height:28px!important;padding:6px 8px!important;font-size:11px!important;white-space:nowrap!important}\
+  .n11-v4 .n11-timeline .n11-program-card>div>b{flex:0 0 auto!important;font-size:12px!important}\
+  .n11-v4 .n11-timeline .n11-program-card>div>small{flex:0 0 auto!important;font-size:10px!important}\
+  .n11-v4 .n11-timeline .n11-program-card>.n11-status{height:28px!important;padding:6px 7px!important;font-size:10px!important;white-space:nowrap!important}\
 }\
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
