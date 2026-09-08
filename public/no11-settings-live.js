@@ -38,16 +38,16 @@
       headers:{'content-type':'application/json'},
       body:JSON.stringify(payload),
       keepalive:true
-    }).then(function(r){if(!r.ok)throw new Error('save');return r.json()});
+    }).then(function(r){if(!r.ok){var error=new Error(r.status===409?'occupied':'save');error.status=r.status;throw error}return r.json()});
   }
   function bindBooking(){var form=document.querySelector('#randevu form');if(!form||form.dataset.n11SettingsBound)return;form.dataset.n11SettingsBound='1';form.addEventListener('submit',function(event){
     if(!settings)return;
     event.preventDefault();event.stopImmediatePropagation();
     var payload=appointmentPayload(form);
     if(!payload.name||!payload.phone)return;
-    saveAppointment(payload).catch(function(){});
     var message='Merhaba, No.11 Pilates Studio için randevu talebi oluşturmak istiyorum.\n\nAd Soyad: '+payload.name+'\nTelefon: '+payload.phone+'\nTarih: '+payload.date+(payload.time?'\nSaat: '+payload.time:'')+(payload.studentNote?'\nNot: '+payload.studentNote:'');
-    window.open('https://wa.me/'+digits(settings.whatsapp||settings.phone)+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
+    var whatsapp=window.open('','_blank');
+    saveAppointment(payload).then(function(){var url='https://wa.me/'+digits(settings.whatsapp||settings.phone)+'?text='+encodeURIComponent(message);if(whatsapp)whatsapp.location.href=url;else window.location.href=url}).catch(function(error){if(whatsapp)whatsapp.close();window.alert(error&&error.status===409?'Bu saat az önce doldu. Lütfen başka bir saat seçin.':'Randevu kaydedilemedi. Lütfen tekrar deneyin.')});
   },true)}
   function start(){fetch('/api/no11-settings?ts='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('load');return r.json()}).then(function(data){settings=data.settings;apply();bindBooking()}).catch(function(){})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
