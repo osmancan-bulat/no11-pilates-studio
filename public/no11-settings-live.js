@@ -19,6 +19,10 @@
     var selects=form.querySelectorAll('select');
     var selectedService=selects[0]&&selects[0].value||'';
     var selectedTime=selects[1]&&selects[1].value||'';
+    var serviceLabel=selects[0]&&selects[0].previousElementSibling&&selects[0].previousElementSibling.textContent.trim()||'';
+    var timeLabel=selects[1]&&selects[1].previousElementSibling&&selects[1].previousElementSibling.textContent.trim()||'';
+    if(!selectedService&&!/seç/i.test(serviceLabel))selectedService=serviceLabel;
+    if(!selectedTime){var timeMatch=timeLabel.match(/(?:^|\s)([0-2]\d:[0-5]\d)(?:\s|$)/);if(timeMatch)selectedTime=timeMatch[1]}
     return {
       id:'apt-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
       name:String(data.get('name')||'').trim(),
@@ -40,12 +44,18 @@
       keepalive:true
     }).then(function(r){if(!r.ok)throw new Error('save');return r.json()});
   }
+  function bookingMessage(form,message,error){
+    var node=form.querySelector('.n11-booking-message');
+    if(!node){node=document.createElement('p');node.className='n11-booking-message';node.style.cssText='margin:10px 0 0;font:600 13px/1.4 Arial,sans-serif';form.querySelector('button[type="submit"]').insertAdjacentElement('beforebegin',node)}
+    node.style.color=error?'#a3243f':'#367047';node.textContent=message;
+  }
   function bindBooking(){var form=document.querySelector('#randevu form');if(!form||form.dataset.n11SettingsBound)return;form.dataset.n11SettingsBound='1';form.addEventListener('submit',function(event){
     if(!settings)return;
     event.preventDefault();event.stopImmediatePropagation();
     var payload=appointmentPayload(form);
-    if(!payload.name||!payload.phone||!/^\d{4}-\d{2}-\d{2}$/.test(payload.date)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(payload.time))return;
-    saveAppointment(payload).catch(function(){});
+    if(!payload.name||!payload.phone||!/^\d{4}-\d{2}-\d{2}$/.test(payload.date)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(payload.time)){bookingMessage(form,'Lütfen ad, telefon, tarih ve saat alanlarını eksiksiz seçin.',true);form.reportValidity();return}
+    bookingMessage(form,'Randevu talebiniz kaydediliyor…',false);
+    saveAppointment(payload).then(function(){bookingMessage(form,'Randevu talebiniz başarıyla alındı.',false)}).catch(function(){bookingMessage(form,'Randevu kaydedilemedi. Lütfen tekrar deneyin.',true)});
     var message='Merhaba, No.11 Pilates Studio için randevu talebi oluşturmak istiyorum.\n\nAd Soyad: '+payload.name+'\nTelefon: '+payload.phone+'\nTarih: '+payload.date+(payload.time?'\nSaat: '+payload.time:'')+(payload.studentNote?'\nNot: '+payload.studentNote:'');
     window.open('https://wa.me/'+digits(settings.whatsapp||settings.phone)+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
   },true)}
