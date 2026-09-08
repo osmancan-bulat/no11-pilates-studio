@@ -120,6 +120,7 @@
 }\
 .n11-v4 .n11-appt-row{position:relative;overflow:visible!important}\
 .n11-v4 .n11-timeline .n11-time-line>time .n11-program-time-date{display:none!important}\
+.n11-v4 .n11-today-row>time .n11-program-time-date{display:none!important}\
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
 .n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
