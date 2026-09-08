@@ -40,12 +40,11 @@
       keepalive:true
     }).then(function(r){if(!r.ok){var error=new Error(r.status===409?'occupied':'save');error.status=r.status;throw error}return r.json()});
   }
-  function bindBooking(){var form=document.querySelector('#randevu form');if(!form||form.dataset.n11SettingsBound)return;form.dataset.n11SettingsBound='1';var nameInput=form.querySelector('[name="name"]'),dateInput=form.querySelector('[name="date"]'),selects=form.querySelectorAll('select'),timeInput=selects[1];if(nameInput)nameInput.required=true;if(dateInput)dateInput.required=true;if(timeInput)timeInput.required=true;form.addEventListener('submit',function(event){
+  function bindBooking(){var form=document.querySelector('#randevu form');if(!form||form.dataset.n11SettingsBound)return;form.dataset.n11SettingsBound='1';form.addEventListener('submit',function(event){
     if(!settings)return;
     event.preventDefault();event.stopImmediatePropagation();
     var payload=appointmentPayload(form);
-    if(!payload.name||!payload.date||!payload.time){window.alert('Ad soyad, tarih ve saat alanları zorunludur.');var missing=!payload.name?nameInput:!payload.date?dateInput:timeInput;if(missing)missing.focus();return}
-    if(!payload.phone)return;
+    if(!payload.name||!payload.phone)return;
     var message='Merhaba, No.11 Pilates Studio için randevu talebi oluşturmak istiyorum.\n\nAd Soyad: '+payload.name+'\nTelefon: '+payload.phone+'\nTarih: '+payload.date+(payload.time?'\nSaat: '+payload.time:'')+(payload.studentNote?'\nNot: '+payload.studentNote:'');
     var whatsapp=window.open('','_blank');
     saveAppointment(payload).then(function(){var url='https://wa.me/'+digits(settings.whatsapp||settings.phone)+'?text='+encodeURIComponent(message);if(whatsapp)whatsapp.location.href=url;else window.location.href=url}).catch(function(error){if(whatsapp)whatsapp.close();window.alert(error&&error.status===409?'Bu saat az önce doldu. Lütfen başka bir saat seçin.':'Randevu kaydedilemedi. Lütfen tekrar deneyin.')});
