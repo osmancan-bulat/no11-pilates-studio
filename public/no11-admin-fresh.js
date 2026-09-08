@@ -122,6 +122,7 @@
 .n11-v4 .n11-timeline .n11-time-line>time .n11-program-time-date{display:none!important}\
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
+.n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
@@ -342,6 +343,26 @@
     });
   }
 
+  function enhanceManagerNote(){
+    var detail=document.querySelector('.n11-detail');
+    var textarea=detail&&detail.querySelector('.n11-manager-note');
+    var button=detail&&detail.querySelector('[data-save-note]');
+    if(!textarea||!button)return;
+    var confirmed=!!detail.querySelector('.n11-status.confirmed');
+    button.textContent=confirmed?'Notu düzenle':'Notu kaydet';
+    var helper=detail.querySelector('.n11-manager-note-helper');
+    if(!confirmed&&!textarea.value.trim()){
+      if(!helper){
+        helper=document.createElement('p');
+        helper.className='n11-manager-note-helper';
+        helper.textContent='Öğrenciye özel bir not kaydetmek istiyorsanız bu alana yazabilirsiniz.';
+        textarea.insertAdjacentElement('afterend',helper);
+      }
+    }else if(helper){
+      helper.remove();
+    }
+  }
+
   function apply(){
     if(busy)return;busy=true;
     try{
@@ -354,6 +375,7 @@
       renderMobileDashboard();
       desktopMetrics();
       enhanceAppointmentDateTimes();
+      enhanceManagerNote();
       enhanceAppointmentMenus();
     }finally{busy=false}
   }
