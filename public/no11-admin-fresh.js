@@ -123,16 +123,23 @@
 .n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
 .n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
 .n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{grid-template-columns:66px minmax(0,1fr)!important;min-height:52px!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>time{font-size:17px!important;white-space:nowrap!important}\
+.n11-v4 .n11-program-v4:has(>.n11-schedule-timeline){grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;align-items:start!important}\
+.n11-v4 .n11-program-v4>.n11-timeline.n11-schedule-timeline{grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))!important;gap:20px!important;padding:24px!important;min-height:0!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart{min-width:0!important;padding:18px 18px 8px!important;border:1px solid var(--n11-line)!important;border-radius:16px!important;background:var(--n11-card)!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart>h3{margin:0 0 10px!important;padding:0 0 14px!important;border-bottom:1px solid var(--n11-line)!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{grid-template-columns:62px minmax(0,1fr)!important;align-items:center!important;min-height:58px!important;border-bottom:1px solid var(--n11-line)!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line:last-child{border-bottom:0!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>time{padding:0!important;font-size:17px!important;white-space:nowrap!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>span{display:none!important}\
 .n11-v4 .n11-program-slot-items{grid-column:2!important;grid-row:1!important;z-index:2!important;display:grid!important;gap:5px!important;min-width:0!important;width:100%!important}\
-.n11-v4 .n11-program-inline-card{display:grid!important;grid-template-columns:max-content minmax(0,1fr) max-content!important;align-items:center!important;gap:7px!important;min-width:0!important;width:100%!important;max-width:100%!important;padding:5px 8px 5px 0!important;box-sizing:border-box!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important;overflow:hidden!important}\
+.n11-v4 .n11-program-inline-card{display:grid!important;grid-template-columns:max-content minmax(0,1fr) max-content!important;align-items:center!important;gap:8px!important;min-width:0!important;width:100%!important;max-width:100%!important;padding:10px 11px!important;box-sizing:border-box!important;border:1px solid var(--n11-line)!important;border-left:3px solid #3f8a5b!important;border-radius:10px!important;background:var(--n11-bg)!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important;overflow:hidden!important}\
 .n11-v4 .n11-program-inline-card b{flex:none!important;font:700 15px/1.2 Arial,sans-serif!important}\
 .n11-v4 .n11-program-inline-card small{font:500 14px/1.2 Arial,sans-serif!important;color:var(--n11-muted)!important;overflow:hidden!important;text-overflow:ellipsis!important}\
 .n11-v4 .n11-program-inline-status{font:700 13px/1.2 Arial,sans-serif!important;flex:none!important}\
 .n11-v4 .n11-program-inline-status.confirmed{color:#378253!important}\
 .n11-v4 .n11-program-inline-status.pending{color:#b12d49!important}\
 .n11-v4 .n11-program-inline-status.rejected{color:#8a8086!important}\
+.n11-v4 .n11-program-available{grid-column:2!important;grid-row:1!important;color:var(--n11-muted)!important;font:500 13px/1.2 Arial,sans-serif!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
 .n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
@@ -418,7 +425,7 @@
     timeline.dataset.n11ScheduleSignature=signature;
     timeline.classList.add('n11-schedule-timeline');
     function card(item){var status=normalizedStatus(item);return '<article class="n11-program-inline-card" data-n11-program-id="'+esc(item.id)+'"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small><em class="n11-program-inline-status '+esc(status)+'">'+statusText(status)+'</em></article>'}
-    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span><div class="n11-program-slot-items">'+found.map(card).join('')+'</div></div>'}).join('')+'</div></div>'}
+    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span>'+(found.length?'<div class="n11-program-slot-items">'+found.map(card).join('')+'</div>':'<small class="n11-program-available">Müsait</small>')+'</div>'}).join('')+'</div></div>'}
     timeline.innerHTML=group('SABAH',slots.filter(function(x){return x<'12:00'}))+group('ÖĞLE',slots.filter(function(x){return x>='12:00'&&x<'15:00'}))+group('AKŞAM',slots.filter(function(x){return x>='15:00'}));
     if(!slots.length)timeline.innerHTML='<div class="n11-empty"><h3>Kapalı gün</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
   }
