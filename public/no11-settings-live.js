@@ -21,12 +21,13 @@
     var phoneInput=form.querySelector('input[name="phone"]');
     var dateInput=form.querySelector('input[name="date"]');
     var selectedService=selects[0]&&(selects[0].value||(selects[0].selectedOptions[0]&&selects[0].selectedOptions[0].textContent))||'';
-    var selectedTime=selects[1]&&(selects[1].value||(selects[1].selectedOptions[0]&&selects[1].selectedOptions[0].textContent))||'';
+    var selectedTime=selects[1]&&selects[1].value||'';
+    var selectedTimeText=selects[1]&&selects[1].selectedOptions[0]&&selects[1].selectedOptions[0].textContent||'';
     var serviceLabel=selects[0]&&selects[0].previousElementSibling&&selects[0].previousElementSibling.textContent.trim()||'';
     var timeLabel=selects[1]&&selects[1].previousElementSibling&&selects[1].previousElementSibling.textContent.trim()||'';
     if(!selectedService&&!/seç/i.test(serviceLabel))selectedService=serviceLabel;
     if(!selectedTime){var timeMatch=timeLabel.match(/(?:^|\s)([0-2]\d:[0-5]\d)(?:\s|$)/);if(timeMatch)selectedTime=timeMatch[1]}
-    var normalizedTime=String(selectedTime).match(/(?:^|\s)([0-2]\d:[0-5]\d)(?:\s|$)/);
+    var normalizedTime=(String(selectedTime)+' '+String(selectedTimeText)+' '+String(timeLabel)).match(/(?:^|\s)([0-2]\d:[0-5]\d)(?:\s|$)/);
     selectedTime=normalizedTime?normalizedTime[1]:'';
     return {
       id:'apt-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
