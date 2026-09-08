@@ -79,7 +79,9 @@ export async function POST(request) {
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const appointment = normalizeAppointment(await request.json(), { publicCreate: true });
-    if (!appointment.name || !appointment.phone) {
+    const validDate = /^\d{4}-\d{2}-\d{2}$/.test(appointment.date);
+    const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(appointment.time);
+    if (!appointment.name || !appointment.phone || !validDate || !validTime) {
       return json({ error: 'missing_required_fields' }, 400);
     }
     const saved = await saveAppointment(appointment);
