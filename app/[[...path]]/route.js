@@ -90,6 +90,8 @@ const mobileStorySpacing = `<style id="no11-mobile-story-spacing">
 @media (max-width:900px){.story h2{margin-bottom:2.75rem!important}}
 </style>`;
 
+const phoneInputGuard = `<script id="no11-phone-input-guard" src="/no11-phone-guard.js?v=1" defer></script>`;
+
 const adminPolish = `<style id="no11-admin-polish">
 @media (min-width:761px){.appointment-card{border-radius:18px!important;padding:24px!important;border-color:#e6ded5!important;box-shadow:0 8px 30px rgba(49,40,34,.045)!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important}.appointment-card:hover{transform:translateY(-2px)!important;border-color:#d8c9bd!important;box-shadow:0 16px 40px rgba(49,40,34,.08)!important}}
 .filters{padding:4px!important;border:1px solid #e5ddd5!important;border-radius:14px!important;background:#f7f3ef!important;gap:3px!important}.filters button{border:0!important;border-radius:10px!important;padding:10px 15px!important;color:#756a63!important;font-weight:600!important;transition:all .2s ease!important}.filters button.active{background:#292522!important;color:#fff!important;box-shadow:0 5px 13px rgba(41,37,34,.17)!important}.appointment-tools>label{border-radius:13px!important;border-color:#e3dbd3!important;box-shadow:0 4px 16px rgba(49,40,34,.035)!important}
@@ -165,7 +167,7 @@ async function proxy(request, context) {
       html = deferHeroVideos(html);
       html = html
       .replace(/(<video class="hero-video hero-video--desktop"[^>]* poster=")[^"]*(")/, `$1${incoming.origin}/no11-desktop-poster.webp$2`)
-      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script><script src="${incoming.origin}/no11-schedule-live.js?v=2" defer></script><script src="${incoming.origin}/no11-settings-live.js?v=5" defer></script></head>`)
+      .replace("</head>", `<link rel="preload" href="${incoming.origin}/no11-desktop-poster.webp" as="image">${mobileStorySpacing}<link rel="stylesheet" href="${incoming.origin}/no11-team-live.css?v=4"><link rel="stylesheet" href="${incoming.origin}/no11-studio-gallery.css?v=1"><script src="${incoming.origin}/no11-team-live.js?v=3" defer></script><script src="${incoming.origin}/no11-studio-gallery.js?v=1" defer></script><script src="${incoming.origin}/no11-schedule-live.js?v=2" defer></script><script src="${incoming.origin}/no11-settings-live.js?v=6" defer></script>${phoneInputGuard}</head>`)
       .replace("</body>", `${desktopHeroScript}</body>`);
     }
     if (path === "admin" || path.startsWith("admin/")) {
