@@ -32,7 +32,7 @@
     return {
       id:'apt-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
       name:String(data.get('name')||(nameInput&&nameInput.value)||'').trim(),
-      phone:String(data.get('phone')||(phoneInput&&phoneInput.value)||'').trim(),
+      phone:String(document.documentElement.dataset.no11BookingPhone||data.get('phone')||(phoneInput&&phoneInput.value)||'').trim(),
       service:String(data.get('service')||data.get('lesson')||selectedService||'Pilates').trim(),
       date:String(data.get('date')||(dateInput&&dateInput.value)||'').trim(),
       time:String(data.get('time')||selectedTime||'').trim(),
