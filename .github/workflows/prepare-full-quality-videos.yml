@@ -1,0 +1,52 @@
+name: Prepare full-quality local videos
+
+on:
+  push:
+    branches:
+      - codex/full-quality-local-videos
+    paths:
+      - .github/workflows/prepare-full-quality-videos.yml
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/full-quality-local-videos
+          fetch-depth: 0
+
+      - name: Download original release videos
+        run: |
+          curl -L --fail --retry 3 -o public/no11-mobile-full-quality.mp4 "https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.0/dikeyno11.4.mp4"
+          curl -L --fail --retry 3 -o public/no11-desktop-full-quality.mp4 "https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.0/yatayno11.5.mp4"
+          echo "4a1269095ca95f308ef5bc1bad84e0842856d6d87bcf6451019a0ebb2eb0250a  public/no11-mobile-full-quality.mp4" | sha256sum -c -
+          echo "061f446c96a6f4cb3b440890bad55995320d413f2370714276ba2353ddee9554  public/no11-desktop-full-quality.mp4" | sha256sum -c -
+
+      - name: Use same-origin video paths
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("app/[[...path]]/route.js")
+          text = path.read_text()
+          text = text.replace(
+              "https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.0/yatayno11.5.mp4",
+              "/no11-desktop-full-quality.mp4",
+          )
+          text = text.replace(
+              "https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.0/dikeyno11.4.mp4",
+              "/no11-mobile-full-quality.mp4",
+          )
+          path.write_text(text)
+          PY
+
+      - name: Commit prepared assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/[[...path]]/route.js public/no11-mobile-full-quality.mp4 public/no11-desktop-full-quality.mp4
+          git commit -m "Serve full-quality videos from the site"
+          git push origin HEAD:codex/full-quality-local-videos
