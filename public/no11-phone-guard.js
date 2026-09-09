@@ -23,7 +23,7 @@
     original.dataset.no11PhoneOriginal='1';original.type='hidden';original.required=false;original.tabIndex=-1;original.style.cssText+=';display:none!important';
     original.parentNode.insertBefore(proxy,original);
     proxy.addEventListener('input',function(){sync(proxy,original)},true);
-    proxy.addEventListener('inputkeydown',function(event){if(event.key==='Enter')event.preventDefault()});
+    proxy.addEventListener('keydown',function(event){if(event.key==='Enter')event.preventDefault()});
     if(!document.getElementById('no11-phone-proxy-style')){var style=document.createElement('style');style.id='no11-phone-proxy-style';style.textContent='#no11-booking-phone-visible:empty:before{content:attr(data-placeholder);color:#8b817b;pointer-events:none}';document.head.appendChild(style)}
   }
   function start(){install();new MutationObserver(install).observe(document.documentElement,{childList:true,subtree:true})}
