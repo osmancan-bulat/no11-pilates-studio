@@ -19,7 +19,8 @@ function deferHeroVideos(html) {
 
 const desktopHeroScript = `<script id="no11-desktop-hero-swap">
 (function(){
-  var desktopVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/video-v1/no11-desktop-full-quality.mp4';
+  var desktopVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.0/yatayno11.5.mp4';
+  var mobileVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.0/dikeyno11.4.mp4';
   var desktopQuery=window.matchMedia('(min-width: 901px)');
   function activeVideo(){return document.querySelector(window.matchMedia('(min-width: 901px)').matches?'.hero-video--desktop':'.hero-video--mobile')}
   function syncControl(){
@@ -73,7 +74,7 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
       var desktopStill=document.querySelector('.hero-desktop-still');if(desktopStill)desktopStill.style.setProperty('display','none','important');
       loadVideo(desktop,desktopVideoUrl);
     }else{
-      unloadVideo(desktop);loadVideo(mobile);
+      unloadVideo(desktop);loadVideo(mobile,mobileVideoUrl);
     }
     enhanceControls();syncControl();
   }
