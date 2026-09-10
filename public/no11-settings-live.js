@@ -89,8 +89,6 @@
     if(!payload.name||!payload.phone||!/^\d{4}-\d{2}-\d{2}$/.test(payload.date)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(payload.time)){bookingMessage(form,'Lütfen ad, telefon, tarih ve saat alanlarını eksiksiz seçin.',true);form.reportValidity();return}
     bookingMessage(form,'Randevu talebiniz kaydediliyor…',false);
     saveAppointment(payload).then(function(){bookingMessage(form,'Randevu talebiniz başarıyla alındı.',false);showBookingSuccess(payload)}).catch(function(){bookingMessage(form,'Randevu kaydedilemedi. Lütfen tekrar deneyin.',true)});
-    var message='Merhaba, No.11 Pilates Studio için randevu talebi oluşturmak istiyorum.\n\nAd Soyad: '+payload.name+'\nTelefon: '+payload.phone+'\nTarih: '+payload.date+(payload.time?'\nSaat: '+payload.time:'')+(payload.studentNote?'\nNot: '+payload.studentNote:'');
-    window.open('https://wa.me/'+digits(settings.whatsapp||settings.phone)+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
   },true)}
   function start(){fetch('/api/no11-settings?ts='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('load');return r.json()}).then(function(data){settings=data.settings;apply();bindBooking()}).catch(function(){})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
