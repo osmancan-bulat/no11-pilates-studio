@@ -48,6 +48,11 @@
   reportGuard.defer = true;
   document.head.appendChild(reportGuard);
 
+  var navSafe = document.createElement('script');
+  navSafe.src = '/no11-admin-nav-safe.js?v=20260910-1';
+  navSafe.defer = true;
+  document.head.appendChild(navSafe);
+
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
   setTimeout(ensureReportsNav,300);
