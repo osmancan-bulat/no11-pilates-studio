@@ -22,4 +22,9 @@
   reportScript.src = '/no11-admin-reports.js';
   reportScript.defer = true;
   document.head.appendChild(reportScript);
+
+  var reportGuard = document.createElement('script');
+  reportGuard.src = '/no11-admin-reports-guard.js';
+  reportGuard.defer = true;
+  document.head.appendChild(reportGuard);
 })();
