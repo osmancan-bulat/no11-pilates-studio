@@ -9,7 +9,7 @@
   if (!document.querySelector('link[data-no11-reports]')) {
     var reportStyle = document.createElement('link');
     reportStyle.rel = 'stylesheet';
-    reportStyle.href = '/no11-admin-reports.css?v=20260910-2';
+    reportStyle.href = '/no11-admin-reports.css?v=20260910-3';
     reportStyle.dataset.no11Reports = '1';
     document.head.appendChild(reportStyle);
   }
@@ -32,12 +32,12 @@
   document.head.appendChild(script);
 
   var reportScript = document.createElement('script');
-  reportScript.src = '/no11-admin-reports.js?v=20260910-2';
+  reportScript.src = '/no11-admin-reports.js?v=20260910-3';
   reportScript.defer = true;
   document.head.appendChild(reportScript);
 
   var reportGuard = document.createElement('script');
-  reportGuard.src = '/no11-admin-reports-guard.js?v=20260910-2';
+  reportGuard.src = '/no11-admin-reports-guard.js?v=20260910-3';
   reportGuard.defer = true;
   document.head.appendChild(reportGuard);
 
