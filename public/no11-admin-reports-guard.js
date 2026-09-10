@@ -34,15 +34,6 @@
         });
       }
     }
-
-    var theme=e.target&&e.target.closest?e.target.closest('.n11-rp-theme'):null;
-    if(theme){
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      var main=document.querySelector('main.n11-v4');
-      if(main)main.classList.toggle('n11-dark');
-    }
   },true);
 
   var observer=new MutationObserver(function(){
