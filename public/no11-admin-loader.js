@@ -53,6 +53,11 @@
   navSafe.defer = true;
   document.head.appendChild(navSafe);
 
+  var reportsStability = document.createElement('script');
+  reportsStability.src = '/no11-admin-reports-stability.js?v=20260910-1';
+  reportsStability.defer = true;
+  document.head.appendChild(reportsStability);
+
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
   setTimeout(ensureReportsNav,300);
