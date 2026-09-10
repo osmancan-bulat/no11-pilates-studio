@@ -150,12 +150,10 @@
   }
 
   function reloadOn(page,delay){
-    if(document.querySelector('.n11-detail'))return;
     var target=page||activePage();
     rememberPage(target);
-    sessionStorage.setItem('no11-admin-return-page',target);
-    if(pendingReloadTimer)clearTimeout(pendingReloadTimer);
-    pendingReloadTimer=setTimeout(function(){pendingReloadTimer=0;location.reload()},delay);
+    sessionStorage.removeItem('no11-admin-return-page');
+    if(pendingReloadTimer){clearTimeout(pendingReloadTimer);pendingReloadTimer=0}
   }
 
   function restorePage(){
