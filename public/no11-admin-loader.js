@@ -9,9 +9,16 @@
   if (!document.querySelector('link[data-no11-reports]')) {
     var reportStyle = document.createElement('link');
     reportStyle.rel = 'stylesheet';
-    reportStyle.href = '/no11-admin-reports.css?v=20260910-3';
+    reportStyle.href = '/no11-admin-reports.css?v=20260910-4';
     reportStyle.dataset.no11Reports = '1';
     document.head.appendChild(reportStyle);
+  }
+  if (!document.querySelector('link[data-no11-reports-mobile-v2]')) {
+    var mobileReportStyle = document.createElement('link');
+    mobileReportStyle.rel = 'stylesheet';
+    mobileReportStyle.href = '/no11-admin-reports-mobile-v2.css?v=20260910-4';
+    mobileReportStyle.dataset.no11ReportsMobileV2 = '1';
+    document.head.appendChild(mobileReportStyle);
   }
 
   function ensureReportsNav(){
@@ -32,12 +39,12 @@
   document.head.appendChild(script);
 
   var reportScript = document.createElement('script');
-  reportScript.src = '/no11-admin-reports.js?v=20260910-3';
+  reportScript.src = '/no11-admin-reports.js?v=20260910-4';
   reportScript.defer = true;
   document.head.appendChild(reportScript);
 
   var reportGuard = document.createElement('script');
-  reportGuard.src = '/no11-admin-reports-guard.js?v=20260910-3';
+  reportGuard.src = '/no11-admin-reports-guard.js?v=20260910-4';
   reportGuard.defer = true;
   document.head.appendChild(reportGuard);
 
