@@ -89,6 +89,10 @@
     var target=e.target&&e.target.closest?e.target.closest('[data-page="reports"]'):null;if(!target)return;
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();renderReport();
   }
+  function trackPageExit(e){
+    var target=e.target&&e.target.closest?e.target.closest('[data-page]'):null;
+    if(target&&target.dataset.page!==REPORT_PAGE)active=false;
+  }
   function showReadyToast(kind,key){
     var toast=document.createElement('button');toast.className='n11-rp-ready';
     if(kind==='monthly'){
@@ -113,6 +117,7 @@
       if(monthFinished&&!sessionStorage.getItem(monthlyKey)){showReadyToast('monthly',monthlyKey)}
     }
   }
+  document.addEventListener('click',trackPageExit,true);
   document.addEventListener('click',openReports,true);
   var observer=new MutationObserver(function(){injectNav();if(!document.querySelector('.n11-rp-ready'))checkReady()});
   function start(){var main=document.querySelector('main');if(!main){setTimeout(start,120);return}observer.observe(main,{childList:true,subtree:true});injectNav();fetchItems().then(function(){checkReady()});setInterval(checkReady,60000)}
