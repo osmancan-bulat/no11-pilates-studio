@@ -3,6 +3,7 @@
 
   var KEY='no11-appointments';
   var SEEN_PENDING_KEY='no11-admin-seen-pending-v1';
+  var PAGE_KEY='no11-admin-current-page-v1';
   var syncing=false;
   var ready=false;
   var polling=false;
@@ -10,6 +11,7 @@
   var pendingReloadTimer=0;
   var knownSignature='';
   var knownPending={};
+  var currentPage=sessionStorage.getItem(PAGE_KEY)||'dashboard';
   var nativeGetItem=Storage.prototype.getItem;
   var nativeSetItem=Storage.prototype.setItem;
   var nativeRemoveItem=Storage.prototype.removeItem;
@@ -52,9 +54,7 @@
   function pendingIds(items){
     var out={};
     items.forEach(function(item){
-      if(item&&item.id&&String(item.status||'pending').toLowerCase()==='pending'){
-        out[String(item.id)]=true;
-      }
+      if(item&&item.id&&String(item.status||'pending').toLowerCase()==='pending')out[String(item.id)]=true;
     });
     return out;
   }
@@ -68,17 +68,13 @@
     }catch(e){return {}}
   }
 
-  function rememberPending(ids){
-    nativeSetItem.call(localStorage,SEEN_PENDING_KEY,JSON.stringify(ids||{}));
-  }
+  function rememberPending(ids){nativeSetItem.call(localStorage,SEEN_PENDING_KEY,JSON.stringify(ids||{}))}
 
   function recentPendingId(items){
     var cutoff=Date.now()-120000;
     var recent=(Array.isArray(items)?items:[]).filter(function(item){
       return item&&item.id&&String(item.status||'pending').toLowerCase()==='pending'&&Date.parse(item.createdAt||0)>=cutoff;
-    }).sort(function(a,b){
-      return Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0);
-    });
+    }).sort(function(a,b){return Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0)});
     return recent[0]?String(recent[0].id):'';
   }
 
@@ -93,31 +89,22 @@
     });
   }
 
+  function rememberPage(page){
+    if(!page)return;
+    currentPage=page;
+    sessionStorage.setItem(PAGE_KEY,page);
+  }
+
   function showToast(appointment){
-    var old=document.querySelector('.n11-live-toast');
-    if(old)old.remove();
-    var toast=document.createElement('div');
-    toast.className='n11-live-toast';
-    toast.setAttribute('role','status');
-    toast.setAttribute('aria-live','assertive');
-    var icon=document.createElement('span');
-    icon.textContent='11';
-    icon.style.cssText='display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#281e2b;color:#fff;font:700 16px/1 Georgia,serif;flex:none';
-    var copy=document.createElement('span');
-    copy.style.cssText='display:grid;gap:4px;min-width:0;text-align:left';
-    var appLine=document.createElement('span');
-    appLine.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px';
-    var appName=document.createElement('strong');
-    appName.textContent='No.11';
-    appName.style.cssText='display:block;color:#18151a;font:700 13px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif';
-    var now=document.createElement('small');
-    now.textContent='şimdi';
-    now.style.cssText='color:#77727a;font:400 12px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif';
-    appLine.appendChild(appName);
-    appLine.appendChild(now);
-    var title=document.createElement('strong');
-    title.textContent='Yeni randevu talebi';
-    title.style.cssText='display:block;color:#18151a;font:600 15px/1.25 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;letter-spacing:0';
+    var old=document.querySelector('.n11-live-toast');if(old)old.remove();
+    var toast=document.createElement('div');toast.className='n11-live-toast';toast.setAttribute('role','status');toast.setAttribute('aria-live','assertive');
+    var icon=document.createElement('span');icon.textContent='11';icon.style.cssText='display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#281e2b;color:#fff;font:700 16px/1 Georgia,serif;flex:none';
+    var copy=document.createElement('span');copy.style.cssText='display:grid;gap:4px;min-width:0;text-align:left';
+    var appLine=document.createElement('span');appLine.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px';
+    var appName=document.createElement('strong');appName.textContent='No.11';appName.style.cssText='display:block;color:#18151a;font:700 13px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif';
+    var now=document.createElement('small');now.textContent='şimdi';now.style.cssText='color:#77727a;font:400 12px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif';
+    appLine.appendChild(appName);appLine.appendChild(now);
+    var title=document.createElement('strong');title.textContent='Yeni randevu talebi';title.style.cssText='display:block;color:#18151a;font:600 15px/1.25 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;letter-spacing:0';
     var detail=document.createElement('small');
     var person=appointment&&appointment.name?String(appointment.name):'Yeni öğrenci';
     var service=appointment&&appointment.service?String(appointment.service):'Pilates';
@@ -125,233 +112,110 @@
     var dateText='Tarih belirtilmedi';
     var rawDate=appointment&&appointment.date?String(appointment.date):'';
     var match=rawDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if(match){
-      var dateValue=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
-      dateText=dateValue.toLocaleDateString('tr-TR',{day:'numeric',month:'long',weekday:'long'});
-    }
-    detail.textContent=person+' · '+service;
-    detail.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-    var dateLine=document.createElement('small');
-    dateLine.textContent=dateText+' · '+time;
-    dateLine.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-    copy.appendChild(appLine);
-    copy.appendChild(title);
-    copy.appendChild(detail);
-    copy.appendChild(dateLine);
-    toast.appendChild(icon);
-    toast.appendChild(copy);
-    toast.style.setProperty('position','fixed','important');
-    toast.style.setProperty('left','auto','important');
-    toast.style.setProperty('right','16px','important');
-    toast.style.setProperty('top','max(16px, env(safe-area-inset-top))','important');
-    toast.style.setProperty('bottom','auto','important');
-    toast.style.setProperty('z-index','2147483647','important');
-    toast.style.setProperty('display','grid','important');
-    toast.style.setProperty('grid-template-columns','44px minmax(0,1fr)','important');
-    toast.style.setProperty('align-items','center','important');
-    toast.style.setProperty('gap','13px','important');
-    toast.style.setProperty('width','min(420px, calc(100vw - 32px))','important');
-    toast.style.setProperty('box-sizing','border-box','important');
-    toast.style.setProperty('overflow','hidden','important');
-    toast.style.setProperty('visibility','visible','important');
-    toast.style.setProperty('opacity','1','important');
-    toast.style.setProperty('transform','none','important');
-    toast.style.setProperty('padding','18px 20px','important');
-    toast.style.setProperty('border-radius','20px','important');
-    toast.style.setProperty('background','rgba(248,248,250,.94)','important');
-    toast.style.setProperty('color','#18151a','important');
-    toast.style.setProperty('border','1px solid rgba(0,0,0,.08)','important');
-    toast.style.setProperty('box-shadow','0 14px 40px rgba(20,16,22,.2)','important');
-    toast.style.setProperty('-webkit-backdrop-filter','blur(18px)','important');
-    toast.style.setProperty('backdrop-filter','blur(18px)','important');
-    toast.style.setProperty('font','700 16px/1.25 Arial,sans-serif','important');
-    toast.style.setProperty('text-align','center','important');
-    toast.style.setProperty('cursor','pointer','important');
-    toast.setAttribute('aria-label','Yeni randevuyu görüntüle');
+    if(match){var dateValue=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));dateText=dateValue.toLocaleDateString('tr-TR',{day:'numeric',month:'long',weekday:'long'})}
+    detail.textContent=person+' · '+service;detail.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    var dateLine=document.createElement('small');dateLine.textContent=dateText+' · '+time;dateLine.style.cssText='display:block;color:#5f5a63;font:400 13px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    copy.appendChild(appLine);copy.appendChild(title);copy.appendChild(detail);copy.appendChild(dateLine);toast.appendChild(icon);toast.appendChild(copy);
+    toast.style.setProperty('position','fixed','important');toast.style.setProperty('left','auto','important');toast.style.setProperty('right','16px','important');toast.style.setProperty('top','max(16px, env(safe-area-inset-top))','important');toast.style.setProperty('bottom','auto','important');toast.style.setProperty('z-index','2147483647','important');toast.style.setProperty('display','grid','important');toast.style.setProperty('grid-template-columns','44px minmax(0,1fr)','important');toast.style.setProperty('align-items','center','important');toast.style.setProperty('gap','13px','important');toast.style.setProperty('width','min(420px, calc(100vw - 32px))','important');toast.style.setProperty('box-sizing','border-box','important');toast.style.setProperty('overflow','hidden','important');toast.style.setProperty('visibility','visible','important');toast.style.setProperty('opacity','1','important');toast.style.setProperty('transform','none','important');toast.style.setProperty('padding','18px 20px','important');toast.style.setProperty('border-radius','20px','important');toast.style.setProperty('background','rgba(248,248,250,.94)','important');toast.style.setProperty('color','#18151a','important');toast.style.setProperty('border','1px solid rgba(0,0,0,.08)','important');toast.style.setProperty('box-shadow','0 14px 40px rgba(20,16,22,.2)','important');toast.style.setProperty('-webkit-backdrop-filter','blur(18px)','important');toast.style.setProperty('backdrop-filter','blur(18px)','important');toast.style.setProperty('font','700 16px/1.25 Arial,sans-serif','important');toast.style.setProperty('text-align','center','important');toast.style.setProperty('cursor','pointer','important');toast.setAttribute('aria-label','Yeni randevuyu görüntüle');
     toast.onclick=function(){
       if(pendingReloadTimer){clearTimeout(pendingReloadTimer);pendingReloadTimer=0}
-      var id=appointment&&appointment.id?String(appointment.id):'';
-      toast.remove();
-      var appointmentsButton=document.querySelector('.n11-main-side [data-page="appointments"]');
-      if(appointmentsButton)appointmentsButton.click();
-      setTimeout(function(){
-        var detailButton=id?document.querySelector('[data-detail="'+id.replace(/"/g,'\\"')+'"]'):null;
-        if(detailButton)detailButton.click();
-      },250);
+      var id=appointment&&appointment.id?String(appointment.id):'';toast.remove();rememberPage('appointments');
+      var appointmentsButton=document.querySelector('.n11-main-side [data-page="appointments"]');if(appointmentsButton)appointmentsButton.click();
+      setTimeout(function(){var detailButton=id?document.querySelector('[data-detail="'+id.replace(/"/g,'\\"')+'"]'):null;if(detailButton)detailButton.click()},250);
     };
-    document.body.appendChild(toast);
-    toast.classList.add('show');
-    setTimeout(function(){
-      toast.classList.remove('show');
-      setTimeout(function(){toast.remove()},220);
-    },15000);
+    document.body.appendChild(toast);toast.classList.add('show');
+    setTimeout(function(){toast.classList.remove('show');setTimeout(function(){toast.remove()},220)},15000);
   }
 
   function activePage(){
     var button=document.querySelector('.n11-main-side [data-page].active');
-    return button&&button.dataset.page||'dashboard';
+    var page=button&&button.dataset.page;
+    if(page)rememberPage(page);
+    return page||currentPage||sessionStorage.getItem(PAGE_KEY)||'dashboard';
   }
 
   function reloadOn(page,delay){
-    sessionStorage.setItem('no11-admin-return-page',page||activePage());
+    var target=page||activePage();
+    rememberPage(target);
+    sessionStorage.setItem('no11-admin-return-page',target);
     if(pendingReloadTimer)clearTimeout(pendingReloadTimer);
     pendingReloadTimer=setTimeout(function(){pendingReloadTimer=0;location.reload()},delay);
   }
 
   function restorePage(){
-    var page=sessionStorage.getItem('no11-admin-return-page');
+    var page=sessionStorage.getItem('no11-admin-return-page')||sessionStorage.getItem(PAGE_KEY);
     if(!page)return;
-    sessionStorage.removeItem('no11-admin-return-page');
+    rememberPage(page);
     var attempts=0;
     var timer=setInterval(function(){
       attempts++;
       var button=document.querySelector('.n11-main-side [data-page="'+page+'"]');
       if(button){
-        clearInterval(timer);
-        button.click();
-      }else if(attempts>30){
-        clearInterval(timer);
-      }
+        clearInterval(timer);sessionStorage.removeItem('no11-admin-return-page');button.click();
+      }else if(attempts>50){clearInterval(timer)}
     },100);
   }
 
-  function applyRemote(items){
-    syncing=true;
-    nativeSetItem.call(localStorage,KEY,JSON.stringify(items));
-    syncing=false;
-    window.dispatchEvent(new CustomEvent('no11-appointments-updated'));
-  }
+  function applyRemote(items){syncing=true;nativeSetItem.call(localStorage,KEY,JSON.stringify(items));syncing=false;window.dispatchEvent(new CustomEvent('no11-appointments-updated'))}
 
   function saveChanges(previous,next){
     if(syncing||!ready)return;
     var before=byId(previous),after=byId(next),jobs=[];
-    Object.keys(after).forEach(function(id){
-      if(!before[id]||signature([before[id]])!==signature([after[id]])){
-        jobs.push(request('/api/no11-appointments',{
-          method:'PUT',
-          body:JSON.stringify(after[id])
-        }));
-      }
-    });
-    Object.keys(before).forEach(function(id){
-      if(!after[id]){
-        jobs.push(request('/api/no11-appointments?id='+encodeURIComponent(id),{method:'DELETE'}));
-      }
-    });
+    Object.keys(after).forEach(function(id){if(!before[id]||signature([before[id]])!==signature([after[id]])){jobs.push(request('/api/no11-appointments',{method:'PUT',body:JSON.stringify(after[id])}))}});
+    Object.keys(before).forEach(function(id){if(!after[id])jobs.push(request('/api/no11-appointments?id='+encodeURIComponent(id),{method:'DELETE'}))});
     if(!jobs.length)return;
     savingUntil=Date.now()+3500;
-    Promise.allSettled(jobs).then(function(){
-      knownSignature=signature(next);
-      knownPending=pendingIds(next);
-      savingUntil=Date.now()+700;
-    });
+    Promise.allSettled(jobs).then(function(){knownSignature=signature(next);knownPending=pendingIds(next);savingUntil=Date.now()+700});
   }
 
   Storage.prototype.setItem=function(key,value){
-    if(this===localStorage&&key===KEY){
-      var previous=parse(nativeGetItem.call(localStorage,KEY));
-      nativeSetItem.call(this,key,value);
-      saveChanges(previous,parse(value));
-      return;
-    }
+    if(this===localStorage&&key===KEY){var previous=parse(nativeGetItem.call(localStorage,KEY));nativeSetItem.call(this,key,value);saveChanges(previous,parse(value));return}
     return nativeSetItem.call(this,key,value);
   };
-
   Storage.prototype.removeItem=function(key){
-    if(this===localStorage&&key===KEY){
-      var previous=parse(nativeGetItem.call(localStorage,KEY));
-      nativeRemoveItem.call(this,key);
-      saveChanges(previous,[]);
-      return;
-    }
+    if(this===localStorage&&key===KEY){var previous=parse(nativeGetItem.call(localStorage,KEY));nativeRemoveItem.call(this,key);saveChanges(previous,[]);return}
     return nativeRemoveItem.call(this,key);
   };
 
   function fetchRemote(initial){
     if(polling||document.hidden||Date.now()<savingUntil)return;
     polling=true;
-    request('/api/no11-appointments?ts='+Date.now())
-      .then(function(data){
-        var remote=Array.isArray(data&&data.appointments)?data.appointments:[];
-        var nextSignature=signature(remote);
-        var nextPending=pendingIds(remote);
-        if(initial){
-          var seenPending=readSeenPending();
-          var recentId=recentPendingId(remote);
-          var lastNotified=sessionStorage.getItem('no11-admin-last-notified');
-          var hasNewSinceLastVisit=seenPending!==null&&Object.keys(nextPending).some(function(id){
-            return !seenPending[id];
-          });
-          if(recentId&&recentId!==lastNotified)hasNewSinceLastVisit=true;
-          knownSignature=nextSignature;
-          knownPending=nextPending;
-          rememberPending(nextPending);
-          ready=true;
-          var localSignature=signature(parse(localStorage.getItem(KEY)));
-          var initialMarker=sessionStorage.getItem('no11-admin-initial-sync');
-          if(hasNewSinceLastVisit){
-            if(localSignature!==nextSignature)applyRemote(remote);
-            sessionStorage.removeItem('no11-admin-initial-sync');
-            if(recentId)sessionStorage.setItem('no11-admin-last-notified',recentId);
-            showToast(remote.filter(function(item){return String(item&&item.id||'')===recentId})[0]);
-            reloadOn(activePage(),15250);
-            return;
-          }
-          if(localSignature!==nextSignature){
-            applyRemote(remote);
-            if(initialMarker!==nextSignature){
-              sessionStorage.setItem('no11-admin-initial-sync',nextSignature);
-              reloadOn(activePage(),80);
-            }else{
-              sessionStorage.removeItem('no11-admin-initial-sync');
-            }
-          }else{
-            sessionStorage.removeItem('no11-admin-initial-sync');
-          }
-          return;
+    request('/api/no11-appointments?ts='+Date.now()).then(function(data){
+      var remote=Array.isArray(data&&data.appointments)?data.appointments:[];
+      var nextSignature=signature(remote),nextPending=pendingIds(remote);
+      if(initial){
+        var seenPending=readSeenPending(),recentId=recentPendingId(remote),lastNotified=sessionStorage.getItem('no11-admin-last-notified');
+        var hasNewSinceLastVisit=seenPending!==null&&Object.keys(nextPending).some(function(id){return !seenPending[id]});
+        if(recentId&&recentId!==lastNotified)hasNewSinceLastVisit=true;
+        knownSignature=nextSignature;knownPending=nextPending;rememberPending(nextPending);ready=true;
+        var localSignature=signature(parse(localStorage.getItem(KEY))),initialMarker=sessionStorage.getItem('no11-admin-initial-sync');
+        if(hasNewSinceLastVisit){
+          if(localSignature!==nextSignature)applyRemote(remote);
+          sessionStorage.removeItem('no11-admin-initial-sync');if(recentId)sessionStorage.setItem('no11-admin-last-notified',recentId);
+          showToast(remote.filter(function(item){return String(item&&item.id||'')===recentId})[0]);reloadOn(activePage(),15250);return;
         }
-        if(nextSignature===knownSignature)return;
-        var newPendingId=Object.keys(nextPending).filter(function(id){return !knownPending[id]})[0]||'';
-        var hasNew=!!newPendingId;
-        knownSignature=nextSignature;
-        knownPending=nextPending;
-        rememberPending(nextPending);
-        applyRemote(remote);
-        if(hasNew){
-          showToast(remote.filter(function(item){return String(item&&item.id||'')===newPendingId})[0]);
-          reloadOn(activePage(),15250);
-        }else{
-          reloadOn(activePage(),120);
-        }
-      })
-      .catch(function(){})
-      .then(function(){polling=false});
+        if(localSignature!==nextSignature){
+          applyRemote(remote);
+          if(initialMarker!==nextSignature){sessionStorage.setItem('no11-admin-initial-sync',nextSignature);reloadOn(activePage(),80)}else sessionStorage.removeItem('no11-admin-initial-sync');
+        }else sessionStorage.removeItem('no11-admin-initial-sync');
+        return;
+      }
+      if(nextSignature===knownSignature)return;
+      var newPendingId=Object.keys(nextPending).filter(function(id){return !knownPending[id]})[0]||'',hasNew=!!newPendingId;
+      knownSignature=nextSignature;knownPending=nextPending;rememberPending(nextPending);applyRemote(remote);
+      if(hasNew){showToast(remote.filter(function(item){return String(item&&item.id||'')===newPendingId})[0]);reloadOn(activePage(),15250)}else reloadOn(activePage(),120);
+    }).catch(function(){}).then(function(){polling=false});
   }
 
-  function addStyle(){
-    if(document.getElementById('n11-live-sync-style'))return;
-    var style=document.createElement('style');
-    style.id='n11-live-sync-style';
-    style.textContent='.n11-live-toast.show{opacity:1;transform:none}';
-    document.head.appendChild(style);
-  }
+  function addStyle(){if(document.getElementById('n11-live-sync-style'))return;var style=document.createElement('style');style.id='n11-live-sync-style';style.textContent='.n11-live-toast.show{opacity:1;transform:none}';document.head.appendChild(style)}
 
   function start(){
     addStyle();
-    restorePage();
-    fetchRemote(true);
-    setInterval(function(){fetchRemote(false)},4000);
-    document.addEventListener('visibilitychange',function(){
-      if(!document.hidden)fetchRemote(false);
-    });
-    window.addEventListener('focus',function(){fetchRemote(false)});
-    window.addEventListener('pageshow',function(){fetchRemote(false)});
-    window.addEventListener('online',function(){fetchRemote(false)});
+    document.addEventListener('click',function(e){var page=e.target&&e.target.closest?e.target.closest('[data-page]'):null;if(page&&page.dataset.page)rememberPage(page.dataset.page)},true);
+    restorePage();fetchRemote(true);setInterval(function(){fetchRemote(false)},4000);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)fetchRemote(false)});
+    window.addEventListener('focus',function(){fetchRemote(false)});window.addEventListener('pageshow',function(){fetchRemote(false)});window.addEventListener('online',function(){fetchRemote(false)});
   }
 
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',start,{once:true});
-  }else{
-    start();
-  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
