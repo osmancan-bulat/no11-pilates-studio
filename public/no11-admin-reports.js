@@ -20,6 +20,7 @@
     return new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',day:'numeric',month:'long',year:'numeric',weekday:'long'}).format(d);
   }
   function tomorrowKey(dateKey){var d=new Date(dateKey+'T12:00:00+03:00');d.setDate(d.getDate()+1);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+  function isLastDayOfMonth(dateKey){var d=new Date(dateKey+'T12:00:00+03:00'),next=new Date(d);next.setDate(d.getDate()+1);return next.getMonth()!==d.getMonth()}
   function normalize(x){return Object.assign({status:'pending',name:'',phone:'',service:x&&x.lesson||'Pilates',date:'',time:'',createdAt:''},x||{},{service:(x&&x.service)||(x&&x.lesson)||'Pilates'})}
   function localItems(){try{return (JSON.parse(localStorage.getItem(APPOINTMENTS_KEY)||'[]')||[]).map(normalize)}catch(e){return []}}
   function fetchItems(){
@@ -88,11 +89,29 @@
     var target=e.target&&e.target.closest?e.target.closest('[data-page="reports"]'):null;if(!target)return;
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();renderReport();
   }
+  function showReadyToast(kind,key){
+    var toast=document.createElement('button');toast.className='n11-rp-ready';
+    if(kind==='monthly'){
+      toast.innerHTML='<b>Aylık raporunuz hazır, Eda Hanım.</b><span>Ayın özetini görüntüleyin →</span>';
+      toast.onclick=function(){toast.remove();reportMode='monthly';renderReport()};
+    }else{
+      toast.innerHTML='<b>Günlük raporunuz hazır, Eda Hanım.</b><span>Bugünün özetini görüntüleyin →</span>';
+      toast.onclick=function(){toast.remove();reportMode='daily';renderReport()};
+    }
+    sessionStorage.setItem(key,'1');document.body.appendChild(toast);setTimeout(function(){if(toast.parentNode)toast.remove()},12000);
+  }
   function checkReady(){
-    if(active)return;var n=nowTR(),items=cache.length?cache:localItems(),today=items.filter(function(x){return x.date===n.date&&/^\d{2}:\d{2}$/.test(x.time||'')});if(!today.length)return;
-    var last=today.slice().sort(sortTime).pop().time;if(n.time<last)return;
-    var key='no11-report-ready-'+n.date;if(sessionStorage.getItem(key))return;sessionStorage.setItem(key,'1');
-    var toast=document.createElement('button');toast.className='n11-rp-ready';toast.innerHTML='<b>Günlük raporunuz hazır, Eda Hanım.</b><span>Bugünün özetini görüntüleyin →</span>';toast.onclick=function(){toast.remove();reportMode='daily';renderReport()};document.body.appendChild(toast);setTimeout(function(){if(toast.parentNode)toast.remove()},12000);
+    if(active||document.querySelector('.n11-rp-ready'))return;
+    var n=nowTR(),items=cache.length?cache:localItems(),today=items.filter(function(x){return x.date===n.date&&/^\d{2}:\d{2}$/.test(x.time||'')});
+    var dayFinished=false;
+    if(today.length){var last=today.slice().sort(sortTime).pop().time;dayFinished=n.time>=last}
+    var dailyKey='no11-report-ready-'+n.date;
+    if(dayFinished&&!sessionStorage.getItem(dailyKey)){showReadyToast('daily',dailyKey);return}
+    if(isLastDayOfMonth(n.date)){
+      var monthFinished=dayFinished||(!today.length&&n.time>='21:00');
+      var monthlyKey='no11-monthly-report-ready-'+n.month;
+      if(monthFinished&&!sessionStorage.getItem(monthlyKey)){showReadyToast('monthly',monthlyKey)}
+    }
   }
   document.addEventListener('click',openReports,true);
   var observer=new MutationObserver(function(){injectNav();if(!document.querySelector('.n11-rp-ready'))checkReady()});
