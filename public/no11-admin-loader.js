@@ -39,7 +39,7 @@
   document.head.appendChild(script);
 
   var reportScript = document.createElement('script');
-  reportScript.src = '/no11-admin-reports.js?v=20260910-4';
+  reportScript.src = '/no11-admin-reports.js?v=20260910-5';
   reportScript.defer = true;
   document.head.appendChild(reportScript);
 
