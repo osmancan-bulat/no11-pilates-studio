@@ -41,7 +41,6 @@ const mobileSafetyFix = `<style id="n11-mobile-safety-fix">
   .n11-v4 .n11-main-content:has(.n11-appointments-layout) .n11-appt-row .n11-approve{grid-column:4!important;grid-row:3!important;height:40px!important;min-width:82px!important;border-radius:10px!important}
   .n11-v4 .n11-main-content:has(.n11-appointments-layout) .n11-appt-row button.danger{grid-column:2/4!important;grid-row:4!important;width:100%!important;height:38px!important;border-radius:10px!important}
   .n11-v4 .n11-main-content:has(.n11-appointments-layout) .n11-appt-row .n11-whatsapp{grid-column:4!important;grid-row:4!important;width:100%!important;height:38px!important;display:grid!important;place-items:center!important;border-radius:10px!important;text-decoration:none!important}
-  .n11-v4 .n11-main-content:has(.n11-appointments-layout) .n11-appt-row .n11-dash{display:none!important}
   .n11-v4 .n11-main-content:has(.n11-appointments-layout) .n11-appt-row:not(:has(.n11-approve)) .n11-whatsapp{grid-column:2/5!important;grid-row:3!important}
 }
 </style>`;
@@ -83,7 +82,7 @@ async function proxy(request, context) {
 
     html = html.replace(
       '</head>',
-      `<script src="${incoming.origin}/no11-admin-live-sync.js?v=13" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=7" defer></script></head>`,
+      `<script src="${incoming.origin}/no11-admin-live-sync.js?v=13" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=7" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260910-3" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
