@@ -44,7 +44,7 @@
   document.head.appendChild(reportScript);
 
   var reportGuard = document.createElement('script');
-  reportGuard.src = '/no11-admin-reports-guard.js?v=20260910-4';
+  reportGuard.src = '/no11-admin-reports-guard.js?v=20260910-6';
   reportGuard.defer = true;
   document.head.appendChild(reportGuard);
 
