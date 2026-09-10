@@ -82,7 +82,7 @@ async function proxy(request, context) {
 
     html = html.replace(
       '</head>',
-      `<script src="${incoming.origin}/no11-admin-live-sync.js?v=14" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=7" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260910-6" defer></script></head>`,
+      `<script src="${incoming.origin}/no11-admin-live-sync.js?v=15" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=7" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260910-6" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
