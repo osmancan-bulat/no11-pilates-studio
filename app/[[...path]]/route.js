@@ -22,7 +22,7 @@ function deferHeroVideos(html) {
 const desktopHeroScript = `<script id="no11-desktop-hero-swap">
 (function(){
   var desktopVideoUrl='/no11-desktop-full-quality.mp4';
-  var mobileVideoUrl='/no11-mobile-full-quality.mp4';
+  var mobileVideoUrl='https://github.com/osmancan-bulat/no11-pilates-studio/releases/download/v1.0.1/no11-mobile-web-hq.2.mp4';
   var desktopQuery=window.matchMedia('(min-width: 901px)');
   function activeVideo(){return document.querySelector(window.matchMedia('(min-width: 901px)').matches?'.hero-video--desktop':'.hero-video--mobile')}
   function hardenVideo(video){
