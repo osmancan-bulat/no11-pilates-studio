@@ -8,10 +8,12 @@ function deferHeroVideos(html) {
     (_match, rawAttributes, rawContent) => {
       let attributes = rawAttributes
         .replace(/\sautoplay(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, "")
+        .replace(/\scontrols(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, "")
+        .replace(/\scontrolslist=(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
         .replace(/\spreload=(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
         .replace(/\ssrc=("[^"]*"|'[^']*')/gi, " data-no11-src=$1");
       const content = rawContent.replace(/\ssrc=("[^"]*"|'[^']*')/gi, " data-no11-src=$1");
-      attributes += ' preload="none"';
+      attributes += ' preload="none" muted playsinline webkit-playsinline';
       return `<video${attributes}>${content}</video>`;
     },
   );
@@ -23,6 +25,26 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
   var mobileVideoUrl='/no11-mobile-full-quality.mp4';
   var desktopQuery=window.matchMedia('(min-width: 901px)');
   function activeVideo(){return document.querySelector(window.matchMedia('(min-width: 901px)').matches?'.hero-video--desktop':'.hero-video--mobile')}
+  function hardenVideo(video){
+    if(!video)return;
+    video.removeAttribute('controls');
+    video.removeAttribute('controlslist');
+    video.controls=false;
+    video.muted=true;
+    video.defaultMuted=true;
+    video.autoplay=true;
+    video.loop=true;
+    video.playsInline=true;
+    video.setAttribute('muted','');
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+  }
+  function ensureNativeControlsHidden(){
+    if(document.getElementById('no11-hero-native-controls-fix'))return;
+    var style=document.createElement('style');style.id='no11-hero-native-controls-fix';
+    style.textContent='.hero-video::-webkit-media-controls,.hero-video::-webkit-media-controls-panel,.hero-video::-webkit-media-controls-play-button,.hero-video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none!important;opacity:0!important;pointer-events:none!important}.hero-video{pointer-events:none!important}';
+    document.head.appendChild(style);
+  }
   function syncControl(){
     var control=document.querySelector('.no11-video-control'),video=activeVideo();if(!control||!video)return;
     if(video.paused){control.setAttribute('aria-label','Videoyu oynat');control.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.6v10.8c0 .7.8 1.1 1.4.7l8-5.4a.85.85 0 0 0 0-1.4l-8-5.4A.85.85 0 0 0 4 2.6Z"></path></svg>'}
@@ -30,7 +52,8 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
   }
   function enhanceControls(){
     var hero=document.querySelector('.hero'),videos=document.querySelectorAll('.hero-video');if(!hero||!videos.length)return;
-    videos.forEach(function(video){video.defaultPlaybackRate=.9;video.playbackRate=.9;if(!video.dataset.no11ControlEvents){video.dataset.no11ControlEvents='1';video.addEventListener('play',syncControl);video.addEventListener('pause',syncControl)}});
+    ensureNativeControlsHidden();
+    videos.forEach(function(video){hardenVideo(video);video.defaultPlaybackRate=.9;video.playbackRate=.9;if(!video.dataset.no11ControlEvents){video.dataset.no11ControlEvents='1';video.addEventListener('play',syncControl);video.addEventListener('pause',syncControl)}});
     var existingControl=hero.querySelector('.no11-video-control');
     if(!desktopQuery.matches){if(existingControl)existingControl.remove();return}
     if(!document.getElementById('no11-hero-video-controls-style')){
@@ -48,26 +71,35 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
     video.pause();video.removeAttribute('src');video.querySelectorAll('source').forEach(function(source){source.removeAttribute('src')});
     video.autoplay=false;video.preload='none';video.load();video.dataset.no11Active='0';
   }
+  function tryPlay(video,attempt){
+    hardenVideo(video);
+    var playPromise=video.play();
+    if(playPromise&&playPromise.catch){
+      playPromise.catch(function(){
+        if(attempt<2){setTimeout(function(){tryPlay(video,attempt+1)},350*(attempt+1));return}
+        video.pause();
+        video.removeAttribute('controls');
+        video.controls=false;
+      });
+    }
+  }
   function loadVideo(video,forcedUrl){
     if(!video||video.dataset.no11Active==='1')return;
     if(forcedUrl){video.querySelectorAll('source').forEach(function(source){source.remove()});video.src=forcedUrl}
     else if(video.dataset.no11Src){video.src=video.dataset.no11Src}
     else video.querySelectorAll('source[data-no11-src]').forEach(function(source){source.src=source.dataset.no11Src});
-    video.muted=true;
-    video.loop=true;
-    video.autoplay=true;
-    video.playsInline=true;
+    hardenVideo(video);
     video.preload='auto';
     video.defaultPlaybackRate=.9;
     video.playbackRate=.9;
     video.dataset.no11Active='1';
     video.load();
-    var playPromise=video.play();
-    if(playPromise && playPromise.catch) playPromise.catch(function(){});
+    tryPlay(video,0);
   }
   function selectHeroVideo(){
     var desktop=document.querySelector('.hero-video--desktop'),mobile=document.querySelector('.hero-video--mobile');
     if(!desktop&&!mobile)return;
+    ensureNativeControlsHidden();
     if(desktopQuery.matches){
       unloadVideo(mobile);
       if(desktop){desktop.poster='/no11-desktop-poster.webp';desktop.style.setProperty('display','block','important');desktop.style.setProperty('visibility','visible','important');desktop.style.setProperty('opacity','1','important')}
@@ -81,6 +113,8 @@ const desktopHeroScript = `<script id="no11-desktop-hero-swap">
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',selectHeroVideo);
   else selectHeroVideo();
   window.addEventListener('resize',syncControl);
+  window.addEventListener('focus',function(){var video=activeVideo();if(video&&video.paused)tryPlay(video,0)});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden){var video=activeVideo();if(video&&video.paused)tryPlay(video,0)}});
   if(desktopQuery.addEventListener)desktopQuery.addEventListener('change',selectHeroVideo);else desktopQuery.addListener(selectHeroVideo);
   window.addEventListener('pageshow',selectHeroVideo,{once:true});
 })();
