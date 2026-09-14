@@ -6,12 +6,12 @@
     style.dataset.no11Premium = '1';
     document.head.appendChild(style);
   }
-  if (!document.querySelector('link[data-no11-settings-desktop-fix]')) {
-    var settingsDesktopFix = document.createElement('link');
-    settingsDesktopFix.rel = 'stylesheet';
-    settingsDesktopFix.href = '/no11-admin-settings-desktop-fix.css?v=20260914-3';
-    settingsDesktopFix.dataset.no11SettingsDesktopFix = '1';
-    document.head.appendChild(settingsDesktopFix);
+  if (!document.querySelector('link[data-no11-settings-desktop-clean]')) {
+    var settingsDesktopClean = document.createElement('link');
+    settingsDesktopClean.rel = 'stylesheet';
+    settingsDesktopClean.href = '/no11-settings-desktop-clean.css?v=20260914-1';
+    settingsDesktopClean.dataset.no11SettingsDesktopClean = '1';
+    document.head.appendChild(settingsDesktopClean);
   }
   if (!document.querySelector('link[data-no11-reports]')) {
     var reportStyle = document.createElement('link');
@@ -44,6 +44,11 @@
   script.src = '/no11-admin-exact-20.js';
   script.defer = true;
   document.head.appendChild(script);
+
+  var settingsClean = document.createElement('script');
+  settingsClean.src = '/no11-settings-desktop-clean.js?v=20260914-1';
+  settingsClean.defer = true;
+  document.head.appendChild(settingsClean);
 
   var reportScript = document.createElement('script');
   reportScript.src = '/no11-admin-reports.js?v=20260910-5';
