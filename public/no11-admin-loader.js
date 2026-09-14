@@ -77,6 +77,11 @@
   reportsStability.defer = true;
   document.head.appendChild(reportsStability);
 
+  var teamEditThemeGuard = document.createElement('script');
+  teamEditThemeGuard.src = '/no11-team-edit-theme-guard.js?v=20260914-1';
+  teamEditThemeGuard.defer = true;
+  document.head.appendChild(teamEditThemeGuard);
+
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
   setTimeout(ensureReportsNav,300);
