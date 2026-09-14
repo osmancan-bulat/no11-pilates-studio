@@ -5,6 +5,7 @@ import {
   saveAppointment,
   deleteAppointment,
 } from '../../../lib/firebase-firestore.js';
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 
 const LEGACY_ORIGIN =
   'https://no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects.vercel.app';
@@ -16,6 +17,10 @@ function json(data, status = 200) {
     status,
     headers: { 'cache-control': 'no-store, max-age=0' },
   });
+}
+
+function unauthorized() {
+  return json({ error: 'unauthorized' }, 401);
 }
 
 function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
@@ -56,7 +61,8 @@ async function legacyAppointments() {
   }
 }
 
-export async function GET() {
+export async function GET(request) {
+  if (!isAdminRequest(request)) return unauthorized();
   try {
     const [legacy, firebase] = await Promise.all([
       legacyAppointments(),
@@ -93,6 +99,7 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
+  if (!isAdminRequest(request)) return unauthorized();
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
@@ -114,6 +121,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
+  if (!isAdminRequest(request)) return unauthorized();
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const id = new URL(request.url).searchParams.get('id');
