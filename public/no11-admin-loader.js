@@ -6,6 +6,13 @@
     style.dataset.no11Premium = '1';
     document.head.appendChild(style);
   }
+  if (!document.querySelector('link[data-no11-settings-desktop-fix]')) {
+    var settingsDesktopFix = document.createElement('link');
+    settingsDesktopFix.rel = 'stylesheet';
+    settingsDesktopFix.href = '/no11-admin-settings-desktop-fix.css?v=20260914-1';
+    settingsDesktopFix.dataset.no11SettingsDesktopFix = '1';
+    document.head.appendChild(settingsDesktopFix);
+  }
   if (!document.querySelector('link[data-no11-reports]')) {
     var reportStyle = document.createElement('link');
     reportStyle.rel = 'stylesheet';
