@@ -76,7 +76,7 @@
   function loadPremium(){
     if(document.querySelector('script[data-no11-premium-loader]'))return;
     var script=document.createElement('script');
-    script.src='/no11-admin-premium.js?v=31';
+    script.src='/no11-admin-premium.js?v=20260914-team-edit-1';
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
     document.head.appendChild(script);
@@ -118,38 +118,22 @@
     form.addEventListener('submit',function(event){
       event.preventDefault();
       errorBox.textContent='';
-      var button=form.querySelector('button');button.disabled=true;button.textContent='Giriş yapılıyor…';
-      var data=new FormData(form);
-      request('/api/no11-admin-login',{method:'POST',body:JSON.stringify({username:data.get('username'),password:data.get('password')})})
-        .then(function(){
-          authenticated=true;
-          overlay.remove();
-          if(style.parentNode)style.remove();
-          return loadAppointments();
-        })
-        .catch(function(err){
-          if(err&&err.status===401)errorBox.textContent='Kullanıcı adı veya şifre hatalı.';
-          else errorBox.textContent='Giriş sırasında bir sorun oluştu. Lütfen tekrar deneyin.';
-          button.disabled=false;button.textContent='Giriş Yap';
-        });
+      var button=form.querySelector('button');button.disabled=true;
+      request('/api/no11-admin-session',{method:'POST',body:JSON.stringify({username:form.username.value,password:form.password.value})}).then(function(){authenticated=true;overlay.remove();loadAppointments()}).catch(function(){errorBox.textContent='Kullanıcı adı veya şifre hatalı.';button.disabled=false});
     });
   }
 
   function loadAppointments(){
-    return request('/api/no11-appointments?ts='+Date.now())
-      .then(function(data){
-        authenticated=true;
-        mergeAndMigrate(Array.isArray(data.appointments)?data.appointments:[]);
-        loadPremium();
-      })
-      .catch(function(err){
-        if(err&&err.status===401){authenticated=false;showLogin();return}
-        clearBoot();
-        loadPremium();
-      });
+    request('/api/no11-appointments').then(function(data){
+      authenticated=true;
+      mergeAndMigrate(Array.isArray(data&&data.items)?data.items:[]);
+      clearBoot();
+      loadPremium();
+    }).catch(function(err){
+      if(err&&err.status===401){showLogin();return}
+      clearBoot();loadPremium();
+    });
   }
 
-  function boot(){loadAppointments()}
-
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+  loadAppointments();
 })();
