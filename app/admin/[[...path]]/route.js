@@ -1,4 +1,107 @@
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
+
 const ORIGIN = 'https://no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects.vercel.app';
+
+function loginPage() {
+  return `<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Yönetici Girişi | No.11 Pilates Studio</title>
+  <style>
+    :root{color-scheme:light;--ink:#292624;--muted:#817971;--line:rgba(73,62,54,.19);--accent:#8f1821;--ivory:rgba(249,245,239,.94)}
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden}
+    body{background:#181513;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input{font:inherit}
+    .page{position:relative;display:flex;align-items:center;justify-content:flex-end;width:100%;min-height:100svh;padding:clamp(24px,4vw,70px);overflow:hidden;background:linear-gradient(90deg,rgba(21,17,14,.28),rgba(21,17,14,.04) 56%,rgba(21,17,14,.16)),url('/no11-studio-main.jpeg') center/cover no-repeat}
+    .brand{position:absolute;top:clamp(40px,7vh,82px);left:clamp(36px,8vw,146px);z-index:2;display:flex;width:max-content;flex-direction:column;align-items:center;color:#fff;text-decoration:none;text-shadow:0 2px 18px rgba(0,0,0,.25)}
+    .brand strong{font:400 clamp(48px,5vw,70px)/.95 Georgia,serif;letter-spacing:-.055em}
+    .brand span{margin-top:12px;font-size:clamp(8px,.75vw,11px);font-weight:600;letter-spacing:.38em}
+    .panel{width:min(100%,468px);padding:48px 40px 36px;border:1px solid rgba(255,255,255,.72);border-radius:24px;background:var(--ivory);box-shadow:0 25px 80px rgba(30,20,14,.26);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+    .eyebrow{margin:0 0 18px;text-align:center;color:#806e62;font-size:10px;font-weight:700;letter-spacing:.34em}
+    h1{margin:0;text-align:center;font:400 42px/1.08 Georgia,serif;letter-spacing:-.035em}
+    .rule{width:42px;height:1px;margin:24px auto 32px;background:#bda892}
+    form{display:grid;gap:13px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .field{position:relative}
+    .field-icon{position:absolute;top:50%;left:17px;width:21px;height:21px;transform:translateY(-50%);fill:none;stroke:#393633;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+    input{width:100%;height:57px;padding:0 52px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.78);color:var(--ink);font-size:15px;outline:0;transition:border-color .2s,box-shadow .2s,background .2s}
+    input::placeholder{color:#8b8580;opacity:1}
+    input:focus{border-color:rgba(143,24,33,.65);background:#fff;box-shadow:0 0 0 3px rgba(143,24,33,.08)}
+    .password input{padding-right:57px}
+    .peek{position:absolute;top:50%;right:8px;display:grid;width:44px;height:44px;padding:0;place-items:center;transform:translateY(-50%);border:0;border-radius:9px;background:transparent;color:#34312f;cursor:pointer}
+    .peek:hover,.peek:focus-visible{background:rgba(143,24,33,.06);outline:0}
+    .peek svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .error{min-height:17px;margin-top:-1px;color:#9c3034;font-size:11px;text-align:center}
+    .submit{height:58px;border:0;border-radius:11px;background:linear-gradient(105deg,#85151e,#981e27);box-shadow:0 10px 24px rgba(116,15,23,.17);color:#fff;cursor:pointer;font:400 17px Georgia,serif;transition:transform .2s,filter .2s}
+    .submit:hover{filter:brightness(.94);transform:translateY(-1px)}
+    .submit:disabled{opacity:.65;cursor:wait;transform:none}
+    .back{display:block;width:max-content;margin:25px auto 0;color:#77716c;font-size:12px;text-decoration:none}
+    .back:hover{color:#302d2a}
+    @media(max-width:820px){
+      .page{align-items:center;justify-content:center;min-height:var(--viewport-height,100svh);padding:max(20px,env(safe-area-inset-top)) 20px max(20px,env(safe-area-inset-bottom));background-position:38% center;transition:min-height .2s}
+      .page:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,19,16,.18),rgba(24,19,16,.03) 34%,rgba(24,19,16,.34));pointer-events:none}
+      .brand{top:max(28px,env(safe-area-inset-top));left:50%;z-index:2;transform:translateX(-50%)}
+      .brand strong{font-size:48px}.brand span{margin-top:8px;font-size:8px}
+      .panel{position:relative;z-index:2;width:100%;max-width:430px;margin-top:96px;padding:31px 22px 25px;border-radius:22px;transition:margin .2s,padding .2s,transform .2s}
+      .eyebrow{margin-bottom:13px;font-size:9px}h1{font-size:36px}.rule{margin:17px auto 23px}
+      input{height:55px}.submit{height:56px}.back{margin-top:20px}
+      body.keyboard-open .page{align-items:flex-start;padding-top:max(8px,env(safe-area-inset-top))}
+      body.keyboard-open .brand{top:max(8px,env(safe-area-inset-top))}
+      body.keyboard-open .brand strong{font-size:30px}
+      body.keyboard-open .brand span{display:none}
+      body.keyboard-open .panel{margin-top:47px;padding:18px 18px 15px;border-radius:18px}
+      body.keyboard-open .eyebrow{display:none}
+      body.keyboard-open h1{font-size:27px}
+      body.keyboard-open .rule{margin:10px auto 13px}
+      body.keyboard-open form{gap:8px}
+      body.keyboard-open input{height:49px}
+      body.keyboard-open .submit{height:49px}
+      body.keyboard-open .error{min-height:12px;font-size:10px}
+      body.keyboard-open .back{display:none}
+    }
+    @media(max-width:380px){.panel{padding-left:17px;padding-right:17px}h1{font-size:33px}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="brand" href="/" aria-label="Ana sayfaya dön"><strong>No.11</strong><span>PILATES STUDIO</span></a>
+    <section class="panel">
+      <p class="eyebrow">YÖNETİCİ PANELİ</p>
+      <h1>Yönetici Girişi</h1>
+      <div class="rule" aria-hidden="true"></div>
+      <form id="login-form">
+        <label class="sr-only" for="username">Kullanıcı adı</label>
+        <div class="field">
+          <svg class="field-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2.2c0-3.5 2.8-6.3 6.3-6.3h1.4c3.5 0 6.3 2.8 6.3 6.3V21"/></svg>
+          <input id="username" name="username" placeholder="Kullanıcı adı" autocomplete="username" autocapitalize="none" required>
+        </div>
+        <label class="sr-only" for="password">Şifre</label>
+        <div class="field password">
+          <svg class="field-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10M12 15v2"/></svg>
+          <input id="password" name="password" type="password" placeholder="Şifre" autocomplete="current-password" required>
+          <button class="peek" type="button" aria-label="Şifreyi göster"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+        </div>
+        <div class="error" id="error" role="alert"></div>
+        <button class="submit" type="submit">Giriş Yap</button>
+      </form>
+      <a class="back" href="/">←&nbsp;&nbsp; Ana siteye dön</a>
+    </section>
+  </main>
+  <script>
+    const form=document.getElementById('login-form'),error=document.getElementById('error'),password=document.getElementById('password'),peek=document.querySelector('.peek');
+    peek.addEventListener('click',()=>{const visible=password.type==='text';password.type=visible?'password':'text';peek.setAttribute('aria-label',visible?'Şifreyi göster':'Şifreyi gizle')});
+    const fullViewportHeight=window.innerHeight;
+    const syncViewport=()=>{const viewport=window.visualViewport;const height=viewport?viewport.height:window.innerHeight;document.documentElement.style.setProperty('--viewport-height',height+'px');document.body.classList.toggle('keyboard-open',window.innerWidth<=820&&height<Math.max(fullViewportHeight,window.innerHeight)-120)};
+    syncViewport();window.addEventListener('resize',syncViewport);if(window.visualViewport){window.visualViewport.addEventListener('resize',syncViewport);window.visualViewport.addEventListener('scroll',syncViewport)}
+    form.addEventListener('submit',async(event)=>{event.preventDefault();error.textContent='';const button=form.querySelector('.submit');button.disabled=true;button.textContent='Giriş yapılıyor…';const data=new FormData(form);try{const response=await fetch('/api/no11-admin-login',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({username:data.get('username'),password:data.get('password')})});if(!response.ok){error.textContent=response.status===401?'Kullanıcı adı veya şifre hatalı.':'Giriş sırasında bir sorun oluştu.';return}location.reload()}catch{error.textContent='Bağlantı kurulamadı. Lütfen tekrar deneyin.'}finally{button.disabled=false;button.textContent='Giriş Yap'}});
+  </script>
+</body>
+</html>`;
+}
 
 const mobileSafetyFix = `<style id="n11-mobile-safety-fix">
 @media(max-width:760px){
@@ -58,6 +161,17 @@ const calendarThemeGuard = `<script id="n11-calendar-theme-guard">
 </script>`;
 
 async function proxy(request, context) {
+  if (request.method === 'GET' && !isAdminRequest(request)) {
+    return new Response(loginPage(), {
+      status: 200,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        'cache-control': 'no-store, no-cache, must-revalidate',
+        'x-robots-tag': 'noindex, nofollow',
+      },
+    });
+  }
+
   const incoming = new URL(request.url);
   const params = await context.params;
   const tail = Array.isArray(params?.path) ? params.path.join('/') : '';
