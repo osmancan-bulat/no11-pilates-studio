@@ -192,7 +192,8 @@ async function proxy(request, context) {
     let html = await upstream.text();
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
-      .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`);
+      .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
+      .replaceAll('href="/"', 'href="/api/no11-admin-logout"');
 
     html = html.replace(
       '</head>',
