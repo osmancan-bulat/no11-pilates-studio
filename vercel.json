@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/favicon.ico", "destination": "/favicon.svg", "permanent": false },
+    { "source": "/apple-touch-icon.png", "destination": "/apple-touch-icon.svg", "permanent": false },
+    { "source": "/apple-touch-icon-precomposed.png", "destination": "/apple-touch-icon.svg", "permanent": false },
+    { "source": "/icons/icon-192.png", "destination": "/favicon.svg", "permanent": false }
+  ]
+}
