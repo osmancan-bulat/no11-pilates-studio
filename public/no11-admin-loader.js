@@ -9,7 +9,7 @@
   if (!document.querySelector('link[data-no11-settings-desktop-fix]')) {
     var settingsDesktopFix = document.createElement('link');
     settingsDesktopFix.rel = 'stylesheet';
-    settingsDesktopFix.href = '/no11-admin-settings-desktop-fix.css?v=20260914-2';
+    settingsDesktopFix.href = '/no11-admin-settings-desktop-fix.css?v=20260914-3';
     settingsDesktopFix.dataset.no11SettingsDesktopFix = '1';
     document.head.appendChild(settingsDesktopFix);
   }
@@ -44,11 +44,6 @@
   script.src = '/no11-admin-exact-20.js';
   script.defer = true;
   document.head.appendChild(script);
-
-  var settingsRepair = document.createElement('script');
-  settingsRepair.src = '/no11-settings-desktop-repair.js?v=20260914-2';
-  settingsRepair.defer = true;
-  document.head.appendChild(settingsRepair);
 
   var reportScript = document.createElement('script');
   reportScript.src = '/no11-admin-reports.js?v=20260910-5';
