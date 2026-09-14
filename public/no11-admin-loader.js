@@ -52,6 +52,11 @@
   script.defer = true;
   document.head.appendChild(script);
 
+  var teamEditIsolation = document.createElement('script');
+  teamEditIsolation.src = '/no11-team-edit-isolation.js?v=20260914-1';
+  teamEditIsolation.defer = true;
+  document.head.appendChild(teamEditIsolation);
+
   var settingsClean = document.createElement('script');
   settingsClean.src = '/no11-settings-desktop-clean.js?v=20260914-1';
   settingsClean.defer = true;
