@@ -1,3 +1,5 @@
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
+
 const KEY='no11:schedule';
 const DEFAULT_DATA={
   lessons:[{id:'lesson-1',name:'Birebir Pilates',duration:50},{id:'lesson-2',name:'Tanışma Dersi',duration:50},{id:'lesson-3',name:'Duet / İkili Pilates',duration:50},{id:'lesson-4',name:'Omurga Odaklı Pilates',duration:50},{id:'lesson-5',name:'Hamile Pilatesi',duration:50}],
@@ -14,5 +16,19 @@ function clean(body){
   const hours=DEFAULT_DATA.hours.map((base,i)=>{const x=body.hours[i]||base;const closed=!!x.closed;return {day:base.day,open:closed?'':validTime(x.open)?x.open:base.open,close:closed?'':validTime(x.close)?x.close:base.close,closed}});
   if(!lessons.length||!slots.length)throw new Error('invalid');return {lessons,slots,hours};
 }
-export async function GET(){try{const raw=await command(['GET',KEY]);return Response.json(raw?JSON.parse(raw):DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}catch(error){return Response.json(DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}}
-export async function PUT(request){try{const data=clean(await request.json());await command(['SET',KEY,JSON.stringify(data)]);return Response.json({...data,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400})}}
+function repairLegacyTestSlots(data){
+  const replacements={'08:01':'09:00','19:32':'19:30','00:00':'09:00','23:59':'19:30'};
+  let changed=false;
+  const slots=[...new Set(data.slots.map((slot)=>{const next=replacements[slot]||slot;if(next!==slot)changed=true;return next;}))].sort();
+  return {changed,data:{...data,slots}};
+}
+export async function GET(){
+  try{
+    const raw=await command(['GET',KEY]);
+    const current=raw?clean(JSON.parse(raw)):DEFAULT_DATA;
+    const repaired=repairLegacyTestSlots(current);
+    if(repaired.changed)await command(['SET',KEY,JSON.stringify(repaired.data)]);
+    return Response.json(repaired.data,{headers:{'cache-control':'no-store'}});
+  }catch(error){return Response.json(DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}
+}
+export async function PUT(request){if(!isAdminRequest(request))return Response.json({error:'unauthorized'},{status:401,headers:{'cache-control':'no-store'}});try{const data=clean(await request.json());await command(['SET',KEY,JSON.stringify(data)]);return Response.json({...data,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400})}}
