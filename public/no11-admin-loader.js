@@ -34,6 +34,13 @@
     mobileReportStyle.dataset.no11ReportsMobileV2 = '1';
     document.head.appendChild(mobileReportStyle);
   }
+  if (!document.querySelector('link[data-no11-team-edit-modal-fix]')) {
+    var teamEditModalFix = document.createElement('link');
+    teamEditModalFix.rel = 'stylesheet';
+    teamEditModalFix.href = '/no11-team-edit-modal-fix.css?v=20260914-2';
+    teamEditModalFix.dataset.no11TeamEditModalFix = '1';
+    document.head.appendChild(teamEditModalFix);
+  }
 
   function ensureReportsNav(){
     var nav=document.querySelector('.n11-main-side nav');
