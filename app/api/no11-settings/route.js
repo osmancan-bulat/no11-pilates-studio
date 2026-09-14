@@ -1,3 +1,4 @@
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 const KEY='no11:site-settings';
 const DEFAULT_SETTINGS={
   businessName:'No.11 Pilates Studio',
@@ -30,4 +31,4 @@ function clean(body){
   return data;
 }
 export async function GET(){try{const raw=await command(['GET',KEY]);const settings=raw?clean(JSON.parse(raw)):DEFAULT_SETTINGS;return Response.json({settings,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({settings:DEFAULT_SETTINGS,persistent:false},{headers:{'cache-control':'no-store'}})}}
-export async function PUT(request){try{const settings=clean(await request.json());await command(['SET',KEY,JSON.stringify(settings)]);return Response.json({ok:true,settings,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400,headers:{'cache-control':'no-store'}})}}
+export async function PUT(request){if(!isAdminRequest(request))return Response.json({error:'unauthorized'},{status:401});try{const settings=clean(await request.json());await command(['SET',KEY,JSON.stringify(settings)]);return Response.json({ok:true,settings,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400,headers:{'cache-control':'no-store'}})}}
