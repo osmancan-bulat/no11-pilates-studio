@@ -1,0 +1,32 @@
+/* Team edit modal only: keep the page theme unchanged and make the editor card visible above its backdrop. */
+.n11-v4 .n11-modal.open{
+  display:flex!important;
+  position:fixed!important;
+  inset:0!important;
+  z-index:10000!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:24px!important;
+  box-sizing:border-box!important;
+  background:rgba(18,14,20,.42)!important;
+}
+.n11-v4 .n11-modal.open .n11-modal-card{
+  display:block!important;
+  position:relative!important;
+  z-index:10001!important;
+  width:min(520px,calc(100vw - 32px))!important;
+  max-height:calc(100vh - 48px)!important;
+  overflow:auto!important;
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+  background:var(--n11-card)!important;
+  color:var(--n11-ink)!important;
+  border:1px solid var(--n11-line)!important;
+  border-radius:16px!important;
+  padding:28px!important;
+  box-sizing:border-box!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.28)!important;
+}
+.n11-v4 .n11-modal.open .n11-modal-fields{display:grid!important;gap:14px!important}
+.n11-v4 .n11-modal.open .n11-modal-fields label{display:grid!important;gap:7px!important;color:var(--n11-ink)!important}
