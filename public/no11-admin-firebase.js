@@ -75,6 +75,11 @@
 
   function loadPremium(){
     if(document.querySelector('script[data-no11-premium-loader]'))return;
+    var fix=document.createElement('script');
+    fix.src='/no11-team-edit-final-fix.js?v=20260914-1';
+    fix.defer=true;
+    fix.dataset.no11TeamEditFinalFix='1';
+    document.head.appendChild(fix);
     var script=document.createElement('script');
     script.src='/no11-admin-premium.js?v=31';
     script.defer=true;
