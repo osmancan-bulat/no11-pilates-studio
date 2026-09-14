@@ -20,6 +20,13 @@
     reportStyle.dataset.no11Reports = '1';
     document.head.appendChild(reportStyle);
   }
+  if (!document.querySelector('link[data-no11-reports-theme-fix]')) {
+    var reportThemeFix = document.createElement('link');
+    reportThemeFix.rel = 'stylesheet';
+    reportThemeFix.href = '/no11-reports-theme-fix.css?v=20260914-1';
+    reportThemeFix.dataset.no11ReportsThemeFix = '1';
+    document.head.appendChild(reportThemeFix);
+  }
   if (!document.querySelector('link[data-no11-reports-mobile-v2]')) {
     var mobileReportStyle = document.createElement('link');
     mobileReportStyle.rel = 'stylesheet';
