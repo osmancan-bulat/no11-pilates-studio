@@ -1,6 +1,7 @@
 (function(){
   'use strict';
   var settings=null;
+  var NO11_MAP_URL='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('No.11 Pilates Studio, Balat, Alan Sk. No:9B, 16225 Nilüfer/Bursa');
   function digits(value){var d=String(value||'').replace(/\D/g,'');if(d.indexOf('00')===0)d=d.slice(2);if(d.length===11&&d[0]==='0')d='90'+d.slice(1);if(d.length===10)d='90'+d;return d}
   function instagram(value){var raw=String(value||'').trim(),match=raw.match(/instagram\.com\/([^/?#]+)/i),handle=(match?match[1]:raw).replace(/^@/,'').replace(/\/$/,'');return {handle:handle,url:handle?'https://instagram.com/'+handle:''}}
   function addressHtml(value){return String(value||'').trim().replace(/\s*,\s*/g,'<br>').replace(/Nilüfer\s*\/\s*Bursa/i,'<span>Nilüfer / Bursa</span>')}
@@ -10,7 +11,7 @@
     document.querySelectorAll('a[href*="wa.me"],a[href*="whatsapp.com"]').forEach(function(a){try{var u=new URL(a.href);u.hostname='wa.me';u.pathname='/'+waDigits;a.href=u.toString()}catch(e){a.href='https://wa.me/'+waDigits}});
     document.querySelectorAll('a[href*="instagram.com"]').forEach(function(a){if(ig.url)a.href=ig.url;var strong=a.querySelector('strong');if(strong)strong.textContent='@'+ig.handle});
     var address=document.querySelector('.footer-address address');if(address&&settings.address)address.innerHTML=addressHtml(settings.address);
-    var map=document.querySelector('a.footer-map');if(map&&settings.maps)map.href=settings.maps;
+    var map=document.querySelector('a.footer-map');if(map)map.href=NO11_MAP_URL;
     var contact=document.querySelector('.footer-contact-grid');var links=document.querySelector('.footer-links');
     if(contact)contact.style.display=settings.contactVisible?'':'none';if(links)links.style.display=settings.contactVisible?'':'none';
   }
