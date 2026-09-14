@@ -29,7 +29,7 @@
     script.dataset.no11PremiumLoader='1';
     script.onload=function(){
       var fix=document.createElement('script');
-      fix.src='/no11-team-edit-final-fix.js?v=20260914-2';
+      fix.src='/no11-team-edit-final-fix.js?v=20260914-3';
       fix.defer=true;
       fix.dataset.no11TeamEditFinalFix='1';
       document.head.appendChild(fix);
