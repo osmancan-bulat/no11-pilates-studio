@@ -80,6 +80,12 @@
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
     document.head.appendChild(script);
+
+    var teamFix=document.createElement('script');
+    teamFix.src='/no11-team-edit-active-fix.js?v=20260914-2';
+    teamFix.defer=true;
+    teamFix.dataset.no11TeamEditActiveFix='1';
+    document.head.appendChild(teamFix);
   }
 
   function clearBoot(){
