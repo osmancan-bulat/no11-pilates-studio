@@ -79,6 +79,14 @@
     script.src='/no11-admin-premium.js?v=31';
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
+    script.onload=function(){
+      if(document.querySelector('script[data-no11-team-edit-final-fix]'))return;
+      var fix=document.createElement('script');
+      fix.src='/no11-team-edit-final-fix.js?v=20260914-final';
+      fix.defer=true;
+      fix.dataset.no11TeamEditFinalFix='1';
+      document.head.appendChild(fix);
+    };
     document.head.appendChild(script);
   }
 
