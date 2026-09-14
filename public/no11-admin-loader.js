@@ -53,7 +53,7 @@
   document.head.appendChild(script);
 
   var teamEditIsolation = document.createElement('script');
-  teamEditIsolation.src = '/no11-team-edit-isolation.js?v=20260914-1';
+  teamEditIsolation.src = '/no11-team-edit-isolation.js?v=20260914-2';
   teamEditIsolation.defer = true;
   document.head.appendChild(teamEditIsolation);
 
