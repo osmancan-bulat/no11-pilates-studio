@@ -1,0 +1,88 @@
+@media (min-width: 761px) and (max-width: 1100px) {
+  .n11-v4 .n11-main-content:has(.n11-settings-v4) {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .n11-v4 .n11-settings-v4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    grid-template-columns: 1fr !important;
+    overflow: hidden !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > aside {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    padding: 10px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--n11-line) !important;
+    scrollbar-width: none !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > aside::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > aside button {
+    width: auto !important;
+    min-width: max-content !important;
+    height: 42px !important;
+    padding: 0 16px !important;
+    border-radius: 9px !important;
+    border-left: 0 !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > aside button.active {
+    background: color-mix(in srgb, var(--n11-gold) 10%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--n11-gold) 45%, var(--n11-line)) !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > section {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 28px !important;
+    grid-template-columns: minmax(145px, 180px) minmax(0, 1fr) !important;
+    gap: 16px 22px !important;
+    align-items: center !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > section > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .n11-v4 .n11-settings-v4 input,
+  .n11-v4 .n11-settings-v4 textarea,
+  .n11-v4 .n11-settings-v4 select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (min-width: 1101px) {
+  .n11-v4 .n11-settings-v4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .n11-v4 .n11-settings-v4 > section {
+    min-width: 0 !important;
+  }
+
+  .n11-v4 .n11-settings-v4 input,
+  .n11-v4 .n11-settings-v4 textarea,
+  .n11-v4 .n11-settings-v4 select {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
