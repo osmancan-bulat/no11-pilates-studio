@@ -148,15 +148,39 @@ const mobileSafetyFix = `<style id="n11-mobile-safety-fix">
 }
 </style>`;
 
-const calendarThemeGuard = `<script id="n11-calendar-theme-guard">
+const calendarThemeGuard = `<script id="n11-theme-lock">
 (function(){
-  var KEY='no11-admin-theme',savedTheme=null,savedDark=null;
-  function isCalendarTarget(target){return !!(target&&target.closest&&target.closest('.n11-calendar,.n11-date-field,.n11-date-switch'))}
-  function remember(){var main=document.querySelector('main.n11-v4');savedTheme=localStorage.getItem(KEY);savedDark=main?main.classList.contains('n11-dark'):null}
-  function restore(){var main=document.querySelector('main.n11-v4');if(savedTheme===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,savedTheme);if(main&&savedDark!==null)main.classList.toggle('n11-dark',savedDark)}
-  document.addEventListener('pointerdown',function(e){if(isCalendarTarget(e.target))remember()},true);
-  document.addEventListener('click',function(e){if(isCalendarTarget(e.target))setTimeout(restore,0)},true);
-  document.addEventListener('change',function(e){if(isCalendarTarget(e.target))setTimeout(restore,0)},true);
+  var KEY='no11-admin-theme';
+  var nativeSet=Storage.prototype.setItem;
+  var lockedMode=localStorage.getItem(KEY)==='dark'?'dark':'light';
+  var themeGesture=false;
+  function isThemeButton(target){return !!(target&&target.closest&&target.closest('.n11-theme'))}
+  function enforce(){
+    var main=document.querySelector('main.n11-v4');
+    if(main)main.classList.toggle('n11-dark',lockedMode==='dark');
+  }
+  Storage.prototype.setItem=function(key,value){
+    if(String(key)===KEY){
+      if(!themeGesture)return;
+      lockedMode=String(value)==='dark'?'dark':'light';
+    }
+    return nativeSet.apply(this,arguments);
+  };
+  document.addEventListener('pointerdown',function(event){
+    themeGesture=isThemeButton(event.target);
+  },true);
+  document.addEventListener('click',function(event){
+    if(!isThemeButton(event.target)){
+      themeGesture=false;
+      setTimeout(enforce,0);
+      setTimeout(enforce,50);
+      setTimeout(enforce,200);
+      return;
+    }
+    setTimeout(function(){themeGesture=false;enforce()},0);
+  },true);
+  new MutationObserver(enforce).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enforce);else enforce();
 })();
 </script>`;
 
@@ -198,7 +222,7 @@ async function proxy(request, context) {
 
     html = html.replace(
       '</head>',
-      `<script>window.__NO11_EXACT_ADMIN__=true</script><script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var link=event.target.closest&&event.target.closest('a.n11-site-return,a.n11-side-logo');if(!link)return;event.preventDefault();event.stopImmediatePropagation();location.assign('/api/no11-admin-logout')},true)</script><script src="${incoming.origin}/no11-admin-live-sync.js?v=15" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=9" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260915-6" defer></script><script src="${incoming.origin}/no11-mobile-program-sync.js?v=2" defer></script></head>`,
+      `${calendarThemeGuard}<script>window.__NO11_EXACT_ADMIN__=true</script><script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var link=event.target.closest&&event.target.closest('a.n11-site-return,a.n11-side-logo');if(!link)return;event.preventDefault();event.stopImmediatePropagation();location.assign('/api/no11-admin-logout')},true)</script><script src="${incoming.origin}/no11-admin-live-sync.js?v=15" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=9" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260915-7" defer></script><script src="${incoming.origin}/no11-mobile-program-sync.js?v=2" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
