@@ -408,7 +408,17 @@
   function selectedProgramDate(){
     var active=document.querySelector('.n11-calendar [data-program-day].active');
     var key=active&&active.dataset.programDay;
-    return /^\d{4}-\d{2}-\d{2}$/.test(String(key||''))?key:'';
+    if(/^\d{4}-\d{2}-\d{2}$/.test(String(key||'')))return key;
+    var switcher=document.querySelector('.n11-date-switch');
+    var text=String(switcher&&switcher.textContent||'').replace(/\s+/g,' ').trim();
+    var match=text.match(/(\d{1,2})\s+(Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık)(?:\s+(\d{4}))?/i);
+    if(!match)return '';
+    var monthIndex=months.map(function(x){return x.toLocaleLowerCase('tr-TR')}).indexOf(match[2].toLocaleLowerCase('tr-TR'));
+    if(monthIndex<0)return '';
+    var calendarTitle=document.querySelector('.n11-calendar header h2');
+    var yearMatch=String(calendarTitle&&calendarTitle.textContent||'').match(/\b(20\d{2})\b/);
+    var year=Number(match[3]||(yearMatch&&yearMatch[1])||new Date().getFullYear());
+    return year+'-'+String(monthIndex+1).padStart(2,'0')+'-'+String(Number(match[1])).padStart(2,'0');
   }
 
   function scheduleForDate(dateKey){
