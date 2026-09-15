@@ -193,11 +193,12 @@ async function proxy(request, context) {
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
+      .replaceAll('/no11-admin-firebase.js?v=2', '/no11-admin-firebase.js?v=3')
       .replaceAll('href="/"', 'href="/api/no11-admin-logout"');
 
     html = html.replace(
       '</head>',
-      `<script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var link=event.target.closest&&event.target.closest('a.n11-site-return,a.n11-side-logo');if(!link)return;event.preventDefault();event.stopImmediatePropagation();location.assign('/api/no11-admin-logout')},true)</script><script src="${incoming.origin}/no11-admin-live-sync.js?v=15" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=9" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260915-4" defer></script><script src="${incoming.origin}/no11-mobile-program-sync.js?v=2" defer></script></head>`,
+      `<script>window.__NO11_EXACT_ADMIN__=true</script><script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var link=event.target.closest&&event.target.closest('a.n11-site-return,a.n11-side-logo');if(!link)return;event.preventDefault();event.stopImmediatePropagation();location.assign('/api/no11-admin-logout')},true)</script><script src="${incoming.origin}/no11-admin-live-sync.js?v=15" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=9" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260915-5" defer></script><script src="${incoming.origin}/no11-mobile-program-sync.js?v=2" defer></script></head>`,
     );
     responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
     return new Response(html, { status: upstream.status, headers: responseHeaders });
