@@ -95,3 +95,31 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 .n11-v4 .n11-appointments-layout{grid-template-columns:minmax(0,1fr) 210px;gap:18px}.n11-v4 .n11-appointments{padding:26px 26px 10px}.n11-v4 .n11-appt-row{grid-template-columns:8px 62px 130px minmax(105px,1fr) 88px 28px 82px 80px 80px 46px;gap:8px;min-height:77px}.n11-v4 .n11-appt-row time{font-size:15px}.n11-v4 .n11-appt-row>b{font-size:14px}.n11-v4 .n11-appt-service{font-size:13px}.n11-v4 .n11-appt-row button,.n11-v4 .n11-appt-row>a{height:42px;padding:0 7px;font-size:12px}.n11-v4 .n11-appt-summary{min-height:700px;padding:26px 22px}.n11-v4 .n11-appt-summary>div{padding:30px 0}.n11-v4 .n11-appt-summary i{width:56px;height:56px}.n11-v4 .n11-appt-summary b{font-size:26px}
 @media(max-width:1250px){.n11-v4 .n11-main-side{width:220px}.n11-v4 .n11-main-content{margin-left:220px}}
 @media(max-width:760px){.n11-v4 .n11-main-side{width:min(84vw,315px)}.n11-v4 .n11-main-content{margin-left:0}}
+
+/* Desktop appointments — unified premium cards (mobile intentionally unchanged). */
+@media(min-width:901px){
+  .n11-v4 .n11-appt-list{display:grid;gap:14px}
+  .n11-v4 .n11-appt-row{min-height:112px;padding:12px 16px;border:1px solid #e9e3df;border-radius:14px;background:linear-gradient(90deg,#fff 0%,#fff 42%,#fffafa 100%);box-shadow:0 7px 24px rgba(47,34,45,.045);grid-template-columns:10px 76px minmax(135px,1.05fr) minmax(135px,1.2fr) auto auto auto auto;gap:12px;overflow:hidden!important}
+  .n11-v4 .n11-appt-row:has(.n11-status.confirmed){background:linear-gradient(90deg,#fff 0%,#fff 50%,#f5faf6 100%);grid-template-columns:10px 76px minmax(145px,1.05fr) minmax(145px,1.2fr) minmax(420px,.95fr)}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime{align-self:stretch;min-width:70px;padding:11px 10px;border-radius:12px;background:#fff0f1;place-content:center;text-align:center}
+  .n11-v4 .n11-appt-row:has(.n11-status.confirmed)>time.n11-appt-datetime{background:#eef6f0}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font-size:12px!important;color:#8f2435!important}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime>small{margin-top:4px;font-size:22px!important;color:#8f182d!important}
+  .n11-v4 .n11-appt-row:has(.n11-status.confirmed)>time.n11-appt-datetime>span,.n11-v4 .n11-appt-row:has(.n11-status.confirmed)>time.n11-appt-datetime>small{color:#23643d!important}
+  .n11-v4 .n11-appt-row>b{font:400 21px/1.2 Georgia,serif;align-self:center}
+  .n11-v4 .n11-appt-service{font:14px/1.35 Arial,sans-serif;color:#746d76;align-self:center}
+  .n11-v4 .n11-appt-row>.n11-note-icon,.n11-v4 .n11-appt-row>.n11-dash{display:none!important}
+  .n11-v4 .n11-appt-row>.n11-status{height:44px;padding:0 16px;border-radius:22px;display:flex;align-items:center;justify-content:center;white-space:nowrap;font:600 13px Arial,sans-serif}
+  .n11-v4 .n11-appt-row>.n11-status.pending{color:#971f35;background:#fbeaec;border:1px solid #f3d6db}
+  .n11-v4 .n11-appt-row>.n11-status.confirmed{grid-column:5;grid-row:1;align-self:stretch;justify-self:stretch;height:auto;padding:0 330px 0 25px;border:1px solid #e1ece3;border-radius:999px;background:#eff6f0;color:#256440;font:600 15px Georgia,serif;justify-content:flex-start;position:relative}
+  .n11-v4 .n11-appt-row>.n11-status.confirmed:before{content:'✓';display:grid;place-items:center;width:30px;height:30px;margin-right:10px;border-radius:50%;background:#2ca45b;color:#fff;font:700 17px Arial,sans-serif}
+  .n11-v4 .n11-appt-row>button[data-detail]{min-width:104px;border-color:#e3dcd7;background:#fffdfb;color:#241d26;font:600 13px Arial,sans-serif}
+  .n11-v4 .n11-appt-row>button[data-detail]:first-letter{font-size:0}
+  .n11-v4 .n11-appt-row>.n11-approve{min-width:106px!important;border-color:#8f182d!important;background:#8f182d!important;color:#fff!important;font-weight:600!important}
+  .n11-v4 .n11-appt-row>.danger{min-width:100px!important;background:#fffafa!important;color:#a0283b!important}
+  .n11-v4 .n11-appt-row>.n11-whatsapp{min-width:132px;height:46px!important;padding:0 16px!important;border:0!important;border-radius:10px!important;background:#1fa855!important;color:#fff!important;font-size:0!important;font-weight:700!important;gap:9px}
+  .n11-v4 .n11-appt-row>.n11-whatsapp:before{content:'';display:block;width:22px;height:22px;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='white' d='M16 3a13 13 0 0 0-11.3 19.4L3 29l6.8-1.8A13 13 0 1 0 16 3Zm0 23.7a10.7 10.7 0 0 1-5.5-1.5l-.4-.2-4 .9 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7Zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-2.6-1.6 9.7 9.7 0 0 1-1.8-2.2c-.2-.3 0-.5.1-.7l.5-.6.3-.6c.1-.2 0-.5 0-.7l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.9 1.3 3.4 1.5 3.6a13.2 13.2 0 0 0 5 4.5c1.9.8 2.6.9 3.5.8 1.1-.2 1.9-.9 2.2-1.7.3-.8.3-1.4.2-1.6 0-.1-.3-.2-.6-.4Z'/%3E%3C/svg%3E")}
+  .n11-v4 .n11-appt-row>.n11-whatsapp:after{content:'WhatsApp';font:700 13px Arial,sans-serif}
+  .n11-v4 .n11-appt-row:has(.n11-status.confirmed)>button[data-detail]{grid-column:5;grid-row:1;z-index:2;justify-self:end;width:112px;margin-right:151px;border:0;border-left:1px solid #d6e3d9;border-right:1px solid #d6e3d9;border-radius:0;background:transparent}
+  .n11-v4 .n11-appt-row:has(.n11-status.confirmed)>.n11-whatsapp{grid-column:5;grid-row:1;z-index:2;justify-self:end;width:140px;margin-right:8px;border-radius:23px!important}
+}
