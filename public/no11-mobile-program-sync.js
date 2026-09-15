@@ -25,26 +25,24 @@
   function render(){
     if(rendering||!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches))return;
     var title=document.querySelector('.n11-program-head h1');
-    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
-    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline)return;
+    var list=document.querySelector('.n11-program-mobile .n11-mobile-slot-list');
+    if(!title||title.textContent.trim()!=='Günlük Program'||!list)return;
     var key=dateKey();if(!key)return;
     var data=source(),date=new Date(key+'T12:00:00'),day=data.hours[(date.getDay()+6)%7],closed=!!(day&&day.closed);
     var slots=closed?[]:data.slots.filter(function(x){return !day||!day.open||!day.close||(x>=day.open&&x<day.close)});
     var appointments=read('no11-appointments').filter(function(x){return String(x&&x.date||'')===key&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(x&&x.time||''))}).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
     appointments.forEach(function(x){if(slots.indexOf(String(x.time))<0)slots.push(String(x.time))});slots.sort();
     var signature=key+'|'+closed+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
-    if(timeline.dataset.mobileProgramSync===signature&&timeline.querySelector(closed?'.n11-mobile-closed':'.n11-mobile-schedule-list'))return;
+    if(list.dataset.mobileProgramSync===signature&&list.querySelector('[data-mobile-program-row]'))return;
     rendering=true;
-    timeline.dataset.mobileProgramSync=signature;
-    timeline.classList.remove('n11-schedule-timeline');timeline.classList.add('n11-mobile-schedule');
-    var head='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div>'+(closed?'':'<small>Karta dokunarak detayı açın</small>')+'</header>';
-    if(closed){timeline.innerHTML=head+'<div class="n11-mobile-closed"><span class="n11-mobile-closed-icon">!</span><h3>Stüdyomuz kapalı</h3><p>Pazar günü hizmet vermiyoruz.</p></div>';rendering=false;return}
+    list.dataset.mobileProgramSync=signature;
+    if(closed){list.innerHTML='<div data-mobile-program-row style="padding:42px 18px;text-align:center"><strong style="display:block;font:26px Georgia,serif">Stüdyomuz kapalı</strong><small style="display:block;margin-top:8px;color:var(--n11-muted)">Pazar günü hizmet vermiyoruz.</small></div>';rendering=false;return}
     function row(slot){
       var found=appointments.filter(function(x){return String(x.time)===slot});
-      if(!found.length)return '<div class="n11-mobile-schedule-row"><time>'+esc(slot)+'</time><i class="n11-mobile-schedule-dot"></i><div class="n11-mobile-schedule-copy"><b>Müsait</b><small>Randevu bulunmuyor</small></div><em class="n11-mobile-schedule-status">Boş</em></div>';
-      return found.map(function(x){var state=String(x.status||'pending').toLowerCase();return '<article class="n11-mobile-schedule-row" data-n11-program-id="'+esc(x.id)+'"><time>'+esc(slot)+'</time><i class="n11-mobile-schedule-dot '+esc(state)+'"></i><div class="n11-mobile-schedule-copy"><b>'+esc(x.name||'İsimsiz')+'</b><small>'+esc(x.service||x.lesson||'Pilates')+'</small></div><em class="n11-mobile-schedule-status '+esc(state)+'">'+status(state)+'</em></article>'}).join('');
+      if(!found.length)return '<div class="n11-mobile-slot is-free" data-mobile-program-row><time>'+esc(slot)+'</time><i></i><div><b>Müsait</b><small>Randevu bulunmuyor</small></div><span>Boş</span></div>';
+      return found.map(function(x){var state=String(x.status||'pending').toLowerCase();return '<button type="button" class="n11-mobile-slot is-booked" data-mobile-program-row data-id="'+esc(x.id)+'" data-n11-program-id="'+esc(x.id)+'"><time>'+esc(slot)+'</time><i class="'+esc(state)+'"></i><div><b>'+esc(x.name||'İsimsiz')+'</b><small>'+esc(x.service||x.lesson||'Pilates')+'</small></div><span class="n11-status '+esc(state)+'">'+status(state)+'</span><em>›</em></button>'}).join('');
     }
-    timeline.innerHTML=head+'<div class="n11-mobile-schedule-list">'+slots.map(row).join('')+'</div>';
+    list.innerHTML=slots.map(row).join('');
     rendering=false;
   }
   function loadSchedule(){fetch('/api/no11-schedule?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(data){schedule=data;render()}).catch(function(){render()})}
