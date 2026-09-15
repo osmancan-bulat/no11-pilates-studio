@@ -9,8 +9,7 @@
 
   function isMobile(){return window.matchMedia&&window.matchMedia(MOBILE).matches}
   function main(){return document.querySelector('main.n11-v4')}
-  function isDashboard(){var el=main();return !!(el&&el.querySelector('.n11-dashboard-summary'))}
-  function allowedTarget(target){return !!(!isMobile()&&isDashboard()&&target&&target.closest&&target.closest('.n11-theme'))}
+  function allowedTarget(target){return !!(!isMobile()&&target&&target.closest&&target.closest('.n11-theme'))}
   function authorize(){authorizedUntil=Date.now()+250}
   function authorized(){return isMobile()||Date.now()<=authorizedUntil}
   function storedDark(){return localStorage.getItem(KEY)==='dark'}
