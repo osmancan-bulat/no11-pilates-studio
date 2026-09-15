@@ -89,3 +89,34 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 /* A closed theme menu must never cover or intercept page controls. */
 .n11-v4 .n11-theme-menu{visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 .n11-v4 .n11-theme-wrap.open .n11-theme-menu{visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+
+/* NO11 desktop appointment cards — approved 2026-09-15 */
+.n11-v4 .n11-desktop-appt-actions{display:none}
+@media(min-width:901px){
+  .n11-v4 .n11-appt-list{display:grid!important;gap:12px!important}
+  .n11-v4 .n11-appt-row,.n11-v4 .n11-appt-row:has(.n11-status.confirmed){display:grid!important;grid-template-columns:88px minmax(250px,1fr) minmax(390px,550px)!important;gap:22px!important;align-items:center!important;min-height:92px!important;padding:8px 14px!important;border:1px solid #e8e1dc!important;border-radius:13px!important;background:#fff!important;box-shadow:0 6px 20px rgba(47,34,45,.04)!important;overflow:visible!important}
+  .n11-v4 .n11-appt-row:after,.n11-v4 .n11-appt-row>.n11-dot,.n11-v4 .n11-appt-row>.n11-status,.n11-v4 .n11-appt-row>.n11-note-icon,.n11-v4 .n11-appt-row>.n11-dash,.n11-v4 .n11-appt-row>button,.n11-v4 .n11-appt-row>a{display:none!important}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime{grid-column:1!important;grid-row:1!important;display:grid!important;place-content:center!important;width:78px!important;height:74px!important;padding:5px!important;border:0!important;border-radius:10px!important;background:#fff0f1!important;text-align:center!important}
+  .n11-v4 .n11-appt-row:has(.n11-desktop-appt-actions.confirmed)>time.n11-appt-datetime{background:#eef6f0!important}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 10px/1.05 Georgia,serif!important;color:#8f2435!important}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime>small{margin:3px 0 0!important;font:400 19px/1 Georgia,serif!important;color:#8f182d!important}
+  .n11-v4 .n11-appt-row>time.n11-appt-datetime>em{font:400 9px/1.1 Georgia,serif!important;color:#9c4a58!important;font-style:normal!important}
+  .n11-v4 .n11-appt-row:has(.n11-desktop-appt-actions.confirmed)>time.n11-appt-datetime>*{color:#276843!important}
+  .n11-v4 .n11-appt-person{grid-column:2!important;grid-row:1!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:4px!important;min-width:0!important}
+  .n11-v4 .n11-appt-person>b{font:400 18px/1.15 Georgia,serif!important;color:var(--n11-ink)!important;white-space:nowrap!important}
+  .n11-v4 .n11-appt-person>.n11-appt-service{font:12px/1.25 Arial,sans-serif!important;color:#756e77!important;white-space:nowrap!important}
+  .n11-v4 .n11-desktop-appt-actions{grid-column:3!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:8px!important;justify-self:end!important;min-width:0!important}
+  .n11-v4 .n11-desktop-appt-actions.confirmed{width:390px!important;height:56px!important;padding:7px!important;box-sizing:border-box!important;border:1px solid #e1ece3!important;border-radius:999px!important;background:#eff6f0!important}
+  .n11-v4 .n11-desktop-appt-actions.pending{width:550px!important;padding:6px!important;border-radius:12px!important;background:#fff7f7!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-status{display:flex!important;align-items:center!important;justify-content:center!important;min-width:122px!important;height:40px!important;padding:0 10px!important;border:0!important;border-radius:20px!important;background:transparent!important;font:400 12px/1 Georgia,serif!important;white-space:nowrap!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-status.confirmed{color:#256440!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-status.confirmed:before{content:'✓';display:grid;place-items:center;width:24px;height:24px;margin-right:8px;border-radius:50%;background:#29a65a;color:#fff;font:700 13px Arial,sans-serif}
+  .n11-v4 .n11-desktop-appt-actions>.n11-status.pending{width:126px!important;min-width:126px!important;color:#971f35!important;background:#fbeaec!important;border:1px solid #f1d6da!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-status.pending:before{content:'◷';margin-right:7px;font:700 18px/1 Arial,sans-serif}
+  .n11-v4 .n11-desktop-appt-actions>button,.n11-v4 .n11-desktop-appt-actions>a{display:flex!important;align-items:center!important;justify-content:center!important;height:40px!important;padding:0 12px!important;box-sizing:border-box!important;border:1px solid #e4ddd8!important;border-radius:8px!important;background:#fffdfa!important;color:#211b23!important;text-decoration:none!important;font:400 12px/1 Arial,sans-serif!important;white-space:nowrap!important}
+  .n11-v4 .n11-desktop-appt-actions.confirmed>button[data-detail]{width:92px!important;border-top:0!important;border-bottom:0!important;border-radius:0!important;background:transparent!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-approve{width:96px!important;background:#8f182d!important;border-color:#8f182d!important;color:#fff!important;font-weight:600!important}
+  .n11-v4 .n11-desktop-appt-actions>.danger{width:88px!important;background:#fffafa!important;border-color:#e5bfc5!important;color:#a0283b!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-whatsapp{width:112px!important;padding:0 10px!important;border:0!important;border-radius:20px!important;background:#1fa855!important;color:#fff!important;font:600 12px/1 Arial,sans-serif!important;gap:7px!important}
+  .n11-v4 .n11-desktop-appt-actions>.n11-whatsapp:before{content:'◉';font-size:17px;color:#fff}
+}
