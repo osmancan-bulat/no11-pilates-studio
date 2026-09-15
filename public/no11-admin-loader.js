@@ -61,7 +61,7 @@
   }
 
   var themeAuthority = document.createElement('script');
-  themeAuthority.src = '/no11-theme-authority.js?v=20260915-5';
+  themeAuthority.src = '/no11-theme-authority.js?v=20260915-6';
   themeAuthority.defer = true;
   document.head.appendChild(themeAuthority);
 
