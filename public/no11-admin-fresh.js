@@ -314,6 +314,32 @@
   function enhanceAppointmentMenus(){
     var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
     if(!mobile){
+      if(window.matchMedia&&window.matchMedia('(min-width:901px)').matches){
+        document.querySelectorAll('.n11-appt-row').forEach(function(row){
+          if(row.querySelector(':scope>.n11-desktop-appt-actions'))return;
+          var status=row.querySelector(':scope>.n11-status');
+          var name=row.querySelector(':scope>b');
+          var service=row.querySelector(':scope>.n11-appt-service');
+          var actions=Array.from(row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp'));
+          if(!status||!actions.length)return;
+          if(name&&service){
+            var person=document.createElement('div');
+            person.className='n11-appt-person';
+            row.insertBefore(person,status);
+            person.appendChild(name);
+            person.appendChild(service);
+          }
+          var wrap=document.createElement('div');
+          wrap.className='n11-desktop-appt-actions '+(status.classList.contains('confirmed')?'confirmed':'pending');
+          wrap.appendChild(status);
+          actions.forEach(function(action){
+            if(action.matches('a.n11-whatsapp'))action.textContent='WhatsApp';
+            wrap.appendChild(action);
+          });
+          row.querySelectorAll(':scope>.n11-note-icon,:scope>.n11-dash').forEach(function(node){node.remove()});
+          row.appendChild(wrap);
+        });
+      }
       document.querySelectorAll('.n11-appt-menu').forEach(function(menu){
         var row=menu.closest('.n11-appt-row');
         var panel=menu.querySelector('.n11-appt-menu-panel');
