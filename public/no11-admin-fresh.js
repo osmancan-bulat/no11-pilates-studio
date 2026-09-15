@@ -317,8 +317,17 @@
       document.querySelectorAll('.n11-appt-row').forEach(function(row){
         if(row.querySelector(':scope>.n11-desktop-appt-actions'))return;
         var status=row.querySelector(':scope>.n11-status');
+        var name=row.querySelector(':scope>b');
+        var service=row.querySelector(':scope>.n11-appt-service');
         var actions=Array.from(row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp'));
         if(!status||!actions.length)return;
+        if(name&&service){
+          var person=document.createElement('div');
+          person.className='n11-appt-person';
+          row.insertBefore(person,status);
+          person.appendChild(name);
+          person.appendChild(service);
+        }
         var wrap=document.createElement('div');
         wrap.className='n11-desktop-appt-actions '+(status.classList.contains('confirmed')?'confirmed':'pending');
         wrap.appendChild(status);
@@ -335,7 +344,7 @@
           var demo=source.cloneNode(true),demoActions=demo.querySelector(':scope>.n11-desktop-appt-actions'),demoStatus=demoActions&&demoActions.querySelector('.n11-status');
           if(demoActions&&demoStatus){
             demo.removeAttribute('data-id');
-            var demoTime=demo.querySelector(':scope>time'),demoName=demo.querySelector(':scope>b'),demoService=demo.querySelector(':scope>.n11-appt-service');
+            var demoTime=demo.querySelector(':scope>time'),demoName=demo.querySelector('.n11-appt-person>b'),demoService=demo.querySelector('.n11-appt-person>.n11-appt-service');
             if(demoTime)demoTime.innerHTML='<span>10 Eyl</span><small>12:00</small><em>Salı</em>';
             if(demoName)demoName.textContent='Can';
             if(demoService)demoService.textContent='Omurga Odaklı Pilates';
