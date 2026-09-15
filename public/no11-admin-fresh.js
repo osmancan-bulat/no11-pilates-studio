@@ -335,6 +335,10 @@
           var demo=source.cloneNode(true),demoActions=demo.querySelector(':scope>.n11-desktop-appt-actions'),demoStatus=demoActions&&demoActions.querySelector('.n11-status');
           if(demoActions&&demoStatus){
             demo.removeAttribute('data-id');
+            var demoTime=demo.querySelector(':scope>time'),demoName=demo.querySelector(':scope>b'),demoService=demo.querySelector(':scope>.n11-appt-service');
+            if(demoTime)demoTime.innerHTML='<span>10 Eyl</span><small>12:00</small><em>Salı</em>';
+            if(demoName)demoName.textContent='Can';
+            if(demoService)demoService.textContent='Omurga Odaklı Pilates';
             demoActions.className='n11-desktop-appt-actions pending';
             demoStatus.className='n11-status pending';
             demoStatus.textContent='Onay Bekliyor';
