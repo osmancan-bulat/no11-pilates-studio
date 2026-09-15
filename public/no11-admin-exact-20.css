@@ -86,3 +86,6 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 .n11-v4 .n11-appointments-layout{grid-template-columns:minmax(0,1fr) 210px;gap:18px}.n11-v4 .n11-appointments{padding:26px 26px 10px}.n11-v4 .n11-appt-row{grid-template-columns:8px 62px 130px minmax(105px,1fr) 88px 28px 82px 80px 80px 46px;gap:8px;min-height:77px}.n11-v4 .n11-appt-row time{font-size:15px}.n11-v4 .n11-appt-row>b{font-size:14px}.n11-v4 .n11-appt-service{font-size:13px}.n11-v4 .n11-appt-row button,.n11-v4 .n11-appt-row>a{height:42px;padding:0 7px;font-size:12px}.n11-v4 .n11-appt-summary{min-height:700px;padding:26px 22px}.n11-v4 .n11-appt-summary>div{padding:30px 0}.n11-v4 .n11-appt-summary i{width:56px;height:56px}.n11-v4 .n11-appt-summary b{font-size:26px}
 @media(max-width:1250px){.n11-v4 .n11-main-side{width:220px}.n11-v4 .n11-main-content{margin-left:220px}}
 @media(max-width:760px){.n11-v4 .n11-main-side{width:min(84vw,315px)}.n11-v4 .n11-main-content{margin-left:0}}
+/* A closed theme menu must never cover or intercept page controls. */
+.n11-v4 .n11-theme-menu{visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+.n11-v4 .n11-theme-wrap.open .n11-theme-menu{visibility:visible!important;opacity:1!important;pointer-events:auto!important}

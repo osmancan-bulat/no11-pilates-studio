@@ -2,7 +2,7 @@
   if (!document.querySelector('link[data-no11-premium]')) {
     var style = document.createElement('link');
     style.rel = 'stylesheet';
-    style.href = '/no11-admin-exact-20.css';
+    style.href = '/no11-admin-exact-20.css?v=20260915-3';
     style.dataset.no11Premium = '1';
     document.head.appendChild(style);
   }
@@ -46,11 +46,6 @@
     if(appointments&&appointments.nextSibling)nav.insertBefore(btn,appointments.nextSibling);
     else nav.appendChild(btn);
   }
-
-  var script = document.createElement('script');
-  script.src = '/no11-admin-exact-20.js';
-  script.defer = true;
-  document.head.appendChild(script);
 
   var settingsClean = document.createElement('script');
   settingsClean.src = '/no11-settings-desktop-clean.js?v=20260914-1';
