@@ -1,4 +1,15 @@
 (function(){
+  // The admin HTML comes from an older proxied build. React delegates click
+  // events to its root container, so keeping that same root alive also keeps
+  // the old theme click behavior alive after our exact UI replaces the page.
+  // Clone the root once before mounting the exact admin: markup stays intact,
+  // but event listeners owned by the upstream root are discarded.
+  var upstreamRoot = document.getElementById('__next');
+  if (upstreamRoot && upstreamRoot.parentNode) {
+    var cleanRoot = upstreamRoot.cloneNode(true);
+    upstreamRoot.parentNode.replaceChild(cleanRoot, upstreamRoot);
+  }
+
   if (!document.querySelector('link[data-no11-premium]')) {
     var style = document.createElement('link');
     style.rel = 'stylesheet';
@@ -48,7 +59,7 @@
   }
 
   var themeAuthority = document.createElement('script');
-  themeAuthority.src = '/no11-theme-authority.js?v=20260915-4';
+  themeAuthority.src = '/no11-theme-authority.js?v=20260915-5';
   themeAuthority.defer = true;
   document.head.appendChild(themeAuthority);
 
