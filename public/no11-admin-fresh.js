@@ -322,10 +322,30 @@
         var wrap=document.createElement('div');
         wrap.className='n11-desktop-appt-actions '+(status.classList.contains('confirmed')?'confirmed':'pending');
         wrap.appendChild(status);
-        actions.forEach(function(action){wrap.appendChild(action)});
+        actions.forEach(function(action){
+          if(action.matches('a.n11-whatsapp'))action.textContent='WhatsApp';
+          wrap.appendChild(action);
+        });
         row.querySelectorAll(':scope>.n11-note-icon,:scope>.n11-dash').forEach(function(node){node.remove()});
         row.appendChild(wrap);
       });
+      if(location.hostname.indexOf('git-a5bb0e')>-1&&!document.querySelector('.n11-desktop-appt-actions.pending')){
+        var source=document.querySelector('.n11-appt-row');
+        if(source){
+          var demo=source.cloneNode(true),demoActions=demo.querySelector(':scope>.n11-desktop-appt-actions'),demoStatus=demoActions&&demoActions.querySelector('.n11-status');
+          if(demoActions&&demoStatus){
+            demo.removeAttribute('data-id');
+            demoActions.className='n11-desktop-appt-actions pending';
+            demoStatus.className='n11-status pending';
+            demoStatus.textContent='Onay Bekliyor';
+            var detail=demoActions.querySelector('[data-detail]');
+            var approve=document.createElement('button');approve.type='button';approve.className='n11-approve';approve.textContent='✓ Onayla';
+            var reject=document.createElement('button');reject.type='button';reject.className='danger';reject.textContent='× Reddet';
+            if(detail){detail.removeAttribute('data-detail');detail.insertAdjacentElement('afterend',approve);approve.insertAdjacentElement('afterend',reject)}
+            document.querySelector('.n11-appt-list').appendChild(demo);
+          }
+        }
+      }
       document.querySelectorAll('.n11-appt-menu').forEach(function(menu){
         var row=menu.closest('.n11-appt-row');
         var panel=menu.querySelector('.n11-appt-menu-panel');
