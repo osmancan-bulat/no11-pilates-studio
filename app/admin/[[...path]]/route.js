@@ -214,7 +214,6 @@ async function proxy(request, context) {
 
   if ((upstream.headers.get('content-type') || '').includes('text/html')) {
     let html = await upstream.text();
-    html = html.replace(/<script[^>]+src=["'][^"']*\/no11-admin-premium\.js[^"']*["'][^>]*><\/script>/gi, '');
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
