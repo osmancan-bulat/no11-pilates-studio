@@ -48,7 +48,7 @@
   }
 
   var script = document.createElement('script');
-  script.src = '/no11-admin-exact-20.js?v=20260915-4';
+  script.src = '/no11-admin-exact-20.js?v=20260915-5';
   script.defer = true;
   document.head.appendChild(script);
 
