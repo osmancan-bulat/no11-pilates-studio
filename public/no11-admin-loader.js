@@ -1,17 +1,4 @@
 (function(){
-  // The admin HTML comes from an older proxied build. Replace its React root so
-  // root-owned listeners are discarded, then fence bubbling clicks at the new
-  // root. Target/button handlers still run normally; stale document-level
-  // bubble handlers from the proxied build can no longer react to admin clicks.
-  var upstreamRoot = document.getElementById('__next');
-  if (upstreamRoot && upstreamRoot.parentNode) {
-    var cleanRoot = upstreamRoot.cloneNode(true);
-    cleanRoot.addEventListener('click', function(event){
-      event.stopPropagation();
-    }, false);
-    upstreamRoot.parentNode.replaceChild(cleanRoot, upstreamRoot);
-  }
-
   if (!document.querySelector('link[data-no11-premium]')) {
     var style = document.createElement('link');
     style.rel = 'stylesheet';
@@ -60,16 +47,6 @@
     else nav.appendChild(btn);
   }
 
-  var themeAuthority = document.createElement('script');
-  themeAuthority.src = '/no11-theme-authority.js?v=20260915-6';
-  themeAuthority.defer = true;
-  document.head.appendChild(themeAuthority);
-
-  var script = document.createElement('script');
-  script.src = '/no11-admin-exact-20.js?v=20260915-5';
-  script.defer = true;
-  document.head.appendChild(script);
-
   var settingsClean = document.createElement('script');
   settingsClean.src = '/no11-settings-desktop-clean.js?v=20260914-1';
   settingsClean.defer = true;
@@ -94,6 +71,11 @@
   reportsStability.src = '/no11-admin-reports-stability.js?v=20260910-1';
   reportsStability.defer = true;
   document.head.appendChild(reportsStability);
+
+  var teamEditThemeGuard = document.createElement('script');
+  teamEditThemeGuard.src = '/no11-team-edit-theme-guard.js?v=20260914-1';
+  teamEditThemeGuard.defer = true;
+  document.head.appendChild(teamEditThemeGuard);
 
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
