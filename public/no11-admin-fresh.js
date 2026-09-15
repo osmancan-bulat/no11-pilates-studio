@@ -480,7 +480,8 @@
     var day=hours[(date.getDay()+6)%7];
     var isClosed=!!(day&&day.closed);
     var signature='mobile|'+dateKey+'|'+String(isClosed)+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
-    if(timeline.dataset.n11ScheduleSignature===signature)return;
+    var expectedContent=isClosed?timeline.querySelector('.n11-mobile-closed'):timeline.querySelector('.n11-mobile-schedule-list');
+    if(timeline.dataset.n11ScheduleSignature===signature&&expectedContent)return;
     timeline.dataset.n11ScheduleSignature=signature;
     timeline.classList.remove('n11-schedule-timeline');
     timeline.classList.add('n11-mobile-schedule');
