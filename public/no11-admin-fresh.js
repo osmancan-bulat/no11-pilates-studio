@@ -374,14 +374,14 @@
       });
       if(!item)return;
       used[String(item.id)]=true;
-      var dateText='Tarih yok';
+      var dateText='Tarih yok',weekdayText='';
       var match=String(item.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-      if(match)dateText=Number(match[3])+' '+months[Number(match[2])-1].slice(0,3);
+      if(match){dateText=Number(match[3])+' '+months[Number(match[2])-1].slice(0,3);weekdayText=new Date(Number(match[1]),Number(match[2])-1,Number(match[3])).toLocaleDateString('tr-TR',{weekday:'long'})}
       timeNode.classList.add('n11-appt-datetime');
       var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
       var hasTime=!!String(item.time||'').trim();
       timeNode.classList.toggle('n11-appt-time-missing',!hasTime&&mobile);
-      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(hasTime?item.time:(mobile?'Saat belirtilmedi':'—'))+'</small>';
+      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(hasTime?item.time:(mobile?'Saat belirtilmedi':'—'))+'</small>'+(!mobile&&weekdayText?'<em>'+esc(weekdayText)+'</em>':'');
     });
   }
 
