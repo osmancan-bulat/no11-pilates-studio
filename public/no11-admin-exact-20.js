@@ -1,5 +1,7 @@
 (function(){
   'use strict';
+  if(window.__NO11_EXACT_20_MOUNTED__)return;
+  window.__NO11_EXACT_20_MOUNTED__=true;
   var K={appointments:'no11-appointments',team:'no11-team',lessons:'no11-lessons',hours:'no11-hours',settings:'no11-site-settings',theme:'no11-admin-theme'};
   var state={page:'dashboard',filter:'all',query:'',dateFilter:'',selected:null,dark:false,date:new Date(),items:[],team:[],lessons:[],hours:[],settings:{}};
   var defaults={
