@@ -33,6 +33,11 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
 @media(max-width:1250px){.n11-v4 .n11-program-v4{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.n11-v4 .n11-program-v4{display:block}}
 
+/* Keep theme and date-picker hit areas inside their visible controls. */
+.n11-v4 .n11-theme{position:relative!important;inset:auto!important;width:62px!important;min-width:62px!important;max-width:62px!important;height:34px!important;min-height:34px!important;max-height:34px!important;flex:0 0 62px!important;overflow:hidden!important}
+.n11-v4 .n11-theme *{pointer-events:none!important}
+.n11-v4 .n11-date-field .n11-date-search::-webkit-calendar-picker-indicator{position:static!important;inset:auto!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important}
+
 /* General Overview — approved second reference */
 .n11-v4 .n11-dashboard-new{background:var(--n11-plum);color:#fff;border-color:var(--n11-plum);min-width:180px;justify-content:center}
 .n11-v4 .n11-dashboard-summary{grid-template-columns:1.32fr 2.68fr;padding:44px 40px;min-height:230px;align-items:center}
