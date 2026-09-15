@@ -193,7 +193,7 @@ async function proxy(request, context) {
     html = html
       .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
       .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/\\/no11-admin-exact-20\\.js(?:\\?[^\"' ]*)?/g, `${incoming.origin}/no11-admin-exact-20.js?v=20260915-date-1`)
+      .replace(/\/no11-admin-exact-20\.js(?:\?[^"' ]*)?/g, `${incoming.origin}/no11-admin-exact-20.js?v=20260915-date-1`)
 ;
 
     html = html.replace(
