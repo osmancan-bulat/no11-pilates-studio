@@ -6,6 +6,13 @@
     style.dataset.no11Premium = '1';
     document.head.appendChild(style);
   }
+  if (!document.querySelector('link[data-no11-dashboard-theme-only]')) {
+    var dashboardThemeOnly = document.createElement('link');
+    dashboardThemeOnly.rel = 'stylesheet';
+    dashboardThemeOnly.href = '/no11-desktop-dashboard-theme-only.css?v=20260915-1';
+    dashboardThemeOnly.dataset.no11DashboardThemeOnly = '1';
+    document.head.appendChild(dashboardThemeOnly);
+  }
   if (!document.querySelector('link[data-no11-settings-desktop-clean]')) {
     var settingsDesktopClean = document.createElement('link');
     settingsDesktopClean.rel = 'stylesheet';
