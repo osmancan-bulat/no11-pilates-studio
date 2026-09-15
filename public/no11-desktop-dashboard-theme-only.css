@@ -1,0 +1,8 @@
+/* Desktop: theme control exists visually only on Genel Bakış. Mobile is untouched. */
+@media (min-width: 768px) {
+  main.n11-v4:not(:has(.n11-dashboard-summary)) .n11-theme {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
