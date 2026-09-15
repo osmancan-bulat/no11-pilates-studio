@@ -137,3 +137,11 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
   .n11-v4.n11-dark .n11-desktop-appt-actions>.danger{background:#29252c!important;border-color:#7d4650!important;color:#f09ba8!important}
   .n11-v4.n11-dark .n11-desktop-appt-actions.confirmed>button[data-detail]{background:transparent!important;border-color:#476151!important;color:#f7f2f5!important}
 }
+
+/* NO11 desktop native date picker hit area — 2026-09-15 */
+@media(min-width:901px){
+  .n11-v4 .n11-date-field{position:relative!important;overflow:hidden!important}
+  .n11-v4 .n11-date-field>span{pointer-events:none!important}
+  .n11-v4 .n11-date-field .n11-date-search{position:absolute!important;z-index:5!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;border:0!important;opacity:.001!important;cursor:pointer!important;pointer-events:auto!important}
+  .n11-v4 .n11-date-field .n11-date-search::-webkit-calendar-picker-indicator{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;cursor:pointer!important}
+}
