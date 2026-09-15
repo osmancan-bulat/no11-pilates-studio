@@ -74,6 +74,7 @@
   }
 
   function loadPremium(){
+    if(window.__NO11_EXACT_ADMIN__)return;
     if(document.querySelector('script[data-no11-premium-loader]'))return;
     var script=document.createElement('script');
     script.src='/no11-admin-premium.js?v=31';
