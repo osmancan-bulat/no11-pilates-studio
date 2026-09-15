@@ -78,7 +78,7 @@
   document.head.appendChild(reportsStability);
 
   var themeClickLock = document.createElement('script');
-  themeClickLock.src = '/no11-theme-click-lock.js?v=20260915-1';
+  themeClickLock.src = '/no11-theme-click-lock.js?v=20260915-2';
   themeClickLock.defer = true;
   document.head.appendChild(themeClickLock);
 
