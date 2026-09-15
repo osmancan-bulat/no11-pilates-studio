@@ -2,7 +2,7 @@
   if (!document.querySelector('link[data-no11-premium]')) {
     var style = document.createElement('link');
     style.rel = 'stylesheet';
-    style.href = '/no11-admin-exact-20.css?v=20260915-1';
+    style.href = '/no11-admin-exact-20.css?v=20260915-2';
     style.dataset.no11Premium = '1';
     document.head.appendChild(style);
   }
@@ -48,7 +48,7 @@
   }
 
   var script = document.createElement('script');
-  script.src = '/no11-admin-exact-20.js?v=20260915-3';
+  script.src = '/no11-admin-exact-20.js?v=20260915-4';
   script.defer = true;
   document.head.appendChild(script);
 
