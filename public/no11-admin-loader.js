@@ -48,7 +48,7 @@
   }
 
   var themeAuthority = document.createElement('script');
-  themeAuthority.src = '/no11-theme-authority.js?v=20260915-1';
+  themeAuthority.src = '/no11-theme-authority.js?v=20260915-2';
   themeAuthority.defer = true;
   document.head.appendChild(themeAuthority);
 
