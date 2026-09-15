@@ -1,12 +1,14 @@
 (function(){
-  // The admin HTML comes from an older proxied build. React delegates click
-  // events to its root container, so keeping that same root alive also keeps
-  // the old theme click behavior alive after our exact UI replaces the page.
-  // Clone the root once before mounting the exact admin: markup stays intact,
-  // but event listeners owned by the upstream root are discarded.
+  // The admin HTML comes from an older proxied build. Replace its React root so
+  // root-owned listeners are discarded, then fence bubbling clicks at the new
+  // root. Target/button handlers still run normally; stale document-level
+  // bubble handlers from the proxied build can no longer react to admin clicks.
   var upstreamRoot = document.getElementById('__next');
   if (upstreamRoot && upstreamRoot.parentNode) {
     var cleanRoot = upstreamRoot.cloneNode(true);
+    cleanRoot.addEventListener('click', function(event){
+      event.stopPropagation();
+    }, false);
     upstreamRoot.parentNode.replaceChild(cleanRoot, upstreamRoot);
   }
 
