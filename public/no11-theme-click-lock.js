@@ -1,45 +1,65 @@
 (function(){
   'use strict';
   var KEY='no11-admin-theme';
-  var before=null;
+  var MOBILE='(max-width: 767px)';
+  var lastAllowed=null;
 
-  function main(){return document.querySelector('main.n11-v4')}
-  function isRealThemeClick(event){
-    var button=event.target&&event.target.closest?event.target.closest('.n11-theme'):null;
-    if(!button)return false;
-    var actions=button.closest('.n11-page-actions,.n11-program-head');
-    if(!actions)return false;
-    var rect=button.getBoundingClientRect();
-    if(rect.width>80||rect.height>80||rect.width<20||rect.height<20)return false;
-    if(typeof event.clientX==='number'&&typeof event.clientY==='number'&&(event.clientX||event.clientY)){
-      return event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;
-    }
-    return true;
+  function root(){return document.querySelector('main.n11-v4')}
+  function isMobile(){return window.matchMedia&&window.matchMedia(MOBILE).matches}
+  function isDashboard(){
+    var main=root();
+    return !!(main&&main.querySelector('.n11-dashboard-summary'));
+  }
+  function allowedThemeButton(target){
+    var button=target&&target.closest?target.closest('.n11-theme'):null;
+    if(!button)return null;
+    if(isMobile())return button;
+    return isDashboard()?button:null;
   }
   function snapshot(){
-    var root=main();
-    before={stored:localStorage.getItem(KEY),dark:!!(root&&root.classList.contains('n11-dark'))};
+    var main=root();
+    return {stored:localStorage.getItem(KEY),dark:!!(main&&main.classList.contains('n11-dark'))};
   }
-  function restore(){
+  function restore(before){
     if(!before)return;
-    var root=main();
+    var main=root();
     if(before.stored===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,before.stored);
-    if(root)root.classList.toggle('n11-dark',before.dark);
+    if(main)main.classList.toggle('n11-dark',before.dark);
   }
-  function protect(event){
-    if(isRealThemeClick(event)){before=null;return;}
-    snapshot();
-    setTimeout(restore,0);
-    requestAnimationFrame(function(){restore();requestAnimationFrame(restore)});
+  function hideDesktopThemeOutsideDashboard(){
+    if(isMobile())return;
+    var main=root();
+    if(!main)return;
+    main.querySelectorAll('.n11-theme').forEach(function(button){
+      button.style.display=isDashboard()?'':'none';
+      button.setAttribute('aria-hidden',isDashboard()?'false':'true');
+      button.tabIndex=isDashboard()?0:-1;
+    });
+  }
+  function guard(event){
+    if(allowedThemeButton(event.target)){
+      lastAllowed=null;
+      return;
+    }
+    var before=snapshot();
+    lastAllowed=before;
+    setTimeout(function(){restore(before);hideDesktopThemeOutsideDashboard()},0);
+    requestAnimationFrame(function(){restore(before);hideDesktopThemeOutsideDashboard();requestAnimationFrame(function(){restore(before);hideDesktopThemeOutsideDashboard()})});
   }
 
   document.addEventListener('pointerdown',function(event){
-    if(!isRealThemeClick(event))snapshot();else before=null;
+    if(allowedThemeButton(event.target)){lastAllowed=null;return;}
+    lastAllowed=snapshot();
   },true);
-  document.addEventListener('click',protect,true);
+  document.addEventListener('click',guard,true);
   document.addEventListener('change',function(event){
-    if(event.target&&event.target.closest&&event.target.closest('.n11-theme'))return;
-    if(!before)snapshot();
-    setTimeout(restore,0);
+    if(allowedThemeButton(event.target))return;
+    var before=lastAllowed||snapshot();
+    setTimeout(function(){restore(before);hideDesktopThemeOutsideDashboard()},0);
   },true);
+
+  var observer=new MutationObserver(function(){hideDesktopThemeOutsideDashboard()});
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener('resize',hideDesktopThemeOutsideDashboard);
+  hideDesktopThemeOutsideDashboard();
 })();
