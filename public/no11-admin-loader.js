@@ -77,6 +77,11 @@
   reportsStability.defer = true;
   document.head.appendChild(reportsStability);
 
+  var themeClickLock = document.createElement('script');
+  themeClickLock.src = '/no11-theme-click-lock.js?v=20260915-1';
+  themeClickLock.defer = true;
+  document.head.appendChild(themeClickLock);
+
   var teamEditThemeGuard = document.createElement('script');
   teamEditThemeGuard.src = '/no11-team-edit-theme-guard.js?v=20260914-1';
   teamEditThemeGuard.defer = true;
