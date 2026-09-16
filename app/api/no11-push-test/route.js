@@ -4,7 +4,7 @@ import { sendPushToAdmins } from '../../../lib/firebase-firestore.js';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(request) {
+async function run(request) {
   if (process.env.VERCEL_ENV !== 'preview') {
     return NextResponse.json({ error: 'preview_only' }, { status: 404 });
   }
@@ -25,3 +25,6 @@ export async function POST(request) {
     return NextResponse.json({ error: 'push_test_failed' }, { status: 500 });
   }
 }
+
+export const GET = run;
+export const POST = run;
