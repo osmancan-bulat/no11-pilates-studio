@@ -3,5 +3,5 @@
   "private": true,
   "version": "1.0.0",
   "scripts": { "build": "next build", "vercel-build": "next build" },
-  "dependencies": { "next": "16.1.1", "react": "19.2.3", "react-dom": "19.2.3" }
+  "dependencies": { "next": "16.1.1", "react": "19.2.3", "react-dom": "19.2.3", "web-push": "3.6.7" }
 }
