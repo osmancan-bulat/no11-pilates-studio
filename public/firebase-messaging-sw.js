@@ -1,3 +1,5 @@
+self.addEventListener('install',function(event){self.skipWaiting();});
+self.addEventListener('activate',function(event){event.waitUntil(clients.claim());});
 self.addEventListener('push',function(event){
   var data={};
   try{data=event.data?event.data.json():{};}catch(e){data={body:event.data?event.data.text():''};}
