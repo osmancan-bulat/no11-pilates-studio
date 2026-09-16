@@ -8,18 +8,12 @@ self.addEventListener('push',function(event){
   if(appointmentId&&url.indexOf('appointment=')===-1){
     url='/admin?appointment='+encodeURIComponent(appointmentId);
   }
-  event.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(function(list){
-    var adminVisible=list.some(function(client){
-      try{return client.visibilityState==='visible'&&new URL(client.url).pathname.indexOf('/admin')===0;}catch(e){return false;}
-    });
-    if(adminVisible)return;
-    return self.registration.showNotification(data.title||'Yeni Randevu Talebi ✨',{
-      body:data.body||'',
-      icon:'/favicon.ico',
-      badge:'/favicon.ico',
-      data:{url:url,appointmentId:appointmentId},
-      tag:appointmentId?('no11-'+appointmentId):'no11-booking'
-    });
+  event.waitUntil(self.registration.showNotification(data.title||'Yeni Randevu Talebi ✨',{
+    body:data.body||'',
+    icon:'/favicon.ico',
+    badge:'/favicon.ico',
+    data:{url:url,appointmentId:appointmentId},
+    tag:appointmentId?('no11-'+appointmentId):'no11-booking'
   }));
 });
 self.addEventListener('notificationclick',function(event){
