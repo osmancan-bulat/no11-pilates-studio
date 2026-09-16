@@ -42,6 +42,20 @@ function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
   return appointment;
 }
 
+function istanbulNow() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Istanbul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.filter((part) => part.type !== 'literal').map((part) => [part.type, part.value]));
+  return { date: `${values.year}-${values.month}-${values.day}`, time: `${values.hour}:${values.minute}` };
+}
+
 async function legacyAppointments() {
   try {
     const response = await fetch(new URL('/api/no11-appointments', LEGACY_ORIGIN), {
@@ -84,6 +98,18 @@ export async function POST(request) {
     if (!appointment.name || !appointment.phone || !validDate || !validTime) {
       return json({ error: 'missing_required_fields' }, 400);
     }
+    const now = istanbulNow();
+    if (appointment.date < now.date || (appointment.date === now.date && appointment.time <= now.time)) {
+      return json({ error: 'appointment_time_in_past' }, 409);
+    }
+    const [legacy, firebase] = await Promise.all([
+      legacyAppointments(),
+      firebaseConfigured() ? listAppointments() : Promise.resolve([]),
+    ]);
+    const occupied = legacy.concat(firebase).some((item) =>
+      item?.date === appointment.date && item?.time === appointment.time && item?.status !== 'rejected',
+    );
+    if (occupied) return json({ error: 'appointment_slot_occupied' }, 409);
     const saved = await saveAppointment(appointment);
     return json({ ok: true, appointment: saved }, 201);
   } catch (error) {
