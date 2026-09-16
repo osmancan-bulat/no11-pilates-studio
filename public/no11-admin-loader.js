@@ -47,6 +47,12 @@
     else nav.appendChild(btn);
   }
 
+  function loadScript(src,key){
+    if(document.querySelector('script[data-no11-push="'+key+'"]'))return;
+    var script=document.createElement('script');
+    script.src=src;script.defer=true;script.dataset.no11Push=key;document.head.appendChild(script);
+  }
+
   var settingsClean = document.createElement('script');
   settingsClean.src = '/no11-settings-desktop-clean.js?v=20260914-1';
   settingsClean.defer = true;
@@ -86,6 +92,10 @@
   dateFilter.src = '/no11-appointments-date-filter.js?v=20260916-1';
   dateFilter.defer = true;
   document.head.appendChild(dateFilter);
+
+  loadScript('/no11-admin-push-deeplink.js?v=20260916-production-1','deeplink');
+  loadScript('/no11-admin-push.js?v=20260916-production-1','push');
+  loadScript('/no11-admin-notification-behavior.js?v=20260916-production-1','behavior');
 
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
