@@ -77,6 +77,16 @@
   teamEditThemeGuard.defer = true;
   document.head.appendChild(teamEditThemeGuard);
 
+  var dateLabel = document.createElement('script');
+  dateLabel.src = '/no11-appointments-date-label.js?v=20260916-1';
+  dateLabel.defer = true;
+  document.head.appendChild(dateLabel);
+
+  var dateFilter = document.createElement('script');
+  dateFilter.src = '/no11-appointments-date-filter.js?v=20260916-1';
+  dateFilter.defer = true;
+  document.head.appendChild(dateFilter);
+
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
   setTimeout(ensureReportsNav,300);
