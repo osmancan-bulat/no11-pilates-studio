@@ -77,6 +77,11 @@
   teamEditThemeGuard.defer = true;
   document.head.appendChild(teamEditThemeGuard);
 
+  var dateLabel = document.createElement('script');
+  dateLabel.src = '/no11-appointments-date-label.js?v=20260916-1';
+  dateLabel.defer = true;
+  document.head.appendChild(dateLabel);
+
   ensureReportsNav();
   setTimeout(ensureReportsNav,100);
   setTimeout(ensureReportsNav,300);
