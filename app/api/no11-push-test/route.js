@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
-import { sendPushToAdmins } from '../../../lib/firebase-firestore.js';
+import { listAppointments, sendPushToAdmins } from '../../../lib/firebase-firestore.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,14 +12,20 @@ async function run(request) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
   try {
-    const result = await sendPushToAdmins({
+    const appointments = await listAppointments();
+    const existing = appointments.find((item) => item?.id);
+    const testAppointment = existing ? {
+      ...existing,
+      name: `Test • ${existing.name || 'Randevu'}`,
+    } : {
       id: `push-test-${Date.now()}`,
       name: 'Test Randevusu',
       service: 'Pilates',
       date: 'Bildirim testi',
       time: 'Şimdi',
-    });
-    return NextResponse.json({ ok: true, ...result }, { headers: { 'cache-control': 'no-store, max-age=0' } });
+    };
+    const result = await sendPushToAdmins(testAppointment);
+    return NextResponse.json({ ok: true, appointmentId: String(testAppointment.id || ''), ...result }, { headers: { 'cache-control': 'no-store, max-age=0' } });
   } catch (error) {
     console.error('Push test failed:', error);
     return NextResponse.json({ error: 'push_test_failed' }, { status: 500 });
