@@ -2,6 +2,26 @@ import { NextResponse } from "next/server";
 
 export function middleware(request) {
   const url = request.nextUrl.clone();
+
+  if (url.pathname === "/") {
+    const referer = request.headers.get("referer") || "";
+    try {
+      const from = referer ? new URL(referer) : null;
+      if (from && from.origin === url.origin && from.pathname.startsWith("/admin")) {
+        const response = NextResponse.next();
+        response.cookies.set("no11_admin_session", "", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          path: "/",
+          expires: new Date(0),
+          maxAge: 0,
+        });
+        return response;
+      }
+    } catch {}
+  }
+
   if (url.pathname === "/no11-admin-detail.js") {
     return new NextResponse(
       "(function(){var s=document.createElement('link');s.rel='stylesheet';s.href='/no11-admin-exact-20.css';s.dataset.no11Premium='1';document.head.appendChild(s);var j=document.createElement('script');j.src='/no11-admin-exact-20.js';j.defer=true;document.head.appendChild(j);})();",
@@ -16,5 +36,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/_next/static/:path*", "/no11-admin-detail.js"],
+  matcher: ["/", "/_next/static/:path*", "/no11-admin-detail.js"],
 };
