@@ -26,8 +26,8 @@
       button.type='button';
       button.dataset.deleteLesson=form.dataset.id;
       button.textContent='Dersi Sil';
-      button.style.cssText='margin-right:auto;border:1px solid rgba(143,24,33,.28);background:rgba(143,24,33,.06);color:#8f1821;border-radius:10px;padding:12px 16px;font:600 13px Arial,sans-serif;cursor:pointer';
-      footer.insertBefore(button,footer.firstChild);
+      button.style.cssText='margin-left:10px;border:1px solid rgba(143,24,33,.28);background:rgba(143,24,33,.06);color:#8f1821;border-radius:10px;padding:12px 16px;font:600 13px Arial,sans-serif;cursor:pointer';
+      footer.appendChild(button);
       button.onclick=async function(){
         if(!confirm('Bu dersi silmek istediğinize emin misiniz?'))return;
         button.disabled=true;
