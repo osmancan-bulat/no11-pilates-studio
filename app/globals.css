@@ -58,3 +58,37 @@
  .story{padding-top:67px!important}
  .story>.eyebrow{font-size:9px!important;letter-spacing:.25em!important}
 }
+
+
+/* Recovered approved contact/footer layout from 28 Aug review */
+.contact-footer{background:#171417!important;color:#f7f1ea!important;padding:76px 7vw 34px!important;display:grid!important;grid-template-columns:.8fr 1.35fr 1.05fr .9fr!important;gap:48px!important;align-items:start!important;position:relative!important}
+.contact-footer a{color:inherit;text-decoration:none}
+.footer-brand .logo{display:inline-flex!important;flex-direction:column!important;font:400 42px/1 Georgia,"Times New Roman",serif!important;color:#fff!important}
+.footer-brand .logo small{font:500 8px/1 Arial,sans-serif!important;letter-spacing:.18em!important;margin-top:8px!important;color:#d6a46e!important}
+.footer-brand>p,.contact-footer small,.map-faux b{font:600 10px/1.3 Arial,sans-serif!important;letter-spacing:.22em!important;color:#d9a66f!important}
+.footer-brand>p{margin:58px 0 0!important}
+.footer-map-card{display:block!important;min-height:225px!important;border:1px solid rgba(255,255,255,.16)!important;overflow:hidden!important;background:linear-gradient(145deg,#ddd8cf,#aaa49c)!important;position:relative!important}
+.map-faux{position:absolute!important;inset:0!important;background:linear-gradient(135deg,rgba(232,229,220,.96),rgba(185,181,173,.88)),repeating-linear-gradient(35deg,transparent 0 24px,rgba(70,70,70,.09) 25px 27px)!important;color:#211d1c!important}
+.map-faux:before,.map-faux:after{content:"";position:absolute;border:1px solid rgba(80,75,70,.32);border-radius:50%}
+.map-faux:before{width:110px;height:110px;left:22%;top:24%}.map-faux:after{width:70px;height:70px;right:18%;bottom:17%}
+.map-faux>span{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#211d1c;color:#fff;font:400 15px Georgia,serif;z-index:2}
+.map-faux b{position:absolute!important;left:18px!important;bottom:17px!important;color:#211d1c!important}
+.map-faux i{position:absolute;right:18px;bottom:14px;font:300 25px/1 Arial,sans-serif;font-style:normal}
+.footer-address address{margin:15px 0 38px!important;font:400 17px/1.45 Arial,sans-serif!important;color:#fff!important}
+.hours>small{display:block;margin-bottom:15px!important}.hours p{display:flex!important;justify-content:space-between!important;gap:18px!important;margin:8px 0!important;font:400 13px/1.4 Arial,sans-serif!important}.hours p b{font-weight:500!important;color:#fff!important}
+.footer-contact-grid{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important}
+.footer-contact-grid>a{font:400 16px/1.4 Arial,sans-serif!important}.footer-contact-grid strong{font-weight:500!important}
+.footer-book{margin-top:25px!important;border-bottom:1px solid rgba(255,255,255,.55)!important;padding:0 0 9px!important;font-size:11px!important;letter-spacing:.18em!important}.footer-book span{margin-left:15px}
+.footer-links{position:absolute!important;right:7vw!important;bottom:35px!important}.footer-links a{font:500 10px/1 Arial,sans-serif!important;letter-spacing:.17em!important;color:#b8afa9!important}
+.footer-copy{grid-column:1/4!important;margin-top:30px!important;padding-top:23px!important;border-top:1px solid rgba(255,255,255,.12)!important;font:500 8px/1 Arial,sans-serif!important;letter-spacing:.17em!important;color:#77706d!important}
+@media(max-width:900px){
+ .contact-footer{padding:58px 27px 28px!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:32px 18px!important}
+ .footer-brand{grid-column:1/-1!important}.footer-brand .logo{font-size:34px!important}.footer-brand>p{margin-top:38px!important}
+ .footer-map-card{grid-column:1/-1!important;min-height:190px!important;order:2!important}
+ .footer-address{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:18px!important;order:3!important}
+ .footer-address>small,.footer-address>address{grid-column:1!important}.footer-address address{font-size:14px!important;margin:8px 0 0!important}
+ .hours{grid-column:2!important;grid-row:1/3!important}.hours p{font-size:11px!important}
+ .footer-contact-grid{grid-column:1/-1!important;order:4!important;border-top:1px solid rgba(255,255,255,.12)!important;padding-top:28px!important}
+ .footer-links{position:static!important;grid-column:2!important;order:5!important;text-align:right!important}
+ .footer-copy{grid-column:1!important;order:5!important;margin:0!important;padding:0!important;border:0!important;align-self:end!important}
+}
