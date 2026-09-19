@@ -8,10 +8,6 @@ export function middleware(request) {
       { headers: { "content-type": "application/javascript; charset=utf-8", "cache-control": "no-store, max-age=0" } }
     );
   }
-  if (url.pathname.startsWith("/_next/static/")) {
-    url.pathname = `/__old1${url.pathname}`;
-    return NextResponse.rewrite(url);
-  }
   return NextResponse.next();
 }
 
