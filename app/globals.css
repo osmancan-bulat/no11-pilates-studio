@@ -114,3 +114,20 @@
  .hero-copy>a{display:inline-block!important;margin-top:33px!important;padding-bottom:8px!important;border-bottom:1px solid rgba(255,255,255,.65)!important;color:#fff!important;text-decoration:none!important;font:500 11px/1 Arial,sans-serif!important;letter-spacing:.12em!important}
  .hero-mobile-copy{display:none!important}
 }
+
+
+/* Exact desktop hero composition recovered from 10 Sep screenshot */
+@media(min-width:901px){
+ .site-nav{padding:27px 4.55vw!important;align-items:flex-start!important}
+ .site-nav .logo{font-size:32px!important}
+ .site-nav nav{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;margin:0!important;padding-top:19px!important;gap:42px!important}
+ .site-nav nav a{font-size:11px!important;font-weight:600!important;letter-spacing:.13em!important;text-transform:uppercase!important}
+ .site-nav .nav-cta{position:absolute!important;right:4.1vw!important;top:43px!important;margin:0!important;padding:0 0 12px!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.8)!important;font-size:11px!important;font-weight:600!important;letter-spacing:.13em!important;text-transform:uppercase!important}
+ .hero-shade{background:linear-gradient(90deg,rgba(15,11,8,.44) 0%,rgba(15,11,8,.08) 42%,rgba(15,11,8,.04) 78%),linear-gradient(0deg,rgba(15,12,10,.58) 0%,rgba(15,12,10,.05) 45%)!important}
+ .hero-copy{left:4.55vw!important;bottom:8.4vh!important;width:52vw!important}
+ .hero-desktop-rule{width:30vw!important;height:52px!important;border-bottom:1px solid rgba(225,168,143,.58)!important;position:relative!important;margin-bottom:49px!important}
+ .hero-desktop-rule span{position:absolute!important;left:0!important;bottom:-27px!important;width:55px!important;height:55px!important;border:1px solid #e0a286!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:rgba(26,19,15,.10)!important;color:#e6b097!important;font:400 13px Georgia,serif!important}
+ .hero-copy>p{margin:0 0 20px!important;color:#e3a88e!important;font-size:11px!important;font-weight:600!important;letter-spacing:.24em!important}
+ .hero-copy h1{font:400 clamp(42px,3.3vw,62px)/1.05 Georgia,"Times New Roman",serif!important;letter-spacing:-.025em!important;color:#fff!important;white-space:nowrap!important}
+ .hero-copy h1 em,.hero-copy>a{display:none!important}
+}
