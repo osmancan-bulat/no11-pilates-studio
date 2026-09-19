@@ -5,8 +5,11 @@ const services=['Birebir Pilates','Duet / İkili Pilates','Hamile Pilatesi','Omu
 const times=['09:00','10:30','12:00','14:00','16:30','18:00','19:30'];
 
 export default function HomePage(){
- const [menu,setMenu]=useState(false),[sent,setSent]=useState(false),[heroPaused,setHeroPaused]=useState(false);\n const desktopHero=useRef(null),mobileHero=useRef(null);
- useEffect(()=>{ document.body.style.overflow=menu?'hidden':''; return()=>{document.body.style.overflow=''} },[menu]);\n useEffect(()=>{ const setup=(v)=>{if(!v)return;v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.controls=false;v.defaultPlaybackRate=.9;v.playbackRate=.9}; setup(desktopHero.current);setup(mobileHero.current);const play=()=>{const v=window.matchMedia('(min-width: 901px)').matches?desktopHero.current:mobileHero.current;if(v)v.play().then(()=>setHeroPaused(false)).catch(()=>{})};play();window.addEventListener('pageshow',play);return()=>window.removeEventListener('pageshow',play)},[]);\n function toggleHero(){const v=window.matchMedia('(min-width: 901px)').matches?desktopHero.current:mobileHero.current;if(!v)return;if(v.paused)v.play().then(()=>setHeroPaused(false)).catch(()=>{});else{v.pause();setHeroPaused(true)}}
+ const [menu,setMenu]=useState(false),[sent,setSent]=useState(false),[heroPaused,setHeroPaused]=useState(false);
+ const desktopHero=useRef(null),mobileHero=useRef(null);
+ useEffect(()=>{ document.body.style.overflow=menu?'hidden':''; return()=>{document.body.style.overflow=''} },[menu]);
+ useEffect(()=>{ const setup=(v)=>{if(!v)return;v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.controls=false;v.defaultPlaybackRate=.9;v.playbackRate=.9}; setup(desktopHero.current);setup(mobileHero.current);const play=()=>{const v=window.matchMedia('(min-width: 901px)').matches?desktopHero.current:mobileHero.current;if(v)v.play().then(()=>setHeroPaused(false)).catch(()=>{})};play();window.addEventListener('pageshow',play);return()=>window.removeEventListener('pageshow',play)},[]);
+ function toggleHero(){const v=window.matchMedia('(min-width: 901px)').matches?desktopHero.current:mobileHero.current;if(!v)return;if(v.paused)v.play().then(()=>setHeroPaused(false)).catch(()=>{});else{v.pause();setHeroPaused(true)}}
  async function submit(e){
    e.preventDefault(); const f=new FormData(e.currentTarget);
    const appointment={id:'NO11-'+String(Date.now()).slice(-6),name:String(f.get('name')||''),phone:String(f.get('phone')||''),email:String(f.get('email')||''),service:String(f.get('service')||'Tanışma Dersi'),date:String(f.get('date')||''),time:String(f.get('time')||''),studentNote:String(f.get('note')||''),note:String(f.get('note')||''),managerNote:'',status:'pending',createdAt:new Date().toISOString()};
