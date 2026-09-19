@@ -14,6 +14,10 @@ export default function RootLayout({ children }) {
     <style>{'@media (max-width:900px){.story h2{margin-bottom:2.75rem!important}}'}</style>
   </head><body>
     {children}
-    <Script src="/no11-team-live.js?v=3" strategy="afterInteractive"/>\n    <Script src="/no11-studio-gallery.js?v=1" strategy="afterInteractive"/>\n    <Script src="/no11-schedule-live.js?v=4" strategy="afterInteractive"/>\n    <Script src="/no11-settings-live.js?v=6" strategy="afterInteractive"/>\n    <Script src="/no11-phone-guard.js?v=1" strategy="afterInteractive"/>
+    <Script src="/no11-team-live.js?v=3" strategy="afterInteractive"/>
+    <Script src="/no11-studio-gallery.js?v=1" strategy="afterInteractive"/>
+    <Script src="/no11-schedule-live.js?v=4" strategy="afterInteractive"/>
+    <Script src="/no11-settings-live.js?v=6" strategy="afterInteractive"/>
+    <Script src="/no11-phone-guard.js?v=1" strategy="afterInteractive"/>
   </body></html>;
 }
