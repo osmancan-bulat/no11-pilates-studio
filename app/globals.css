@@ -131,3 +131,15 @@
  .hero-copy h1{font:400 clamp(42px,3.3vw,62px)/1.05 Georgia,"Times New Roman",serif!important;letter-spacing:-.025em!important;color:#fff!important;white-space:nowrap!important}
  .hero-copy h1 em,.hero-copy>a{display:none!important}
 }
+
+
+/* Original pre-booking image band recovered from supplied archive */
+.quote-band{height:95vh;min-height:700px;position:relative;color:#fff;display:grid;place-items:center;text-align:center;overflow:hidden;background:#171310}
+.quote-band:after{content:"";position:absolute;inset:0;background:rgba(10,9,7,.44);z-index:1}
+.quote-band>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.quote-band>div{position:relative;z-index:2}
+.quote-band p{margin:0;letter-spacing:.38em;font:600 .75rem/1.2 Arial,sans-serif}
+.quote-band h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(5rem,11vw,12rem);font-style:italic;font-weight:400;line-height:.9;margin:1rem}
+.quote-band span{font-family:Georgia,"Times New Roman",serif;font-size:1.2rem}
+@media(max-width:900px){.quote-band{height:75vh;min-height:570px}.quote-band h2{font-size:16vw}}
+@media(max-width:540px){.quote-band h2{font-size:15vw}}
