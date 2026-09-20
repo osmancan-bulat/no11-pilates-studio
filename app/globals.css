@@ -530,3 +530,10 @@
    top:7%!important;
  }
 }
+
+
+/* Keep Bilemezsiniz copy clear of the wall ladder */
+@media(min-width:901px){
+ .quote-band>div{left:max(3.5vw,52px)!important;top:6%!important;width:min(430px,25vw)!important}
+ .quote-band>div h2{font-size:clamp(52px,4.1vw,70px)!important;line-height:.98!important}
+}
