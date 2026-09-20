@@ -546,3 +546,15 @@
  .quote-band:after{display:none!important}
  .quote-band>div{display:none!important}
 }
+
+
+/* Bilemezsiniz responsive picture: desktop artwork only, preserve original mobile composition */
+.quote-band>picture{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important}
+.quote-band>picture>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;filter:none!important;transform:none!important}
+@media(min-width:901px){
+ .quote-band>picture>img{object-position:center center!important}
+}
+@media(max-width:900px){
+ .quote-band>picture>img{object-position:center center!important}
+ .quote-band>div{display:block!important}
+}
