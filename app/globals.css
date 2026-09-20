@@ -624,3 +624,10 @@ main{padding-top:0!important}
 html,body{margin:0!important;padding:0!important;border:0!important}
 body>main{margin:0!important;padding:0!important;position:relative!important;top:0!important}
 body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!important}
+
+
+/* Desktop hero rule: keep the line clear of the 11 numeral */
+@media(min-width:901px){
+ .hero-desktop-rule{border-bottom:0!important}
+ .hero-desktop-rule:after{content:""!important;position:absolute!important;left:55px!important;right:0!important;bottom:0!important;height:1px!important;background:rgba(225,168,143,.58)!important}
+}
