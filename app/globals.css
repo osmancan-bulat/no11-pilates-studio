@@ -704,3 +704,16 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    flex:0 0 58px!important;
  }
 }
+
+
+/* Mobile hero rule length: match approved reference exactly */
+@media(max-width:900px){
+ .hero-mobile-copy .hero-rule{
+   width:calc(100% - 42px)!important;
+   margin-right:42px!important;
+ }
+ .hero-mobile-copy .hero-rule:after{
+   left:48px!important;
+   right:0!important;
+ }
+}
