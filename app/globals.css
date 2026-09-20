@@ -343,3 +343,37 @@
  .footer-links a{display:inline-flex!important;align-items:center!important;gap:15px!important}
  .footer-links .contact-icon-admin{width:26px!important;height:26px!important;color:#fff!important}
 }
+
+
+/* Approved desktop contact composition — exact visual reference, 2026-09-20 */
+@media(min-width:901px){
+ .contact-footer{position:relative!important;background:#12110f!important;padding:82px 6.5vw 58px!important;display:grid!important;grid-template-columns:300px 1px 390px minmax(390px,530px)!important;grid-template-rows:auto auto auto!important;column-gap:58px!important;align-items:start!important;color:#f7f1eb!important}
+ .footer-mobile-head{display:none!important}
+ .footer-brand{grid-column:1!important;grid-row:1!important;display:block!important}
+ .footer-brand .logo{font:400 42px/.95 Georgia,"Times New Roman",serif!important;color:#fff!important;display:block!important;width:max-content!important}
+ .footer-brand .logo small{display:block!important;margin-top:10px!important;font:500 11px/1 Arial,sans-serif!important;letter-spacing:.27em!important;color:#fff!important}
+ .footer-brand .logo:after{content:"";display:block!important;width:240px!important;height:1px!important;background:rgba(255,255,255,.8)!important;margin-top:17px!important}
+ .footer-brand>p{display:none!important}
+ .footer-brand:after{content:"Balat Mh. Alan Sk.\A No:9B\A Nilüfer / Bursa";white-space:pre;display:block!important;margin-top:40px!important;font:400 22px/1.55 Georgia,"Times New Roman",serif!important;color:#fff!important}
+ .footer-address{grid-column:3!important;grid-row:1!important;padding:6px 0 0!important;display:block!important}
+ .footer-address>small,.footer-address>address{display:none!important}
+ .footer-address .hours>small{display:block!important;margin:0 0 24px!important;color:#e79779!important;font:700 13px/1 Arial,sans-serif!important;letter-spacing:.14em!important}
+ .footer-address .hours p{display:flex!important;justify-content:space-between!important;align-items:center!important;margin:0!important;padding:15px 0!important;border-bottom:1px solid rgba(255,255,255,.3)!important;font:400 18px/1.2 Georgia,"Times New Roman",serif!important}
+ .footer-address .hours p:last-child{border-bottom:0!important}
+ .footer-address .hours p span,.footer-address .hours p b{font-weight:400!important;color:#fff!important}
+ .footer-map-card{grid-column:4!important;grid-row:1!important;width:100%!important;height:270px!important;min-height:0!important;margin:0!important;border-radius:16px!important;overflow:hidden!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:0 18px 45px rgba(0,0,0,.2)!important}
+ .footer-map-card iframe{width:100%!important;height:100%!important;min-height:0!important;filter:none!important}
+ .footer-map-card .map-open{display:none!important}
+ .contact-footer:before{content:"";grid-column:2!important;grid-row:1!important;width:1px!important;height:210px!important;background:rgba(255,255,255,.7)!important;align-self:start!important;margin-top:0!important}
+ .footer-contact-grid{grid-column:1!important;grid-row:2!important;margin:48px 0 0!important;padding:0!important;border:0!important;display:flex!important;flex-direction:column!important;gap:16px!important}
+ .footer-contact-grid>small,.footer-contact-grid>a[href*="wa.me"],.footer-contact-grid .footer-book{display:none!important}
+ .footer-contact-grid>a[href^="tel:"],.footer-contact-grid>a[href*="instagram"]{display:flex!important;align-items:center!important;gap:24px!important;min-height:42px!important;padding:0!important;margin:0!important;color:#fff!important;grid-template-columns:none!important}
+ .footer-contact-grid>a[href^="tel:"]:after,.footer-contact-grid>a[href*="instagram"]:after{display:none!important;content:none!important}
+ .footer-contact-grid .contact-icon{width:36px!important;height:36px!important;color:#e79779!important;grid-column:auto!important;grid-row:auto!important}
+ .footer-contact-grid strong{font:400 21px/1.2 Georgia,"Times New Roman",serif!important;color:#fff!important;align-self:auto!important}
+ .footer-contact-grid>a[href*="instagram"] strong{font-size:20px!important}
+ .footer-links{grid-column:1/5!important;grid-row:3!important;margin:48px 0 0!important;padding:34px 0 0!important;border-top:1px solid rgba(255,255,255,.48)!important;text-align:left!important}
+ .footer-links a{display:inline-flex!important;align-items:center!important;gap:16px!important;color:#fff!important;font:600 12px/1 Arial,sans-serif!important;letter-spacing:.18em!important;text-transform:uppercase!important}
+ .footer-links .contact-icon-admin{width:30px!important;height:30px!important;color:#e79779!important}
+ .footer-copy{display:none!important}
+}
