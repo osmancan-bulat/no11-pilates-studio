@@ -35,3 +35,10 @@
  #ekip .team-cards article h3{margin:12px 0 18px!important;color:#171310!important;font:400 clamp(34px,3vw,48px)/1 Georgia,"Times New Roman",serif!important;letter-spacing:-.035em!important}
  #ekip .team-cards article p{margin:0!important;color:#6f5c52!important;font-size:15px!important;line-height:1.7!important}
 }
+
+
+/* Final desktop founder portrait corners — preserve original dimensions/crop; mobile untouched */
+@media(min-width:901px){
+ #ekip .founder-image{border-radius:26px!important;overflow:hidden!important}
+ #ekip .founder-image img{border-radius:26px!important}
+}
