@@ -424,3 +424,27 @@
  .footer-contact-grid{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:12px!important}
  .footer-contact-grid>a[href^="tel:"],.footer-contact-grid>a[href*="instagram"]{min-height:46px!important}
 }
+
+
+/* Approved Bilemezsiniz placement — desktop + mobile */
+.quote-band{position:relative!important;overflow:hidden!important}
+.quote-band>img{width:100%!important;height:100%!important;object-fit:cover!important;image-rendering:auto!important}
+.quote-band>div{position:absolute!important;z-index:2!important;text-align:left!important}
+@media(min-width:901px){
+ .quote-band{height:min(720px,72vw)!important;max-height:720px!important}
+ .quote-band>img{object-position:center center!important;filter:none!important}
+ .quote-band:after{content:"";position:absolute!important;inset:0!important;background:linear-gradient(90deg,rgba(12,10,8,.42) 0%,rgba(12,10,8,.08) 38%,rgba(12,10,8,.05) 100%)!important;pointer-events:none!important}
+ .quote-band>div{left:6.5vw!important;top:7.5%!important;transform:none!important;width:440px!important}
+ .quote-band>div p{margin:0 0 14px!important;font-size:12px!important;letter-spacing:.32em!important}
+ .quote-band>div h2{margin:0 0 14px!important;font-size:clamp(56px,5.2vw,86px)!important;line-height:.95!important}
+ .quote-band>div span{font-size:20px!important}
+}
+@media(max-width:900px){
+ .quote-band{height:78vh!important;min-height:560px!important;max-height:720px!important}
+ .quote-band>img{object-position:center center!important;filter:none!important}
+ .quote-band:after{content:"";position:absolute!important;inset:0!important;background:linear-gradient(180deg,rgba(12,10,8,.38) 0%,rgba(12,10,8,.05) 48%,rgba(12,10,8,.12) 100%)!important;pointer-events:none!important}
+ .quote-band>div{left:24px!important;right:auto!important;top:7%!important;transform:none!important;width:min(270px,68vw)!important}
+ .quote-band>div p{margin:0 0 9px!important;font-size:9px!important;letter-spacing:.3em!important}
+ .quote-band>div h2{margin:0 0 8px!important;font-size:clamp(36px,10vw,52px)!important;line-height:.98!important}
+ .quote-band>div span{font-size:14px!important;line-height:1.3!important}
+}
