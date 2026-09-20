@@ -572,3 +572,9 @@
 /* Final booking form: black submit CTA */
 .booking-form button,.booking-form button[type="submit"]{background:#000!important;color:#fff!important;border-color:#000!important}
 .booking-form button:hover,.booking-form button[type="submit"]:hover{background:#000!important;border-color:#000!important}
+
+
+/* Tighten mobile story gap between heading and first principle */
+@media(max-width:900px){
+ .story .principles{margin-top:18px!important}
+}
