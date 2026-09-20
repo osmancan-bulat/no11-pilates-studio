@@ -567,3 +567,8 @@
  .quote-band>div h2{font-size:clamp(29px,8.4vw,40px)!important;line-height:.95!important;margin-bottom:7px!important;white-space:nowrap!important}
  .quote-band>div span{font-size:11px!important;line-height:1.25!important;max-width:215px!important}
 }
+
+
+/* Final booking form: black submit CTA */
+.booking-form button,.booking-form button[type="submit"]{background:#000!important;color:#fff!important;border-color:#000!important}
+.booking-form button:hover,.booking-form button[type="submit"]:hover{background:#000!important;border-color:#000!important}
