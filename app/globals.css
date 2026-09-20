@@ -631,3 +631,14 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .hero-desktop-rule{border-bottom:0!important}
  .hero-desktop-rule:after{content:""!important;position:absolute!important;left:55px!important;right:0!important;bottom:0!important;height:1px!important;background:rgba(225,168,143,.58)!important}
 }
+
+
+/* Mobile hero composition: match the approved original iPhone layout */
+@media(max-width:900px){
+ .hero-mobile-copy{left:27px!important;right:27px!important;bottom:33px!important}
+ .hero-mobile-copy .hero-rule{width:auto!important;height:30px!important;margin:0 43px 21px 0!important;border-top:1px solid rgba(226,171,150,.75)!important;border-bottom:0!important}
+ .hero-mobile-copy .hero-rule span{left:0!important;top:-17px!important}
+ .mobile-floating-booking{right:27px!important;bottom:33px!important;gap:19px!important}
+ .mobile-floating-booking b{font-size:10px!important;letter-spacing:.19em!important}
+ .mobile-floating-booking i{width:53px!important;height:53px!important}
+}
