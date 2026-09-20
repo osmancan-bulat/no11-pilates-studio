@@ -578,3 +578,15 @@
 @media(max-width:900px){
  .story .principles{margin-top:18px!important}
 }
+
+
+/* Desktop persistent navigation with section-aware contrast; mobile untouched */
+@media(min-width:901px){
+ .site-nav{position:fixed!important;top:0!important;left:0!important;right:0!important;z-index:1000!important;transition:color .22s ease,background-color .22s ease!important}
+ .site-nav,.site-nav a,.site-nav .logo,.site-nav .logo small{color:#fff!important}
+ .site-nav .logo:after{background:rgba(255,255,255,.82)!important}
+ .site-nav .nav-cta{border-color:rgba(255,255,255,.55)!important;color:#fff!important}
+ .site-nav.nav-on-light,.site-nav.nav-on-light a,.site-nav.nav-on-light .logo,.site-nav.nav-on-light .logo small{color:#111!important}
+ .site-nav.nav-on-light .logo:after{background:rgba(17,17,17,.72)!important}
+ .site-nav.nav-on-light .nav-cta{border-color:rgba(17,17,17,.45)!important;color:#111!important}
+}
