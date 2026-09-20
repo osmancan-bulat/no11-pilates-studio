@@ -590,3 +590,13 @@
  .site-nav.nav-on-light .logo:after{background:rgba(17,17,17,.72)!important}
  .site-nav.nav-on-light .nav-cta{border-color:rgba(17,17,17,.45)!important;color:#111!important}
 }
+
+
+/* Mobile persistent booking CTA */
+.mobile-floating-booking{display:none}
+@media(max-width:900px){
+ .mobile-floating-booking{position:fixed!important;right:22px!important;bottom:26px!important;z-index:950!important;display:flex!important;align-items:center!important;gap:16px!important;color:#fff!important;text-decoration:none!important;filter:drop-shadow(0 5px 14px rgba(0,0,0,.18))}
+ .mobile-floating-booking b{font:600 9px/1 Arial,sans-serif!important;letter-spacing:.18em!important;white-space:nowrap!important;text-shadow:0 1px 5px rgba(0,0,0,.42)!important}
+ .mobile-floating-booking i{width:52px!important;height:52px!important;border-radius:50%!important;background:#eaa58d!important;display:grid!important;place-items:center!important;font:300 29px/1 Arial,sans-serif!important;font-style:normal!important;color:#fff!important}
+ #randevu{scroll-margin-top:12px!important}
+}
