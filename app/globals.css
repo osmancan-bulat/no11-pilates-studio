@@ -600,3 +600,12 @@
  .mobile-floating-booking i{width:52px!important;height:52px!important;border-radius:50%!important;background:#eaa58d!important;display:grid!important;place-items:center!important;font:300 29px/1 Arial,sans-serif!important;font-style:normal!important;color:#fff!important}
  #randevu{scroll-margin-top:12px!important}
 }
+
+
+/* Final mobile booking CTA: one floating control only; hide it while booking form is visible */
+@media(max-width:900px){
+ .hero-mobile-copy>a{display:none!important}
+ body:has(#randevu:is(:hover)) .mobile-floating-booking{display:flex!important}
+ .mobile-floating-booking{transition:opacity .18s ease,visibility .18s ease!important}
+ body:has(#randevu) .mobile-floating-booking{ }
+}
