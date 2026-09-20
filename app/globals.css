@@ -618,3 +618,9 @@ html,body,main,#top{margin-top:0!important}
 html,body{padding-top:0!important}
 main{padding-top:0!important}
 .hero{margin-top:0!important;top:auto!important}
+
+
+/* Hard reset browser/body top gap above the public hero */
+html,body{margin:0!important;padding:0!important;border:0!important}
+body>main{margin:0!important;padding:0!important;position:relative!important;top:0!important}
+body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!important}
