@@ -505,3 +505,28 @@
 /* Approved booking submit button */
 .booking-form button[type="submit"]{background:#0d0d0d!important;color:#fff!important;border-color:#0d0d0d!important}
 .booking-form button[type="submit"]:hover{background:#000!important;border-color:#000!important}
+
+
+/* Desktop Bilemezsiniz: show the complete composition instead of zoom-cropping */
+@media(min-width:901px){
+ .quote-band{
+   width:100%!important;
+   height:min(760px,calc(100vw * .5625))!important;
+   aspect-ratio:auto!important;
+   background:#15120f!important;
+ }
+ .quote-band>img{
+   width:100%!important;
+   height:100%!important;
+   object-fit:contain!important;
+   object-position:center center!important;
+   background:#15120f!important;
+ }
+ .quote-band:after{
+   background:linear-gradient(90deg,rgba(10,8,7,.42) 0%,rgba(10,8,7,.10) 31%,rgba(10,8,7,0) 52%)!important;
+ }
+ .quote-band>div{
+   left:max(5vw,72px)!important;
+   top:7%!important;
+ }
+}
