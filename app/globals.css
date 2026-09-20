@@ -377,3 +377,30 @@
  .footer-links .contact-icon-admin{width:30px!important;height:30px!important;color:#e79779!important}
  .footer-copy{display:none!important}
 }
+
+
+/* FINAL approved mobile contact reference — do not improvise */
+@media(max-width:900px){
+ .footer-brand>p{display:none!important}
+ .footer-address .hours p:last-child{border-bottom:0!important}
+ .footer-map-card .map-open{display:none!important}
+ .footer-contact-grid{grid-template-columns:1fr!important;grid-template-rows:auto auto!important;row-gap:12px!important}
+ .footer-contact-grid .footer-book{display:none!important}
+ .footer-contact-grid>a[href^="tel:"],.footer-contact-grid>a[href*="instagram"]{
+   grid-column:1!important;min-height:auto!important;padding:0!important;margin:0!important;
+   display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:22px!important
+ }
+ .footer-contact-grid>a[href^="tel:"]{grid-row:1!important}
+ .footer-contact-grid>a[href*="instagram"]{grid-row:2!important}
+ .footer-contact-grid>a[href^="tel:"]:after,.footer-contact-grid>a[href*="instagram"]:after{display:none!important;content:none!important}
+ .footer-contact-grid .contact-icon{width:38px!important;height:38px!important;color:#e79779!important;flex:0 0 38px!important}
+ .footer-contact-grid strong{font:400 25px/1.15 Georgia,"Times New Roman",serif!important;color:#fff!important;white-space:nowrap!important}
+ .footer-contact-grid>a[href*="instagram"] strong{font-size:22px!important}
+}
+@media(max-width:520px){
+ .footer-contact-grid{row-gap:10px!important}
+ .footer-contact-grid>a[href^="tel:"],.footer-contact-grid>a[href*="instagram"]{gap:18px!important}
+ .footer-contact-grid .contact-icon{width:31px!important;height:31px!important;flex-basis:31px!important}
+ .footer-contact-grid strong{font-size:21px!important}
+ .footer-contact-grid>a[href*="instagram"] strong{font-size:18px!important}
+}
