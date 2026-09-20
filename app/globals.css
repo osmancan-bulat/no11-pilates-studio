@@ -488,3 +488,15 @@
  .quote-band>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center center!important;transform:none!important;filter:none!important;background:#15120f!important}
  .quote-band>div{left:7%!important;top:6%!important}
 }
+
+
+/* Desktop Bilemezsiniz: wide cinematic image, no side dead-space */
+@media(min-width:901px){
+ .quote-band{width:100%!important;aspect-ratio:16/7!important;min-height:0!important;overflow:hidden!important;background:#15120f!important}
+ .quote-band>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 52%!important;filter:none!important;transform:none!important}
+ .quote-band:after{content:""!important;position:absolute!important;inset:0!important;background:linear-gradient(90deg,rgba(10,8,7,.58) 0%,rgba(10,8,7,.18) 34%,rgba(10,8,7,0) 62%)!important;pointer-events:none!important}
+ .quote-band>div{z-index:2!important;left:7%!important;top:8%!important;width:500px!important}
+ .quote-band>div p{font-size:12px!important}
+ .quote-band>div h2{font-size:clamp(58px,5vw,80px)!important}
+ .quote-band>div span{font-size:19px!important}
+}
