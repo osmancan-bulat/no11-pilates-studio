@@ -537,3 +537,12 @@
  .quote-band>div{left:max(3.5vw,52px)!important;top:6%!important;width:min(430px,25vw)!important}
  .quote-band>div h2{font-size:clamp(52px,4.1vw,70px)!important;line-height:.98!important}
 }
+
+
+/* Approved Bilemezsiniz artwork: desktop image already contains its final typography */
+@media(min-width:901px){
+ .quote-band{height:auto!important;aspect-ratio:16/9!important;background:#15120f!important}
+ .quote-band>img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important;background:#15120f!important}
+ .quote-band:after{display:none!important}
+ .quote-band>div{display:none!important}
+}
