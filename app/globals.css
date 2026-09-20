@@ -642,3 +642,12 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .mobile-floating-booking b{font-size:10px!important;letter-spacing:.19em!important}
  .mobile-floating-booking i{width:53px!important;height:53px!important}
 }
+
+
+/* Mobile viewport containment: prevent the page from expanding into a blank right column */
+@media(max-width:900px){
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+ body>main{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+ .hero,.section,.experience,.studio,.team,.booking,footer{width:100%!important;max-width:100%!important}
+ .mobile-floating-booking{max-width:calc(100vw - 44px)!important}
+}
