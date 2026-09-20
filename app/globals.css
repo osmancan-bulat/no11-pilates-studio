@@ -480,3 +480,11 @@
  .experience img{height:490px!important;object-fit:cover!important;object-position:center 12%!important}
  .experience>div{background:#0d0d0d!important;padding:60px 24px 66px!important}
 }
+
+
+/* Final Bilemezsiniz framing: preserve full desktop composition without zoom */
+@media(min-width:901px){
+ .quote-band{height:auto!important;aspect-ratio:16/7!important;background:#15120f!important}
+ .quote-band>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center center!important;transform:none!important;filter:none!important;background:#15120f!important}
+ .quote-band>div{left:7%!important;top:6%!important}
+}
