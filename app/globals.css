@@ -609,3 +609,5 @@
  .mobile-floating-booking{transition:opacity .18s ease,visibility .18s ease!important}
  body:has(#randevu) .mobile-floating-booking{ }
 }
+
+@media(max-width:900px){.mobile-floating-booking.is-hidden{opacity:0!important;visibility:hidden!important;pointer-events:none!important}}
