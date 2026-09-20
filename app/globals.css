@@ -500,3 +500,8 @@
  .quote-band>div h2{font-size:clamp(58px,5vw,80px)!important}
  .quote-band>div span{font-size:19px!important}
 }
+
+
+/* Approved booking submit button */
+.booking-form button[type="submit"]{background:#0d0d0d!important;color:#fff!important;border-color:#0d0d0d!important}
+.booking-form button[type="submit"]:hover{background:#000!important;border-color:#000!important}
