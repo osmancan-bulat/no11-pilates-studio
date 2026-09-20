@@ -624,9 +624,3 @@ main{padding-top:0!important}
 html,body{margin:0!important;padding:0!important;border:0!important}
 body>main{margin:0!important;padding:0!important;position:relative!important;top:0!important}
 body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!important}
-
-
-/* Restore original long mobile hero rule without changing hero crop */
-@media(max-width:900px){
- .hero-mobile-copy .hero-rule{width:calc(100% + 42px)!important;margin-right:-42px!important}
-}
