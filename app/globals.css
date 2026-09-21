@@ -863,3 +863,24 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .mobile-menu-contact>a{min-height:62px!important}
  .mobile-menu-tagline{padding-top:24px!important}
 }
+
+
+/* No.11 brand mark — match existing site logo proportions */
+@media(max-width:900px){
+ .mobile-menu-head .logo{
+   display:inline-block!important;
+   width:max-content!important;
+   font:700 34px/.92 Georgia,"Times New Roman",serif!important;
+   letter-spacing:-.045em!important;
+   color:#171310!important;
+   padding-bottom:13px!important;
+   border-bottom:1px solid rgba(23,19,16,.45)!important;
+ }
+ .mobile-menu-head .logo small{
+   display:block!important;
+   margin-top:8px!important;
+   font:600 7px/1 Arial,sans-serif!important;
+   letter-spacing:.08em!important;
+   color:#171310!important;
+ }
+}
