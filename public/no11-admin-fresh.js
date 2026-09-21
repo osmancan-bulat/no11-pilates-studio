@@ -119,30 +119,6 @@
   .n11-final-section{padding:23px 19px}.n11-final-section-head h3{font-size:15px}.n11-final-section-head p{font-size:15px}.n11-final-link{padding:0 12px;font-size:14px}\
 }\
 .n11-v4 .n11-appt-row{position:relative;overflow:visible!important}\
-.n11-v4 .n11-timeline .n11-time-line>time .n11-program-time-date{display:none!important}\
-.n11-v4 .n11-today-row>time .n11-program-time-date{display:none!important}\
-.n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
-.n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
-.n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
-@media(min-width:1201px){.n11-v4 .n11-program-v4:has(>.n11-schedule-timeline){grid-template-columns:minmax(430px,1.12fr) minmax(320px,.84fr) minmax(360px,1fr)!important;align-items:start!important}.n11-v4 .n11-program-v4>.n11-timeline.n11-schedule-timeline{grid-column:auto!important;display:grid!important;grid-template-columns:1fr!important;gap:18px!important;padding:24px!important;min-height:0!important}}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart{min-width:0!important;padding:18px 18px 8px!important;border:1px solid var(--n11-line)!important;border-radius:16px!important;background:var(--n11-card)!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart>h3{margin:0 0 10px!important;padding:0 0 14px!important;border-bottom:1px solid var(--n11-line)!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{grid-template-columns:62px minmax(0,1fr)!important;align-items:center!important;min-height:58px!important;border-bottom:1px solid var(--n11-line)!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line:last-child{border-bottom:0!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>time{padding:0!important;font-size:17px!important;white-space:nowrap!important}\
-.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>span{display:none!important}\
-.n11-v4 .n11-program-slot-items{grid-column:2!important;grid-row:1!important;z-index:2!important;display:grid!important;gap:5px!important;min-width:0!important;width:100%!important}\
-.n11-v4 .n11-program-inline-card{display:grid!important;grid-template-columns:max-content minmax(0,1fr) max-content!important;align-items:center!important;gap:8px!important;min-width:0!important;width:100%!important;max-width:100%!important;padding:10px 11px!important;box-sizing:border-box!important;border:1px solid var(--n11-line)!important;border-left:3px solid #3f8a5b!important;border-radius:10px!important;background:var(--n11-bg)!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important;overflow:hidden!important}\
-.n11-v4 .n11-program-inline-card b{flex:none!important;font:700 15px/1.2 Arial,sans-serif!important}\
-.n11-v4 .n11-program-inline-card small{font:500 14px/1.2 Arial,sans-serif!important;color:var(--n11-muted)!important;overflow:hidden!important;text-overflow:ellipsis!important}\
-.n11-v4 .n11-program-inline-status{font:700 13px/1.2 Arial,sans-serif!important;flex:none!important}\
-.n11-v4 .n11-program-inline-status.confirmed{color:#378253!important}\
-.n11-v4 .n11-program-inline-status.pending{color:#b12d49!important}\
-.n11-v4 .n11-program-inline-status.rejected{color:#8a8086!important}\
-.n11-v4 .n11-program-available{grid-column:2!important;grid-row:1!important;color:var(--n11-muted)!important;font:500 13px/1.2 Arial,sans-serif!important}\
-.n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
-.n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
-.n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
 .n11-v4 .n11-appt-menu{position:relative;grid-column:-2/-1!important;justify-self:end!important;z-index:12}\
 .n11-v4 .n11-appt-more{display:grid!important;place-items:center!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;border:1px solid var(--n11-line)!important;border-radius:11px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font:700 22px/1 Arial,sans-serif!important;letter-spacing:1px!important}\
 .n11-v4 .n11-appt-more>span{display:block!important;width:18px!important;height:4px!important;font-size:0!important;background:radial-gradient(circle at 2px 2px,currentColor 1.7px,transparent 1.8px),radial-gradient(circle at 9px 2px,currentColor 1.7px,transparent 1.8px),radial-gradient(circle at 16px 2px,currentColor 1.7px,transparent 1.8px)}\
@@ -151,29 +127,7 @@
 .n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;height:42px!important;padding:0 13px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:var(--n11-ink)!important;text-decoration:none!important;font:13px Arial,sans-serif!important;white-space:nowrap!important}\
 .n11-v4 .n11-appt-menu-panel button:hover,.n11-v4 .n11-appt-menu-panel a:hover{background:var(--n11-bg)!important}\
 .n11-v4 .n11-appt-menu-panel .danger{color:#a3243f!important}\
-@media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}.n11-v4 .n11-appt-row>time.n11-appt-time-missing>small{width:58px!important;white-space:normal!important;font:600 10px/1.15 Arial,sans-serif!important}}\
-@media(max-width:760px){\
-  .n11-v4 .n11-program-v4>.n11-timeline.n11-mobile-schedule{padding:22px 18px 16px!important;border-radius:18px!important;min-height:0!important}\
-  .n11-v4 .n11-mobile-schedule-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;padding:0 0 15px!important;border-bottom:1px solid var(--n11-line)!important}\
-  .n11-v4 .n11-mobile-schedule-head p{margin:0 0 5px!important;color:#b66d27!important;font:700 9px/1.2 Arial,sans-serif!important;letter-spacing:.25em!important}\
-  .n11-v4 .n11-mobile-schedule-head h2{margin:0!important;color:var(--n11-ink)!important;font:27px/1.05 Georgia,serif!important;font-weight:400!important}\
-  .n11-v4 .n11-mobile-schedule-head small{max-width:118px!important;padding-top:10px!important;color:var(--n11-muted)!important;font:11px/1.35 Arial,sans-serif!important;text-align:right!important}\
-  .n11-v4 .n11-mobile-schedule-list{display:grid!important}\
-  .n11-v4 .n11-mobile-schedule-row{display:grid!important;grid-template-columns:58px 12px minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;min-height:64px!important;padding:7px 0!important;border-bottom:1px solid var(--n11-line)!important}\
-  .n11-v4 .n11-mobile-schedule-row:last-child{border-bottom:0!important}\
-  .n11-v4 .n11-mobile-schedule-row>time{color:var(--n11-muted)!important;font:15px/1 Georgia,serif!important;white-space:nowrap!important}\
-  .n11-v4 .n11-mobile-schedule-dot{width:8px!important;height:8px!important;border-radius:50%!important;background:#d7d2d4!important}\
-  .n11-v4 .n11-mobile-schedule-dot.confirmed{background:#3f8a5b!important}.n11-v4 .n11-mobile-schedule-dot.pending{background:#b12d49!important}\
-  .n11-v4 .n11-mobile-schedule-copy{min-width:0!important}\
-  .n11-v4 .n11-mobile-schedule-copy b{display:block!important;color:var(--n11-ink)!important;font:700 14px/1.25 Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\
-  .n11-v4 .n11-mobile-schedule-copy small{display:block!important;margin-top:3px!important;color:var(--n11-muted)!important;font:11px/1.25 Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\
-  .n11-v4 .n11-mobile-schedule-status{padding:5px 7px!important;border-radius:9px!important;background:var(--n11-bg)!important;color:var(--n11-muted)!important;font:600 9px/1 Arial,sans-serif!important;font-style:normal!important}\
-  .n11-v4 .n11-mobile-schedule-status.confirmed{color:#378253!important}.n11-v4 .n11-mobile-schedule-status.pending{color:#a3243f!important}\
-  .n11-v4 .n11-mobile-closed{padding:42px 18px 38px!important;text-align:center!important}\
-  .n11-v4 .n11-mobile-closed-icon{display:grid!important;place-items:center!important;width:58px!important;height:58px!important;margin:0 auto 16px!important;border-radius:50%!important;background:var(--n11-bg)!important;color:#b66d27!important;font-size:25px!important}\
-  .n11-v4 .n11-mobile-closed h3{margin:0 0 8px!important;color:var(--n11-ink)!important;font:26px/1.12 Georgia,serif!important;font-weight:400!important}\
-  .n11-v4 .n11-mobile-closed p{margin:0!important;color:var(--n11-muted)!important;font:13px/1.5 Arial,sans-serif!important}\
-}\
+@media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}}\
 ';
     document.head.appendChild(style);
   }
@@ -312,47 +266,6 @@
   }
 
   function enhanceAppointmentMenus(){
-    var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
-    if(!mobile){
-      if(window.matchMedia&&window.matchMedia('(min-width:901px)').matches){
-        document.querySelectorAll('.n11-appt-row').forEach(function(row){
-          if(row.querySelector(':scope>.n11-desktop-appt-actions'))return;
-          var status=row.querySelector(':scope>.n11-status');
-          var name=row.querySelector(':scope>b');
-          var service=row.querySelector(':scope>.n11-appt-service');
-          var actions=Array.from(row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp'));
-          if(!status||!actions.length)return;
-          if(name&&service){
-            var person=document.createElement('div');
-            person.className='n11-appt-person';
-            row.insertBefore(person,status);
-            person.appendChild(name);
-            person.appendChild(service);
-          }
-          var wrap=document.createElement('div');
-          wrap.className='n11-desktop-appt-actions '+(status.classList.contains('confirmed')?'confirmed':'pending');
-          wrap.appendChild(status);
-          actions.forEach(function(action){
-            if(action.matches('a.n11-whatsapp'))action.textContent='WhatsApp';
-            wrap.appendChild(action);
-          });
-          row.querySelectorAll(':scope>.n11-note-icon,:scope>.n11-dash').forEach(function(node){node.remove()});
-          row.appendChild(wrap);
-        });
-      }
-      document.querySelectorAll('.n11-appt-menu').forEach(function(menu){
-        var row=menu.closest('.n11-appt-row');
-        var panel=menu.querySelector('.n11-appt-menu-panel');
-        if(row&&panel){
-          Array.from(panel.children).forEach(function(action){
-            if(action.matches('a.n11-whatsapp'))action.textContent='◉';
-            row.insertBefore(action,menu);
-          });
-        }
-        menu.remove();
-      });
-      return;
-    }
     document.querySelectorAll('.n11-appt-row').forEach(function(row){
       if(row.querySelector('.n11-appt-menu'))return;
       var actions=[];
@@ -382,118 +295,6 @@
     });
   }
 
-  function enhanceAppointmentDateTimes(){
-    var items=readArray('no11-appointments');
-    var used={};
-    document.querySelectorAll('.n11-appt-row').forEach(function(row){
-      var timeNode=row.querySelector(':scope>time');
-      var nameNode=row.querySelector(':scope>b');
-      var serviceNode=row.querySelector(':scope>.n11-appt-service');
-      if(!timeNode||!nameNode)return;
-      var rawTime=timeNode.dataset.rawTime||timeNode.textContent.trim();
-      timeNode.dataset.rawTime=rawTime;
-      var item=items.find(function(candidate){
-        if(!candidate||!candidate.id||used[String(candidate.id)])return false;
-        if(String(candidate.name||'İsimsiz')!==nameNode.textContent.trim())return false;
-        if(serviceNode&&String(candidate.service||candidate.lesson||'Pilates')!==serviceNode.textContent.trim())return false;
-        return String(candidate.time||'—')===rawTime;
-      });
-      if(!item)return;
-      used[String(item.id)]=true;
-      var dateText='Tarih yok';
-      var match=String(item.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-      if(match)dateText=Number(match[3])+' '+months[Number(match[2])-1].slice(0,3);
-      timeNode.classList.add('n11-appt-datetime');
-      var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
-      var hasTime=!!String(item.time||'').trim();
-      timeNode.classList.toggle('n11-appt-time-missing',!hasTime&&mobile);
-      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(hasTime?item.time:(mobile?'Saat belirtilmedi':'—'))+'</small>';
-    });
-  }
-
-  function enhanceManagerNote(){
-    var detail=document.querySelector('.n11-detail');
-    var textarea=detail&&detail.querySelector('.n11-manager-note');
-    var button=detail&&detail.querySelector('[data-save-note]');
-    if(!textarea||!button)return;
-    var confirmed=!!detail.querySelector('.n11-status.confirmed');
-    button.textContent=confirmed?'Notu düzenle':'Notu kaydet';
-    var helper=detail.querySelector('.n11-manager-note-helper');
-    if(!confirmed&&!textarea.value.trim()){
-      if(!helper){
-        helper=document.createElement('p');
-        helper.className='n11-manager-note-helper';
-        helper.textContent='Öğrenciye özel bir not kaydetmek istiyorsanız bu alana yazabilirsiniz.';
-        textarea.insertAdjacentElement('afterend',helper);
-      }
-    }else if(helper){
-      helper.remove();
-    }
-  }
-
-  function selectedProgramDate(){
-    var active=document.querySelector('.n11-calendar [data-program-day].active');
-    var key=active&&active.dataset.programDay;
-    if(/^\d{4}-\d{2}-\d{2}$/.test(String(key||'')))return key;
-    var switcher=document.querySelector('.n11-date-switch');
-    var text=String(switcher&&switcher.textContent||'').replace(/\s+/g,' ').trim();
-    var match=text.match(/(\d{1,2})\s+(Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık)(?:\s+(\d{4}))?/i);
-    if(!match)return '';
-    var monthIndex=months.map(function(x){return x.toLocaleLowerCase('tr-TR')}).indexOf(match[2].toLocaleLowerCase('tr-TR'));
-    if(monthIndex<0)return '';
-    var calendarTitle=document.querySelector('.n11-calendar header h2');
-    var yearMatch=String(calendarTitle&&calendarTitle.textContent||'').match(/\b(20\d{2})\b/);
-    var year=Number(match[3]||(yearMatch&&yearMatch[1])||new Date().getFullYear());
-    return year+'-'+String(monthIndex+1).padStart(2,'0')+'-'+String(Number(match[1])).padStart(2,'0');
-  }
-
-  function scheduleForDate(dateKey){
-    var slots=readArray('no11-appointment-slots').filter(function(value){return /^([01]\d|2[0-3]):[0-5]\d$/.test(String(value))}).sort();
-    var hours=readArray('no11-hours');
-    if(!dateKey)return slots;
-    var date=new Date(dateKey+'T12:00:00');
-    var dayIndex=(date.getDay()+6)%7;
-    var day=hours[dayIndex];
-    if(!day||day.closed)return day&&day.closed?[]:slots;
-    var open=String(day.open||''),close=String(day.close||'');
-    if(!open||!close)return slots;
-    return slots.filter(function(slot){return slot>=open&&slot<close});
-  }
-
-  function statusText(status){
-    status=String(status||'pending').toLowerCase();
-    return status==='confirmed'?'Onaylandı':status==='rejected'?'Reddedildi':'Bekliyor';
-  }
-
-  function enhanceDesktopProgram(){
-    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
-    var title=document.querySelector('.n11-program-head h1');
-    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
-    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline)return;
-    var dateKey=selectedProgramDate();
-    if(!dateKey)return;
-    var slots=scheduleForDate(dateKey);
-    var appointments=readArray('no11-appointments').filter(function(item){
-      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
-    }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
-    appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
-    slots.sort();
-    var signature=dateKey+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
-    if(timeline.dataset.n11ScheduleSignature===signature)return;
-    timeline.dataset.n11ScheduleSignature=signature;
-    timeline.classList.add('n11-schedule-timeline');
-    function card(item){var status=normalizedStatus(item);return '<article class="n11-program-inline-card" data-n11-program-id="'+esc(item.id)+'"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small><em class="n11-program-inline-status '+esc(status)+'">'+statusText(status)+'</em></article>'}
-    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span>'+(found.length?'<div class="n11-program-slot-items">'+found.map(card).join('')+'</div>':'<small class="n11-program-available">Müsait</small>')+'</div>'}).join('')+'</div></div>'}
-    timeline.innerHTML=group('SABAH',slots.filter(function(x){return x<'12:00'}))+group('ÖĞLE',slots.filter(function(x){return x>='12:00'&&x<'15:00'}))+group('AKŞAM',slots.filter(function(x){return x>='15:00'}));
-    if(!slots.length)timeline.innerHTML='<div class="n11-empty"><h3>Kapalı gün</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
-  }
-
-  function enhanceMobileProgram(){
-    /* Approved mobile Daily Program is rendered by the premium admin itself.
-       Keep this layer data-only; do not replace the approved mobile composition. */
-    return;
-  }
-
   function apply(){
     if(busy)return;busy=true;
     try{
@@ -505,11 +306,7 @@
       }
       renderMobileDashboard();
       desktopMetrics();
-      enhanceAppointmentDateTimes();
-      enhanceManagerNote();
       enhanceAppointmentMenus();
-      enhanceMobileProgram();
-      enhanceDesktopProgram();
     }finally{busy=false}
   }
 
@@ -542,11 +339,6 @@
       var target=document.querySelector('.n11-main-side [data-page="'+finalPage.dataset.finalPage+'"]');
       if(target)target.click();
       return;
-    }
-    var programCard=event.target.closest&&event.target.closest('[data-n11-program-id]');
-    if(programCard){
-      var original=document.querySelector('.n11-today-row[data-id="'+CSS.escape(programCard.dataset.n11ProgramId)+'"]');
-      if(original)original.click();
     }
   },true);
 
