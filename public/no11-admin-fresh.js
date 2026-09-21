@@ -489,39 +489,9 @@
   }
 
   function enhanceMobileProgram(){
-    if(!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches))return;
-    var title=document.querySelector('.n11-program-head h1');
-    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
-    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline)return;
-    var dateKey=selectedProgramDate();
-    if(!dateKey)return;
-    var slots=scheduleForDate(dateKey);
-    var appointments=readArray('no11-appointments').filter(function(item){
-      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
-    }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
-    appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
-    slots.sort();
-    var hours=readArray('no11-hours');
-    var date=new Date(dateKey+'T12:00:00');
-    var day=hours[(date.getDay()+6)%7];
-    var isClosed=!!(day&&day.closed);
-    var signature='mobile|'+dateKey+'|'+String(isClosed)+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
-    var expectedContent=isClosed?timeline.querySelector('.n11-mobile-closed'):timeline.querySelector('.n11-mobile-schedule-list');
-    if(timeline.dataset.n11ScheduleSignature===signature&&expectedContent)return;
-    timeline.dataset.n11ScheduleSignature=signature;
-    timeline.classList.remove('n11-schedule-timeline');
-    timeline.classList.add('n11-mobile-schedule');
-    if(isClosed){
-      timeline.innerHTML='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div></header><div class="n11-mobile-closed"><span class="n11-mobile-closed-icon">⌁</span><h3>Stüdyomuz kapalı</h3><p>Pazar günü hizmet vermiyoruz.</p></div>';
-      return;
-    }
-    function rows(slot){
-      var found=appointments.filter(function(item){return String(item.time)===slot});
-      if(!found.length)return '<div class="n11-mobile-schedule-row"><time>'+esc(slot)+'</time><i class="n11-mobile-schedule-dot"></i><div class="n11-mobile-schedule-copy"><b>Müsait</b><small>Randevu bulunmuyor</small></div><em class="n11-mobile-schedule-status">Boş</em></div>';
-      return found.map(function(item){var status=normalizedStatus(item);return '<article class="n11-mobile-schedule-row" data-n11-program-id="'+esc(item.id)+'"><time>'+esc(slot)+'</time><i class="n11-mobile-schedule-dot '+esc(status)+'"></i><div class="n11-mobile-schedule-copy"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small></div><em class="n11-mobile-schedule-status '+esc(status)+'">'+statusText(status)+'</em></article>'}).join('');
-    }
-    timeline.innerHTML='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div><small>Karta dokunarak detayı açın</small></header><div class="n11-mobile-schedule-list">'+slots.map(rows).join('')+'</div>';
-    if(!slots.length)timeline.innerHTML='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div></header><div class="n11-mobile-closed"><span class="n11-mobile-closed-icon">⌁</span><h3>Saat bulunmuyor</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
+    /* Approved mobile Daily Program is rendered by the premium admin itself.
+       Keep this layer data-only; do not replace the approved mobile composition. */
+    return;
   }
 
   function apply(){
