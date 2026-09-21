@@ -829,3 +829,37 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .mobile-menu-contact .menu-contact-icon svg{width:25px!important;height:25px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:1.45!important;stroke-linecap:round!important;stroke-linejoin:round!important}
  .mobile-menu-contact .menu-contact-icon svg circle:last-child{fill:currentColor!important;stroke:none!important}
 }
+
+
+/* Reference-locked mobile menu proportions */
+@media(max-width:900px){
+ .mobile-menu{padding:42px 30px 28px!important;background:#fbf7f1!important}
+ .mobile-menu-head .logo{font:400 48px/.86 Georgia,"Times New Roman",serif!important;letter-spacing:-.045em!important}
+ .mobile-menu-head .logo small{margin-top:12px!important;font:500 12px/1 Arial,sans-serif!important;letter-spacing:.28em!important}
+ .mobile-menu-close{width:48px!important;height:48px!important;font:300 52px/42px Arial,sans-serif!important;color:#765043!important}
+ .mobile-menu nav{margin-top:72px!important}
+ .mobile-menu nav a{min-height:76px!important;padding:0 4px!important}
+ .mobile-menu nav a b{font:400 38px/1 Georgia,"Times New Roman",serif!important;letter-spacing:-.025em!important}
+ .mobile-menu nav a>span{font-size:32px!important;color:#8c5948!important}
+ .mobile-menu-book{margin:40px auto 32px!important;gap:28px!important}
+ .mobile-menu-book b{font:400 17px/1 Arial,sans-serif!important;letter-spacing:.28em!important}
+ .mobile-menu-book i{width:64px!important;height:64px!important;flex-basis:64px!important;font-size:32px!important;background:#c97f79!important}
+ .mobile-menu-contact>a{grid-template-columns:54px 1fr 34px!important;min-height:72px!important}
+ .mobile-menu-contact .menu-contact-icon{width:34px!important;height:34px!important}
+ .mobile-menu-contact .menu-contact-icon svg{width:30px!important;height:30px!important;stroke-width:1.8!important}
+ .mobile-menu-contact b{font:400 18px/1.1 Georgia,"Times New Roman",serif!important}
+ .mobile-menu-contact i{font-size:28px!important}
+ .mobile-menu-tagline{padding:34px 4px 8px!important;gap:20px!important}
+ .mobile-menu-tagline em{font:italic 22px/1 Georgia,"Times New Roman",serif!important}
+}
+@media(max-width:390px){
+ .mobile-menu{padding:30px 25px 22px!important}
+ .mobile-menu-head .logo{font-size:41px!important}
+ .mobile-menu-head .logo small{font-size:10px!important}
+ .mobile-menu nav{margin-top:52px!important}
+ .mobile-menu nav a{min-height:65px!important}
+ .mobile-menu nav a b{font-size:33px!important}
+ .mobile-menu-book{margin:30px auto 24px!important}
+ .mobile-menu-contact>a{min-height:62px!important}
+ .mobile-menu-tagline{padding-top:24px!important}
+}
