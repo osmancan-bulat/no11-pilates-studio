@@ -939,3 +939,15 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    padding-right:16px!important;
  }
 }
+
+
+/* Mobile booking form — single-column fit */
+@media(max-width:900px){
+ #randevu.booking{display:block!important;padding:64px 22px 72px!important}
+ #randevu .booking-form{width:100%!important;max-width:100%!important;margin:28px 0 0!important;padding:0!important}
+ #randevu .form-row{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;width:100%!important}
+ #randevu .booking-form label,#randevu .booking-form input,#randevu .booking-form select,#randevu .booking-form textarea{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+ #randevu .booking-form input,#randevu .booking-form select,#randevu .booking-form textarea{font-size:16px!important}
+ #randevu .booking-form button[type="submit"]{width:100%!important;max-width:100%!important;min-height:54px!important;margin-top:10px!important}
+ #randevu h2{font-size:clamp(42px,12vw,58px)!important;line-height:.98!important}
+}
