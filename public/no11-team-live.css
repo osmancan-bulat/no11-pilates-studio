@@ -42,3 +42,10 @@
  #ekip .founder-image{border-radius:26px!important;overflow:hidden!important}
  #ekip .founder-image img{border-radius:26px!important}
 }
+
+
+/* Mobile founder portrait: reveal slightly more of Eda's lower outfit */
+@media(max-width:900px){
+ #ekip .founder-image{aspect-ratio:4/5.35!important}
+ #ekip .founder-image img{object-position:center top!important}
+}
