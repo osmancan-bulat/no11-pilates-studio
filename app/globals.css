@@ -965,3 +965,12 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .quote-band{width:100%!important;height:68vh!important;min-height:520px!important;max-height:620px!important;overflow:hidden!important}
  .quote-band>img{left:0!important;right:0!important;top:0!important;bottom:0!important;width:100%!important;height:100%!important;max-width:none!important;transform:none!important;object-fit:cover!important;object-position:center 34%!important}
 }
+
+
+/* Bilemezsiniz mobile copy spacing — keep headline clear of ladder */
+@media(max-width:900px){
+ .quote-band>div{left:16px!important;top:5.5%!important;width:220px!important;max-width:56vw!important}
+ .quote-band>div p{margin:0 0 7px!important;font-size:7px!important;letter-spacing:.28em!important}
+ .quote-band>div h2{margin:0 0 7px!important;font-size:36px!important;line-height:.92!important}
+ .quote-band>div span{display:block!important;max-width:205px!important;font-size:9px!important;line-height:1.35!important}
+}
