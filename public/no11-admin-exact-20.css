@@ -145,3 +145,10 @@ body:has(.n11-v4)::before{display:none!important;content:none!important}
   .n11-v4 .n11-date-field .n11-date-search{position:absolute!important;z-index:5!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;border:0!important;opacity:.001!important;cursor:pointer!important;pointer-events:auto!important}
   .n11-v4 .n11-date-field .n11-date-search::-webkit-calendar-picker-indicator{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;cursor:pointer!important}
 }
+
+/* Self-contained admin: keep team portraits inside approved cards */
+.n11-v4 .n11-team-card>i{overflow:hidden!important;position:relative!important;flex:none!important}
+.n11-v4 .n11-team-card>i>img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:cover!important;border-radius:50%!important}
+.n11-v4 .n11-team-card{overflow:hidden!important;min-width:0!important}
+.n11-v4 .n11-team-card>div{min-width:0!important}
+@media(max-width:760px){.n11-v4 .n11-team-card>i>img{width:100%!important;height:100%!important;object-fit:cover!important}}
