@@ -2,13 +2,7 @@
   'use strict';
   var K={appointments:'no11-appointments',team:'no11-team',lessons:'no11-lessons',hours:'no11-hours',slots:'no11-appointment-slots',settings:'no11-site-settings',theme:'no11-admin-theme'};
   var state={page:'dashboard',filter:'all',query:'',selected:null,dark:false,themeMode:'light',date:new Date(),items:[],team:[],lessons:[],hours:[],slots:[],settings:{}};
-  var defaults={
-    team:[{id:'team-1',name:'Melis Kaya',role:'Kurucu & Pilates Eğitmeni',bio:'Pilates yolculuğuna tutkuyla eşlik ediyor.',active:true},{id:'team-2',name:'Selin Yılmaz',role:'Pilates Eğitmeni',bio:'Hareketle güçlenen bedenler için.',active:true},{id:'team-3',name:'Zeynep Akın',role:'Pilates Eğitmeni',bio:'Doğru hizalama, güçlü dönüşüm.',active:true},{id:'team-4',name:'Derya Şahin',role:'Pilates Eğitmeni',bio:'Farkındalıkla hareket, dengede yaşam.',active:true},{id:'team-5',name:'Elif Demir',role:'Pilates Eğitmeni',bio:'Nefes, hareket, denge.',active:true},{id:'team-6',name:'Ayşe Karaca',role:'Stüdyo Koordinatörü',bio:'Akışkan bir stüdyo deneyimi için buradayım.',active:true},{id:'team-7',name:'Mert Güneş',role:'Misafir İlişkileri',bio:'Sizi karşılamak için buradayım.',active:true}],
-    lessons:[{id:'lesson-1',name:'Birebir Pilates',duration:50},{id:'lesson-2',name:'Tanışma Dersi',duration:50},{id:'lesson-3',name:'Duet / İkili Pilates',duration:50},{id:'lesson-4',name:'Omurga Odaklı Pilates',duration:50},{id:'lesson-5',name:'Hamile Pilatesi',duration:50}],
-    hours:['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'].map(function(day,i){return {day:day,open:i===6?'':i===5?'09:00':'07:00',close:i===6?'':i===5?'18:00':'21:00',closed:i===6}}),
-    slots:['09:00','10:30','12:00','14:00','16:30','18:00','19:30'],
-    settings:{businessName:'No.11 Pilates Studio',description:'Zihninle bedenini buluştur.\nGüçlü, esnek ve dengede bir sen için buradayız.',phone:'0 532 515 92 11',whatsapp:'+90 532 515 92 11',instagram:'@no11.pilatesstudio',address:'Balat Mh. Alan Sk. No:9B, Nilüfer / Bursa',maps:'https://www.google.com/maps/place/No.11+pilates+studio/@40.259696,28.941868,17z',email:'',siteVisible:true,contactVisible:true,appointmentInterval:'60'}
-  };
+  var defaults={team:[],lessons:[],hours:[],slots:[],settings:{}};
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function read(key,fallback){try{var v=JSON.parse(localStorage.getItem(key)||'null');return v==null?fallback:v}catch(e){return fallback}}
   function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
