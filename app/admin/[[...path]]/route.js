@@ -160,7 +160,7 @@ const calendarThemeGuard = `<script id="n11-calendar-theme-guard">
 })();
 </script>`;
 
-async function proxy(request, context) {
+async function proxy(request) {
   if (request.method === 'GET' && !isAdminRequest(request)) {
     return new Response(loginPage(), {
       status: 200,
@@ -172,39 +172,44 @@ async function proxy(request, context) {
     });
   }
 
-  const incoming = new URL(request.url);
-  const params = await context.params;
-  const tail = Array.isArray(params?.path) ? params.path.join('/') : '';
-  const target = new URL(`${ORIGIN}/admin${tail ? `/${tail}` : ''}${incoming.search}`);
-
-  const headers = new Headers(request.headers);
-  headers.delete('host');
-  headers.delete('content-length');
-
-  const init = { method: request.method, headers, redirect: 'manual' };
-  if (!['GET', 'HEAD'].includes(request.method)) init.body = await request.arrayBuffer();
-
-  const upstream = await fetch(target, init);
-  const responseHeaders = new Headers(upstream.headers);
-  ['content-encoding', 'content-length', 'transfer-encoding', 'connection'].forEach((h) => responseHeaders.delete(h));
-
-  if ((upstream.headers.get('content-type') || '').includes('text/html')) {
-    let html = await upstream.text();
-    html = html
-      .replaceAll('href="/_next/', `href="${ORIGIN}/_next/`)
-      .replaceAll('src="/_next/', `src="${ORIGIN}/_next/`)
-      .replace(/\/no11-admin-exact-20\.js(?:\?[^"' ]*)?/g, `${incoming.origin}/no11-admin-exact-20.js?v=20260915-date-2`)
-;
-
-    html = html.replace(
-      '</head>',
-      `<script>window.__NO11_EXACT_ADMIN__=true;localStorage.setItem('no11-admin-theme','light')</script><script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('.n11-side-logo,.n11-site-return,.n11-side-user');if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(!target.classList.contains('n11-side-logo'))location.assign('/')},true)</script><script src="${incoming.origin}/no11-admin-live-sync.js?v=15" defer></script><script src="${incoming.origin}/no11-admin-fresh.js?v=14" defer></script><script src="${incoming.origin}/no11-admin-loader.js?v=20260915-live-date-hit-1" defer></script><script src="${incoming.origin}/no11-mobile-program-sync.js?v=2" defer></script><script src="${incoming.origin}/no11-admin-lesson-delete.js?v=20260918-1" defer></script></head>`,
-    );
-    responseHeaders.set('cache-control', 'no-store, no-cache, must-revalidate');
-    return new Response(html, { status: upstream.status, headers: responseHeaders });
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new Response('Method Not Allowed', { status: 405, headers: { allow: 'GET, HEAD' } });
   }
 
-  return new Response(await upstream.arrayBuffer(), { status: upstream.status, headers: responseHeaders });
+  const html = `<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>No.11 Yönetici Paneli</title>
+<link rel="stylesheet" href="/no11-admin-exact-20.css?v=20260915-live-date-hit-1">
+<link rel="stylesheet" href="/no11-settings-desktop-clean.css?v=20260914-1">
+<link rel="stylesheet" href="/no11-admin-reports.css?v=20260910-4">
+<link rel="stylesheet" href="/no11-reports-theme-fix.css?v=20260914-1">
+<link rel="stylesheet" href="/no11-admin-reports-mobile-v2.css?v=20260910-4">
+<script>window.__NO11_EXACT_ADMIN__=true;try{localStorage.setItem('no11-admin-theme','light')}catch(e){}</script>
+</head>
+<body>
+<main></main>
+<script src="/no11-admin-exact-20.js?v=20260915-date-2"></script>
+<script src="/no11-admin-live-sync.js?v=15" defer></script>
+<script src="/no11-admin-fresh.js?v=14" defer></script>
+<script src="/no11-admin-loader.js?v=20260915-live-date-hit-1" defer></script>
+<script src="/no11-mobile-program-sync.js?v=2" defer></script>
+<script src="/no11-admin-lesson-delete.js?v=20260918-1" defer></script>
+<script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('.n11-side-logo,.n11-site-return,.n11-side-user');if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(!target.classList.contains('n11-side-logo'))location.assign('/')},true)</script>
+</body>
+</html>`;
+
+  return new Response(request.method === 'HEAD' ? null : html, {
+    status: 200,
+    headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'no-store, no-cache, must-revalidate',
+      'x-robots-tag': 'noindex, nofollow',
+    },
+  });
 }
 
 export const dynamic = 'force-dynamic';
