@@ -1,6 +1,6 @@
 import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 
-const ORIGIN = 'https://no11-pilates-studio-296vuz3g5-osmancanbulat197-7442s-projects.vercel.app';
+const ORIGIN = 'https://no11-pilates-studio-azukoqij1-osmancanbulat197-7442s-projects.vercel.app';
 
 function loginPage() {
   return `<!doctype html>
