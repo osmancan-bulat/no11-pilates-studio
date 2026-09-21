@@ -719,3 +719,38 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
 }
 
 /* Preview redeploy trigger 2026-09-21 */
+
+
+/* Approved warm mobile navigation */
+@media(max-width:900px){
+ .mobile-menu{
+   position:fixed!important;inset:0!important;z-index:1200!important;
+   background:#f7f1ea!important;color:#181310!important;
+   padding:30px 28px 26px!important;overflow-y:auto!important;
+ }
+ .mobile-menu .logo{color:#181310!important}
+ .mobile-menu .logo small{color:#181310!important}
+ .mobile-menu button{color:#6e554b!important}
+ .mobile-menu nav{margin-top:62px!important}
+ .mobile-menu nav a{
+   color:#181310!important;border-bottom:1px solid rgba(78,55,44,.14)!important;
+   padding:19px 0!important;font-family:Georgia,"Times New Roman",serif!important;
+   font-size:31px!important;line-height:1.1!important;
+ }
+ .mobile-menu nav a:before{
+   display:inline-block!important;width:48px!important;
+   color:#b98577!important;font:400 13px/1 Arial,sans-serif!important;
+ }
+ .mobile-menu nav a:nth-child(1):before{content:"01"}
+ .mobile-menu nav a:nth-child(2):before{content:"02"}
+ .mobile-menu nav a:nth-child(3):before{content:"03"}
+ .mobile-menu nav a:nth-child(4):before{content:"04"}
+ .mobile-menu nav a:nth-child(5):before{content:"05"}
+ .mobile-menu nav a:nth-child(6){
+   margin-top:28px!important;padding:18px 24px!important;border:0!important;
+   border-radius:999px!important;background:#cf8d83!important;color:#fff!important;
+   font:500 13px/1 Arial,sans-serif!important;letter-spacing:.18em!important;text-align:center!important;
+ }
+ .mobile-menu nav a:nth-child(6):before{display:none!important}
+ .mobile-menu nav a:nth-child(6):after{content:" →"!important;font-size:22px!important}
+}
