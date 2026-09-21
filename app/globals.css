@@ -992,3 +992,10 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .quote-band{height:72vh!important;min-height:540px!important;max-height:660px!important}
  .quote-band>img{object-fit:cover!important;object-position:center top!important}
 }
+
+
+/* Final trim: remove remaining lower floor from mobile Bilemezsiniz */
+@media(max-width:900px){
+ .quote-band{height:64vh!important;min-height:500px!important;max-height:590px!important}
+ .quote-band>img{object-fit:cover!important;object-position:center top!important}
+}
