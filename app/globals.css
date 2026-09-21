@@ -916,3 +916,26 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  }
  .menu-button span{width:20px!important;min-width:20px!important;max-width:20px!important}
 }
+
+
+/* Mobile booking form: prevent horizontal overflow */
+@media(max-width:900px){
+ #randevu,#randevu *{box-sizing:border-box!important}
+ #randevu{width:100%!important;max-width:100%!important;overflow:hidden!important}
+ #randevu form{width:100%!important;max-width:100%!important;min-width:0!important}
+ #randevu form>*{max-width:100%!important;min-width:0!important}
+ #randevu input,#randevu select,#randevu textarea,#randevu button{
+   width:100%!important;
+   max-width:100%!important;
+   min-width:0!important;
+ }
+ #randevu button[type="submit"]{
+   display:flex!important;
+   align-items:center!important;
+   justify-content:center!important;
+   white-space:normal!important;
+   text-align:center!important;
+   padding-left:16px!important;
+   padding-right:16px!important;
+ }
+}
