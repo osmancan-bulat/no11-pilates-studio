@@ -777,3 +777,27 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .mobile-menu-foot a{padding:0!important;border:0!important;font:500 10px/1.2 Arial,sans-serif!important;letter-spacing:.08em!important;color:#725d54!important}
  .mobile-menu-foot em{font:italic 21px/1 Georgia,"Times New Roman",serif!important;color:#a56f62!important;white-space:nowrap!important}
 }
+
+
+/* Exact approved mobile navigation composition */
+@media(max-width:900px){
+ .mobile-menu{padding:28px 28px 25px!important;background:#fbf4ed!important}
+ .mobile-menu-head .logo{font-size:34px!important}
+ .mobile-menu-close{font-size:40px!important;color:#76574d!important}
+ .mobile-menu nav{margin-top:68px!important}
+ .mobile-menu nav a{grid-template-columns:1fr 34px!important;gap:12px!important;padding:18px 2px!important;border-bottom:1px solid rgba(132,92,77,.20)!important}
+ .mobile-menu nav a b{font:400 30px/1.08 Georgia,"Times New Roman",serif!important;color:#171310!important}
+ .mobile-menu nav a span{font:300 25px/1 Arial,sans-serif!important;color:#8f6255!important}
+ .mobile-menu-book{width:max-content!important;margin:40px auto 31px!important;padding:0!important;background:transparent!important;color:#171310!important;border-radius:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:22px!important;letter-spacing:0!important}
+ .mobile-menu-book b{font:400 17px/1 Arial,sans-serif!important;letter-spacing:.25em!important;white-space:nowrap!important}
+ .mobile-menu-book i{display:grid!important;place-items:center!important;width:58px!important;height:58px!important;border-radius:50%!important;background:#c9827d!important;color:#fff!important;font:300 28px/1 Arial,sans-serif!important;font-style:normal!important}
+ .mobile-menu-contact{border-top:1px solid rgba(132,92,77,.20)!important}
+ .mobile-menu-contact>a{display:grid!important;grid-template-columns:48px 1fr 30px!important;align-items:center!important;gap:14px!important;min-height:72px!important;padding:0 3px!important;border-bottom:1px solid rgba(132,92,77,.20)!important;color:#211916!important}
+ .mobile-menu-contact .menu-contact-icon{font:400 31px/1 Arial,sans-serif!important;color:#c9827d!important}
+ .mobile-menu-contact b{font:400 17px/1.1 Georgia,"Times New Roman",serif!important}
+ .mobile-menu-contact i{justify-self:end!important;font:300 24px/1 Arial,sans-serif!important;font-style:normal!important;color:#8f6255!important}
+ .mobile-menu-tagline{margin-top:auto!important;padding:30px 10px 6px!important;display:grid!important;grid-template-columns:1fr auto 1fr!important;align-items:center!important;gap:15px!important}
+ .mobile-menu-tagline span{height:1px!important;background:rgba(187,123,108,.42)!important}
+ .mobile-menu-tagline em{font:italic 20px/1 Georgia,"Times New Roman",serif!important;color:#c9827d!important;white-space:nowrap!important}
+ .mobile-menu-foot{display:none!important}
+}
