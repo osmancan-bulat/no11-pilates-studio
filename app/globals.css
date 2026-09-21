@@ -951,3 +951,10 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  #randevu .booking-form button[type="submit"]{width:100%!important;max-width:100%!important;min-height:54px!important;margin-top:10px!important}
  #randevu h2{font-size:clamp(42px,12vw,58px)!important;line-height:.98!important}
 }
+
+
+/* Mobile Bilemezsiniz crop — reduce empty floor, keep subject complete */
+@media(max-width:900px){
+ .quote-band{height:68vh!important;min-height:520px!important;max-height:620px!important}
+ .quote-band>img{object-fit:cover!important;object-position:center 38%!important;transform:scale(1.13)!important;transform-origin:center 38%!important}
+}
