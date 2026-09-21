@@ -149,23 +149,3 @@ body:has(.n11-v4.n11-dark){background:#171419!important}
 .n11-v4.n11-dark .n11-lessons article strong{color:#d5a14c}.n11-v4.n11-dark .n11-slots header button{color:#f4eff4;border-color:#8f6934}
 @media(max-width:900px){.n11-v4 .n11-slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.n11-v4 .n11-lessons,.n11-v4 .n11-slots,.n11-v4 .n11-hours{padding:20px}.n11-v4 .n11-lessons article{grid-template-columns:52px 1fr auto!important;gap:10px}.n11-v4 .n11-lessons article strong{grid-column:2}.n11-v4 .n11-lessons article button{grid-column:3;grid-row:1/3}.n11-v4 .n11-slots>header{align-items:flex-start;flex-direction:column}.n11-v4 .n11-slot-grid{grid-template-columns:1fr}.n11-v4 .n11-hours-save{width:100%}}
-
-/* Recovery: final mobile appointments layout must override late desktop corrections */
-@media(max-width:760px){
-.n11-v4 .n11-page-top{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;gap:10px!important;align-items:center!important}
-.n11-v4 .n11-page-top h1{font-size:34px!important;min-width:0!important}
-.n11-v4 .n11-page-top>div{min-width:0!important}
-.n11-v4 .n11-search{width:100%!important;max-width:100%!important;min-width:0!important}
-.n11-v4 .n11-appointments-layout{display:block!important;grid-template-columns:none!important;width:100%!important;min-width:0!important}
-.n11-v4 .n11-appointments{width:100%!important;min-width:0!important;padding:18px 14px 10px!important;overflow:visible!important}
-.n11-v4 .n11-filter{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;max-width:100%!important;margin-bottom:14px!important}
-.n11-v4 .n11-filter button{min-width:0!important;width:100%!important;padding:0 5px!important;font-size:12px!important}
-.n11-v4 .n11-appt-list{width:100%!important;min-width:0!important}
-.n11-v4 .n11-appt-row{width:100%!important;min-width:0!important;grid-template-columns:8px 58px minmax(0,1fr) auto!important;gap:7px!important;padding:10px 0!important}
-.n11-v4 .n11-appt-row>b,.n11-v4 .n11-appt-service{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important}
-.n11-v4 .n11-appt-summary{display:none!important}
-.n11-v4 .n11-appt-row .n11-note-icon,.n11-v4 .n11-appt-row button,.n11-v4 .n11-appt-row>a,.n11-v4 .n11-appt-row .n11-dash{min-width:0!important}
-}
-
-/* Git recovery compatibility: appointment marker on legacy calendar cells */
-.n11-v4 .n11-cal-grid [data-program-day].has-appointment:after{content:"";display:block;width:4px;height:4px;margin-top:-7px;border-radius:50%;background:#3f8a5b}
