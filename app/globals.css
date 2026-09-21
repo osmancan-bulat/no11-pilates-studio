@@ -884,3 +884,35 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    color:#171310!important;
  }
 }
+
+
+/* Exact compact No.11 menu logo from approved reference */
+@media(max-width:900px){
+ .mobile-menu-head .logo{
+   display:inline-block!important;
+   width:auto!important;
+   padding:0!important;
+   border:0!important;
+   font:400 40px/.92 Georgia,"Times New Roman",serif!important;
+   letter-spacing:-.035em!important;
+   color:#171310!important;
+ }
+ .mobile-menu-head .logo small{
+   display:block!important;
+   margin:10px 0 0 1px!important;
+   padding:0!important;
+   border:0!important;
+   font:500 8px/1 Arial,sans-serif!important;
+   letter-spacing:.16em!important;
+   color:#171310!important;
+ }
+ .mobile-menu-head .logo:after{
+   content:""!important;
+   display:block!important;
+   width:94px!important;
+   height:1px!important;
+   margin-top:8px!important;
+   background:rgba(23,19,16,.55)!important;
+ }
+ .menu-button span{width:20px!important;min-width:20px!important;max-width:20px!important}
+}
