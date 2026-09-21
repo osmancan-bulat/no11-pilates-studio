@@ -958,3 +958,10 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .quote-band{height:68vh!important;min-height:520px!important;max-height:620px!important}
  .quote-band>img{object-fit:cover!important;object-position:center 38%!important;transform:scale(1.13)!important;transform-origin:center 38%!important}
 }
+
+
+/* Correct Bilemezsiniz mobile crop: full-bleed, no transform side gap */
+@media(max-width:900px){
+ .quote-band{width:100%!important;height:68vh!important;min-height:520px!important;max-height:620px!important;overflow:hidden!important}
+ .quote-band>img{left:0!important;right:0!important;top:0!important;bottom:0!important;width:100%!important;height:100%!important;max-width:none!important;transform:none!important;object-fit:cover!important;object-position:center 34%!important}
+}
