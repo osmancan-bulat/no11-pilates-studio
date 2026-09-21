@@ -180,6 +180,8 @@ async function proxy(request, context) {
   const headers = new Headers(request.headers);
   headers.delete('host');
   headers.delete('content-length');
+  // Local preview auth is authoritative; do not forward its cookie to the historical upstream.
+  headers.delete('cookie');
 
   const init = { method: request.method, headers, redirect: 'manual' };
   if (!['GET', 'HEAD'].includes(request.method)) init.body = await request.arrayBuffer();
