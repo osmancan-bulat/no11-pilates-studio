@@ -999,3 +999,12 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .quote-band{height:64vh!important;min-height:500px!important;max-height:590px!important}
  .quote-band>img{object-fit:cover!important;object-position:center top!important}
 }
+
+
+/* Keep Bilemezsiniz copy fully above ladder after bottom trim */
+@media(max-width:900px){
+ .quote-band>div{left:12px!important;top:3.2%!important;width:165px!important;max-width:42vw!important}
+ .quote-band>div p{margin:0 0 5px!important;font-size:6px!important;line-height:1!important;letter-spacing:.25em!important}
+ .quote-band>div h2{margin:0 0 5px!important;font-size:29px!important;line-height:.88!important;white-space:nowrap!important}
+ .quote-band>div span{display:block!important;width:160px!important;max-width:41vw!important;font-size:7px!important;line-height:1.2!important;white-space:nowrap!important}
+}
