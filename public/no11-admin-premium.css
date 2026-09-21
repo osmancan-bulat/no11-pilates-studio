@@ -166,3 +166,6 @@ body:has(.n11-v4.n11-dark){background:#171419!important}
 .n11-v4 .n11-appt-summary{display:none!important}
 .n11-v4 .n11-appt-row .n11-note-icon,.n11-v4 .n11-appt-row button,.n11-v4 .n11-appt-row>a,.n11-v4 .n11-appt-row .n11-dash{min-width:0!important}
 }
+
+/* Git recovery compatibility: appointment marker on legacy calendar cells */
+.n11-v4 .n11-cal-grid [data-program-day].has-appointment:after{content:"";display:block;width:4px;height:4px;margin-top:-7px;border-radius:50%;background:#3f8a5b}
