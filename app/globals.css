@@ -822,3 +822,10 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .mobile-menu-contact b{min-width:0!important;font-size:15px!important}
  .mobile-menu-tagline{padding:20px 0 2px!important}
 }
+
+
+@media(max-width:900px){
+ .mobile-menu-contact .menu-contact-icon{width:30px!important;height:30px!important;display:grid!important;place-items:center!important;color:#c9827d!important}
+ .mobile-menu-contact .menu-contact-icon svg{width:25px!important;height:25px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:1.45!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+ .mobile-menu-contact .menu-contact-icon svg circle:last-child{fill:currentColor!important;stroke:none!important}
+}
