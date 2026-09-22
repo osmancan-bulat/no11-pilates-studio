@@ -1,6 +1,6 @@
 import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 
-const ORIGIN = 'https://no11-pilates-studio-azukoqij1-osmancanbulat197-7442s-projects.vercel.app';
+const ORIGIN = 'https://no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects.vercel.app';
 
 function loginPage() {
   return `<!doctype html>
@@ -160,15 +160,57 @@ const calendarThemeGuard = `<script id="n11-calendar-theme-guard">
 })();
 </script>`;
 
-async function proxy(request, context) {
+async function proxy(request) {
   if (request.method === 'GET' && !isAdminRequest(request)) {
-    return new Response(loginPage(), {status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate','x-robots-tag':'noindex, nofollow'}});
+    return new Response(loginPage(), {
+      status: 200,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        'cache-control': 'no-store, no-cache, must-revalidate',
+        'x-robots-tag': 'noindex, nofollow',
+      },
+    });
   }
-  if (request.method !== 'GET' && request.method !== 'HEAD') return new Response(null,{status:405});
-  const incoming=new URL(request.url);
-  const html=`<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>No.11 Yönetici Paneli</title><link rel="stylesheet" href="/no11-admin-exact-20.css?v=20260915-live-date-hit-1"><link rel="stylesheet" href="/no11-admin-premium.css?v=20260918-final">${mobileSafetyFix}<link rel="stylesheet" href="/no11-mobile-appointments-final.css?v=20260921-1">${calendarThemeGuard}</head><body><main></main><div id="n11-admin-boot"></div><script>window.__NO11_EXACT_ADMIN__=true;</script><script src="/no11-admin-firebase.js?v=20260918-final" defer></script><script src="/no11-admin-live-sync.js?v=15" defer></script><script src="/no11-admin-fresh.js?v=14" defer></script><script src="/no11-admin-loader.js?v=20260915-live-date-hit-1" defer></script><script src="/no11-mobile-program-sync.js?v=2" defer></script><script src="/no11-admin-lesson-delete.js?v=20260918-1" defer></script></body></html>`;
-  return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store, no-cache, must-revalidate','x-robots-tag':'noindex, nofollow'}});
+
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new Response('Method Not Allowed', { status: 405, headers: { allow: 'GET, HEAD' } });
+  }
+
+  const html = `<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>No.11 Yönetici Paneli</title>
+<style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style>
+<link rel="stylesheet" href="/no11-admin-premium.css?v=31">
+<link rel="stylesheet" href="/no11-admin-calendar-fix.css?v=31">
+${mobileSafetyFix}
+<script src="/no11-admin-firebase.js?v=3" defer></script>
+<script src="/no11-admin-fresh.js?v=1" defer></script>
+${calendarThemeGuard}
+<script>window.__NO11_EXACT_ADMIN__=true;localStorage.setItem('no11-admin-theme','light')</script>
+<script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('.n11-side-logo,.n11-site-return,.n11-side-user');if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(!target.classList.contains('n11-side-logo'))location.assign('/')},true)</script>
+<script src="/no11-admin-live-sync.js?v=15" defer></script>
+<script src="/no11-admin-fresh.js?v=14" defer></script>
+<script src="/no11-admin-loader.js?v=20260915-live-date-hit-1" defer></script>
+<script src="/no11-mobile-program-sync.js?v=2" defer></script>
+<script src="/no11-admin-lesson-delete.js?v=20260918-1" defer></script>
+</head>
+<body><main></main></body>
+</html>`;
+
+  return new Response(request.method === 'HEAD' ? null : html, {
+    status: 200,
+    headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'no-store, no-cache, must-revalidate',
+      'x-robots-tag': 'noindex, nofollow',
+    },
+  });
 }
+
 export const dynamic = 'force-dynamic';
 export const GET = proxy;
 export const POST = proxy;

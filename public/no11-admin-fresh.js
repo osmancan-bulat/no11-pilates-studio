@@ -11,6 +11,7 @@
   function monthTitle(date){return months[date.getMonth()].toLocaleUpperCase('tr-TR')+' '+date.getFullYear()}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function readArray(key){try{var value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch(e){return []}}
+  function setText(node,value){value=String(value==null?'':value);if(node&&node.textContent!==value)node.textContent=value}
 
   function turkeyNow(){
     var formatter=new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',weekday:'long',hour:'2-digit',hourCycle:'h23'});
@@ -43,7 +44,7 @@
     grid.innerHTML=html;
   }
 
-  function injectMobileStyle(){
+  function injectEnhancementStyle(){
     if(document.getElementById('n11-final-mobile-dashboard-style'))return;
     var style=document.createElement('style');
     style.id='n11-final-mobile-dashboard-style';
@@ -51,8 +52,8 @@
 @media(max-width:760px){\
   .n11-v4 .n11-main-content.n11-final-mobile-host{padding:20px 18px 46px!important;overflow-x:hidden!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top{display:grid!important;grid-template-columns:46px minmax(0,1fr) 46px!important;align-items:start!important;gap:14px!important;margin:0 0 22px!important;min-height:104px!important}\
-  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu{grid-column:1!important;display:grid!important;place-items:center!important;width:46px!important;height:46px!important;margin:0!important;border:1px solid var(--n11-line)!important;border-radius:13px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font-size:0!important;box-shadow:0 5px 18px rgba(30,22,32,.04)!important}\
-  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu:after{content:"☰";font-size:20px!important;line-height:1!important}\
+  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu{grid-column:1!important;display:grid!important;place-items:center!important;position:relative!important;width:46px!important;height:46px!important;margin:0!important;padding:0!important;border:1px solid var(--n11-line)!important;border-radius:13px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font-size:0!important;line-height:0!important;box-shadow:0 5px 18px rgba(30,22,32,.04)!important}\
+  .n11-v4 .n11-final-mobile-host>.n11-page-top .n11-mobile-menu:after{content:"";display:block!important;position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:18px!important;height:14px!important;margin:0!important;background:linear-gradient(var(--n11-ink),var(--n11-ink)) 0 0/18px 1.5px no-repeat,linear-gradient(var(--n11-ink),var(--n11-ink)) 0 6px/18px 1.5px no-repeat,linear-gradient(var(--n11-ink),var(--n11-ink)) 0 12px/18px 1.5px no-repeat}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top>div:nth-of-type(1){grid-column:2!important;min-width:0!important;padding-top:0!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top h1{font:42px/.95 Georgia,serif!important;letter-spacing:-.045em!important;white-space:nowrap!important;margin:0!important;color:var(--n11-ink)!important}\
   .n11-v4 .n11-final-mobile-host>.n11-page-top>div:nth-of-type(1)>p{margin:17px 0 0!important;color:#b56727!important;font:600 11px/1.35 Arial,sans-serif!important;letter-spacing:.29em!important;text-transform:none!important}\
@@ -117,6 +118,62 @@
   .n11-final-first-last{padding-left:7px;padding-right:7px}.n11-final-lesson{grid-template-columns:50px 1fr;padding:0 7px;gap:9px}.n11-final-lesson .n11-final-icon{width:46px;height:46px;font-size:25px}.n11-final-lesson strong{font-size:23px}\
   .n11-final-section{padding:23px 19px}.n11-final-section-head h3{font-size:15px}.n11-final-section-head p{font-size:15px}.n11-final-link{padding:0 12px;font-size:14px}\
 }\
+.n11-v4 .n11-appt-row{position:relative;overflow:visible!important}\
+.n11-v4 .n11-timeline .n11-time-line>time .n11-program-time-date{display:none!important}\
+.n11-v4 .n11-today-row>time .n11-program-time-date{display:none!important}\
+.n11-v4 .n11-calendar .n11-cal-grid button.has-appointment span:after{content:""!important;display:block!important;width:4px!important;height:4px!important;margin:3px auto 0!important;border-radius:50%!important;background:#3f8a5b!important}\
+.n11-v4 .n11-mobile-calendar .n11-cal-grid>button.has-appointment:after{background:#3f8a5b!important}\
+.n11-v4 .n11-manager-note-helper{margin:9px 0 0!important;color:var(--n11-muted)!important;font:12px/1.45 Arial,sans-serif!important}\
+@media(min-width:1201px){.n11-v4 .n11-program-v4:has(>.n11-schedule-timeline){grid-template-columns:minmax(430px,1.12fr) minmax(320px,.84fr) minmax(360px,1fr)!important;align-items:start!important}.n11-v4 .n11-program-v4>.n11-timeline.n11-schedule-timeline{grid-column:auto!important;display:grid!important;grid-template-columns:1fr!important;gap:18px!important;padding:24px!important;min-height:0!important}}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart{min-width:0!important;padding:18px 18px 8px!important;border:1px solid var(--n11-line)!important;border-radius:16px!important;background:var(--n11-card)!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-daypart>h3{margin:0 0 10px!important;padding:0 0 14px!important;border-bottom:1px solid var(--n11-line)!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line{grid-template-columns:62px minmax(0,1fr)!important;align-items:center!important;min-height:58px!important;border-bottom:1px solid var(--n11-line)!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line:last-child{border-bottom:0!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>time{padding:0!important;font-size:17px!important;white-space:nowrap!important}\
+.n11-v4 .n11-timeline.n11-schedule-timeline .n11-time-line>span{display:none!important}\
+.n11-v4 .n11-program-slot-items{grid-column:2!important;grid-row:1!important;z-index:2!important;display:grid!important;gap:5px!important;min-width:0!important;width:100%!important}\
+.n11-v4 .n11-program-inline-card{display:grid!important;grid-template-columns:max-content minmax(0,1fr) max-content!important;align-items:center!important;gap:8px!important;min-width:0!important;width:100%!important;max-width:100%!important;padding:10px 11px!important;box-sizing:border-box!important;border:1px solid var(--n11-line)!important;border-left:3px solid #3f8a5b!important;border-radius:10px!important;background:var(--n11-bg)!important;color:var(--n11-ink)!important;cursor:pointer!important;white-space:nowrap!important;overflow:hidden!important}\
+.n11-v4 .n11-program-inline-card b{flex:none!important;font:700 15px/1.2 Arial,sans-serif!important}\
+.n11-v4 .n11-program-inline-card small{font:500 14px/1.2 Arial,sans-serif!important;color:var(--n11-muted)!important;overflow:hidden!important;text-overflow:ellipsis!important}\
+.n11-v4 .n11-program-inline-status{font:700 13px/1.2 Arial,sans-serif!important;flex:none!important}\
+.n11-v4 .n11-program-inline-status.confirmed{color:#378253!important}\
+.n11-v4 .n11-program-inline-status.pending{color:#b12d49!important}\
+.n11-v4 .n11-program-inline-status.rejected{color:#8a8086!important}\
+.n11-v4 .n11-program-available{grid-column:2!important;grid-row:1!important;color:var(--n11-muted)!important;font:500 13px/1.2 Arial,sans-serif!important}\
+.n11-v4 .n11-appt-row>time.n11-appt-datetime{display:grid!important;gap:3px!important;line-height:1.05!important;white-space:nowrap!important}\
+.n11-v4 .n11-appt-row>time.n11-appt-datetime>span{font:600 12px/1.1 Arial,sans-serif!important;color:var(--n11-muted)!important}\
+.n11-v4 .n11-appt-row>time.n11-appt-datetime>small{font:16px/1.1 Georgia,serif!important;color:var(--n11-ink)!important}\
+.n11-v4 .n11-appt-menu{position:relative;grid-column:-2/-1!important;justify-self:end!important;z-index:12}\
+.n11-v4 .n11-appt-more{display:grid!important;place-items:center!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;border:1px solid var(--n11-line)!important;border-radius:11px!important;background:var(--n11-card)!important;color:var(--n11-ink)!important;font:700 22px/1 Arial,sans-serif!important;letter-spacing:1px!important}\
+.n11-v4 .n11-appt-more>span{display:block!important;width:18px!important;height:4px!important;font-size:0!important;background:radial-gradient(circle at 2px 2px,currentColor 1.7px,transparent 1.8px),radial-gradient(circle at 9px 2px,currentColor 1.7px,transparent 1.8px),radial-gradient(circle at 16px 2px,currentColor 1.7px,transparent 1.8px)}\
+.n11-v4 .n11-appt-menu-panel{position:absolute;right:0;top:calc(100% + 7px);display:none;min-width:190px;padding:7px;border:1px solid var(--n11-line);border-radius:12px;background:var(--n11-card);box-shadow:0 18px 45px rgba(30,22,32,.18);z-index:200}\
+.n11-v4 .n11-appt-menu.open .n11-appt-menu-panel{display:grid;gap:5px}\
+.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;height:42px!important;padding:0 13px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:var(--n11-ink)!important;text-decoration:none!important;font:13px Arial,sans-serif!important;white-space:nowrap!important}\
+.n11-v4 .n11-appt-menu-panel button:hover,.n11-v4 .n11-appt-menu-panel a:hover{background:var(--n11-bg)!important}\
+.n11-v4 .n11-appt-menu-panel .danger{color:#a3243f!important}\
+@media(max-width:760px){.n11-v4 .n11-appt-menu{grid-column:4!important;grid-row:3!important}.n11-v4 .n11-appt-menu-panel{position:fixed;right:16px;left:16px;top:auto;bottom:18px;min-width:0;padding:10px;border-radius:16px}.n11-v4 .n11-appt-menu-panel button,.n11-v4 .n11-appt-menu-panel a{height:48px!important}.n11-v4 .n11-appt-row>time.n11-appt-time-missing>small{width:58px!important;white-space:normal!important;font:600 10px/1.15 Arial,sans-serif!important}}\
+@media(max-width:760px){\
+  .n11-v4 .n11-program-v4>.n11-timeline.n11-mobile-schedule{padding:22px 18px 16px!important;border-radius:18px!important;min-height:0!important}\
+  .n11-v4 .n11-mobile-schedule-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;padding:0 0 15px!important;border-bottom:1px solid var(--n11-line)!important}\
+  .n11-v4 .n11-mobile-schedule-head p{margin:0 0 5px!important;color:#b66d27!important;font:700 9px/1.2 Arial,sans-serif!important;letter-spacing:.25em!important}\
+  .n11-v4 .n11-mobile-schedule-head h2{margin:0!important;color:var(--n11-ink)!important;font:27px/1.05 Georgia,serif!important;font-weight:400!important}\
+  .n11-v4 .n11-mobile-schedule-head small{max-width:118px!important;padding-top:10px!important;color:var(--n11-muted)!important;font:11px/1.35 Arial,sans-serif!important;text-align:right!important}\
+  .n11-v4 .n11-mobile-schedule-list{display:grid!important}\
+  .n11-v4 .n11-mobile-schedule-row{display:grid!important;grid-template-columns:58px 12px minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;min-height:64px!important;padding:7px 0!important;border-bottom:1px solid var(--n11-line)!important}\
+  .n11-v4 .n11-mobile-schedule-row:last-child{border-bottom:0!important}\
+  .n11-v4 .n11-mobile-schedule-row>time{color:var(--n11-muted)!important;font:15px/1 Georgia,serif!important;white-space:nowrap!important}\
+  .n11-v4 .n11-mobile-schedule-dot{width:8px!important;height:8px!important;border-radius:50%!important;background:#d7d2d4!important}\
+  .n11-v4 .n11-mobile-schedule-dot.confirmed{background:#3f8a5b!important}.n11-v4 .n11-mobile-schedule-dot.pending{background:#b12d49!important}\
+  .n11-v4 .n11-mobile-schedule-copy{min-width:0!important}\
+  .n11-v4 .n11-mobile-schedule-copy b{display:block!important;color:var(--n11-ink)!important;font:700 14px/1.25 Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\
+  .n11-v4 .n11-mobile-schedule-copy small{display:block!important;margin-top:3px!important;color:var(--n11-muted)!important;font:11px/1.25 Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\
+  .n11-v4 .n11-mobile-schedule-status{padding:5px 7px!important;border-radius:9px!important;background:var(--n11-bg)!important;color:var(--n11-muted)!important;font:600 9px/1 Arial,sans-serif!important;font-style:normal!important}\
+  .n11-v4 .n11-mobile-schedule-status.confirmed{color:#378253!important}.n11-v4 .n11-mobile-schedule-status.pending{color:#a3243f!important}\
+  .n11-v4 .n11-mobile-closed{padding:42px 18px 38px!important;text-align:center!important}\
+  .n11-v4 .n11-mobile-closed-icon{display:grid!important;place-items:center!important;width:58px!important;height:58px!important;margin:0 auto 16px!important;border-radius:50%!important;background:var(--n11-bg)!important;color:#b66d27!important;font-size:25px!important}\
+  .n11-v4 .n11-mobile-closed h3{margin:0 0 8px!important;color:var(--n11-ink)!important;font:26px/1.12 Georgia,serif!important;font-weight:400!important}\
+  .n11-v4 .n11-mobile-closed p{margin:0!important;color:var(--n11-muted)!important;font:13px/1.5 Arial,sans-serif!important}\
+}\
 ';
     document.head.appendChild(style);
   }
@@ -139,12 +196,12 @@
       return;
     }
 
-    injectMobileStyle();
+    injectEnhancementStyle();
     main.classList.add('n11-final-mobile-host');
     var info=turkeyNow();
     var dateText=turkeyLabel(info);
     var dateNode=title.parentElement&&title.parentElement.querySelector('p');
-    if(dateNode)dateNode.textContent=dateText;
+    setText(dateNode,dateText);
 
     var items=readArray('no11-appointments');
     var signature=mobileSignature(items,info);
@@ -191,80 +248,341 @@
     }
   }
 
-  function enhanceDesktopAppointments(){
-    if(!(window.matchMedia&&window.matchMedia('(min-width:901px)').matches))return;
-    document.querySelectorAll('.n11-appt-row').forEach(function(row){
-      if(row.querySelector(':scope>.n11-desktop-appt-actions'))return;
-      var status=row.querySelector(':scope>.n11-status');
-      var name=row.querySelector(':scope>b');
-      var service=row.querySelector(':scope>.n11-appt-service');
-      var actions=Array.from(row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp'));
-      if(!status||!actions.length)return;
-      if(name&&service){
-        var person=document.createElement('div');
-        person.className='n11-appt-person';
-        row.insertBefore(person,status);
-        person.appendChild(name);
-        person.appendChild(service);
+  function desktopMetrics(){
+    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
+    var title=document.querySelector('.n11-page-top h1');
+    if(!title||title.textContent.trim()!=='Genel Bakış')return;
+
+    var info=turkeyNow();
+    var items=readArray('no11-appointments');
+    var pending=items.filter(function(x){return normalizedStatus(x)==='pending'});
+    var todayConfirmed=items.filter(function(x){
+      return normalizedStatus(x)==='confirmed'&&String(x.date||'')===info.dateKey;
+    }).sort(function(a,b){return timeValue(a).localeCompare(timeValue(b))});
+    var monthConfirmed=items.filter(function(x){
+      return normalizedStatus(x)==='confirmed'&&String(x.date||'').indexOf(info.monthKey)===0;
+    });
+    var slots=readArray('no11-appointment-slots');
+    var capacity=Math.max(slots.length||6,1);
+    var occupancy=Math.min(100,Math.round(todayConfirmed.length/capacity*100));
+    var first=todayConfirmed[0]||null;
+    var last=todayConfirmed.length?todayConfirmed[todayConfirmed.length-1]:null;
+
+    var summaryCopy=document.querySelector('.n11-dashboard-summary .n11-summary-copy');
+    if(summaryCopy){
+      var heading=summaryCopy.querySelector('h2');
+      var sub=summaryCopy.querySelector('span');
+      setText(heading,todayConfirmed.length+' onaylı dersiniz var.');
+      setText(sub,pending.length+' yeni talep onayınızı bekliyor.');
+    }
+
+    var summaryItems=document.querySelectorAll('.n11-dashboard-summary dl>div');
+    if(summaryItems[0]){
+      var confirmedValue=summaryItems[0].querySelector('dd');
+      setText(confirmedValue,todayConfirmed.length);
+    }
+    if(summaryItems[1]){
+      var pendingValue=summaryItems[1].querySelector('dd');
+      setText(pendingValue,pending.length);
+    }
+    if(summaryItems[2]){
+      var firstTime=summaryItems[2].querySelector('dd');
+      var firstName=summaryItems[2].querySelector('small');
+      setText(firstTime,first?first.time||'—':'—');
+      setText(firstName,first?first.name||'':'Bugün ders yok');
+    }
+    if(summaryItems[3]){
+      var lastTime=summaryItems[3].querySelector('dd');
+      var lastName=summaryItems[3].querySelector('small');
+      setText(lastTime,last?last.time||'—':'—');
+      setText(lastName,last?last.name||'':'Bugün ders yok');
+    }
+
+    var kpis=document.querySelectorAll('.n11-dashboard-kpis button b');
+    setText(kpis[0],pending.length);
+    setText(kpis[1],monthConfirmed.length);
+    setText(kpis[2],'%'+occupancy);
+
+    var todayIds={};
+    todayConfirmed.forEach(function(item){todayIds[String(item.id)]=true});
+    document.querySelectorAll('.n11-dashboard-lists .n11-flow-list .n11-record').forEach(function(row){
+      var shouldHide=!todayIds[String(row.dataset.id||'')];
+      if(row.hidden!==shouldHide)row.hidden=shouldHide;
+    });
+  }
+
+  function enhanceAppointmentMenus(){
+    var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
+    if(!mobile){
+      if(window.matchMedia&&window.matchMedia('(min-width:901px)').matches){
+        document.querySelectorAll('.n11-appt-row').forEach(function(row){
+          if(row.querySelector(':scope>.n11-desktop-appt-actions'))return;
+          var status=row.querySelector(':scope>.n11-status');
+          var name=row.querySelector(':scope>b');
+          var service=row.querySelector(':scope>.n11-appt-service');
+          var actions=Array.from(row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp'));
+          if(!status||!actions.length)return;
+          if(name&&service){
+            var person=document.createElement('div');
+            person.className='n11-appt-person';
+            row.insertBefore(person,status);
+            person.appendChild(name);
+            person.appendChild(service);
+          }
+          var wrap=document.createElement('div');
+          wrap.className='n11-desktop-appt-actions '+(status.classList.contains('confirmed')?'confirmed':'pending');
+          wrap.appendChild(status);
+          actions.forEach(function(action){
+            if(action.matches('a.n11-whatsapp'))action.textContent='WhatsApp';
+            wrap.appendChild(action);
+          });
+          row.querySelectorAll(':scope>.n11-note-icon,:scope>.n11-dash').forEach(function(node){node.remove()});
+          row.appendChild(wrap);
+        });
       }
+      document.querySelectorAll('.n11-appt-menu').forEach(function(menu){
+        var row=menu.closest('.n11-appt-row');
+        var panel=menu.querySelector('.n11-appt-menu-panel');
+        if(row&&panel){
+          Array.from(panel.children).forEach(function(action){
+            if(action.matches('a.n11-whatsapp'))action.textContent='◉';
+            row.insertBefore(action,menu);
+          });
+        }
+        menu.remove();
+      });
+      return;
+    }
+    document.querySelectorAll('.n11-appt-row').forEach(function(row){
+      if(row.querySelector('.n11-appt-menu'))return;
+      var actions=[];
+      row.querySelectorAll(':scope>button[data-detail],:scope>button[data-approve],:scope>button[data-reject],:scope>a.n11-whatsapp').forEach(function(action){
+        actions.push(action);
+      });
+      if(!actions.length)return;
+      row.querySelectorAll(':scope>.n11-dash').forEach(function(dash){dash.remove()});
       var wrap=document.createElement('div');
-      wrap.className='n11-desktop-appt-actions '+(status.classList.contains('confirmed')?'confirmed':'pending');
-      wrap.appendChild(status);
+      wrap.className='n11-appt-menu';
+      var more=document.createElement('button');
+      more.type='button';
+      more.className='n11-appt-more';
+      more.dataset.no11ApptMore='1';
+      more.setAttribute('aria-label','Randevu işlemleri');
+      more.setAttribute('aria-expanded','false');
+      more.innerHTML='<span aria-hidden="true">•••</span>';
+      var panel=document.createElement('div');
+      panel.className='n11-appt-menu-panel';
       actions.forEach(function(action){
         if(action.matches('a.n11-whatsapp'))action.textContent='WhatsApp';
-        wrap.appendChild(action);
+        panel.appendChild(action);
       });
-      row.querySelectorAll(':scope>.n11-note-icon,:scope>.n11-dash').forEach(function(node){node.remove()});
+      wrap.appendChild(more);
+      wrap.appendChild(panel);
       row.appendChild(wrap);
     });
+  }
+
+  function enhanceAppointmentDateTimes(){
+    var items=readArray('no11-appointments');
+    var used={};
+    document.querySelectorAll('.n11-appt-row').forEach(function(row){
+      var timeNode=row.querySelector(':scope>time');
+      var nameNode=row.querySelector(':scope>b');
+      var serviceNode=row.querySelector(':scope>.n11-appt-service');
+      if(!timeNode||!nameNode)return;
+      var rawTime=timeNode.dataset.rawTime||timeNode.textContent.trim();
+      timeNode.dataset.rawTime=rawTime;
+      var item=items.find(function(candidate){
+        if(!candidate||!candidate.id||used[String(candidate.id)])return false;
+        if(String(candidate.name||'İsimsiz')!==nameNode.textContent.trim())return false;
+        if(serviceNode&&String(candidate.service||candidate.lesson||'Pilates')!==serviceNode.textContent.trim())return false;
+        return String(candidate.time||'—')===rawTime;
+      });
+      if(!item)return;
+      used[String(item.id)]=true;
+      var dateText='Tarih yok';
+      var match=String(item.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(match)dateText=Number(match[3])+' '+months[Number(match[2])-1].slice(0,3);
+      timeNode.classList.add('n11-appt-datetime');
+      var mobile=window.matchMedia&&window.matchMedia('(max-width:760px)').matches;
+      var hasTime=!!String(item.time||'').trim();
+      timeNode.classList.toggle('n11-appt-time-missing',!hasTime&&mobile);
+      timeNode.innerHTML='<span>'+esc(dateText)+'</span><small>'+esc(hasTime?item.time:(mobile?'Saat belirtilmedi':'—'))+'</small>';
+    });
+  }
+
+  function enhanceManagerNote(){
+    var detail=document.querySelector('.n11-detail');
+    var textarea=detail&&detail.querySelector('.n11-manager-note');
+    var button=detail&&detail.querySelector('[data-save-note]');
+    if(!textarea||!button)return;
+    var confirmed=!!detail.querySelector('.n11-status.confirmed');
+    button.textContent=confirmed?'Notu düzenle':'Notu kaydet';
+    var helper=detail.querySelector('.n11-manager-note-helper');
+    if(!confirmed&&!textarea.value.trim()){
+      if(!helper){
+        helper=document.createElement('p');
+        helper.className='n11-manager-note-helper';
+        helper.textContent='Öğrenciye özel bir not kaydetmek istiyorsanız bu alana yazabilirsiniz.';
+        textarea.insertAdjacentElement('afterend',helper);
+      }
+    }else if(helper){
+      helper.remove();
+    }
+  }
+
+  function selectedProgramDate(){
+    var active=document.querySelector('.n11-calendar [data-program-day].active');
+    var key=active&&active.dataset.programDay;
+    if(/^\d{4}-\d{2}-\d{2}$/.test(String(key||'')))return key;
+    var switcher=document.querySelector('.n11-date-switch');
+    var text=String(switcher&&switcher.textContent||'').replace(/\s+/g,' ').trim();
+    var match=text.match(/(\d{1,2})\s+(Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık)(?:\s+(\d{4}))?/i);
+    if(!match)return '';
+    var monthIndex=months.map(function(x){return x.toLocaleLowerCase('tr-TR')}).indexOf(match[2].toLocaleLowerCase('tr-TR'));
+    if(monthIndex<0)return '';
+    var calendarTitle=document.querySelector('.n11-calendar header h2');
+    var yearMatch=String(calendarTitle&&calendarTitle.textContent||'').match(/\b(20\d{2})\b/);
+    var year=Number(match[3]||(yearMatch&&yearMatch[1])||new Date().getFullYear());
+    return year+'-'+String(monthIndex+1).padStart(2,'0')+'-'+String(Number(match[1])).padStart(2,'0');
+  }
+
+  function scheduleForDate(dateKey){
+    var slots=readArray('no11-appointment-slots').filter(function(value){return /^([01]\d|2[0-3]):[0-5]\d$/.test(String(value))}).sort();
+    var hours=readArray('no11-hours');
+    if(!dateKey)return slots;
+    var date=new Date(dateKey+'T12:00:00');
+    var dayIndex=(date.getDay()+6)%7;
+    var day=hours[dayIndex];
+    if(!day||day.closed)return day&&day.closed?[]:slots;
+    var open=String(day.open||''),close=String(day.close||'');
+    if(!open||!close)return slots;
+    return slots.filter(function(slot){return slot>=open&&slot<close});
+  }
+
+  function statusText(status){
+    status=String(status||'pending').toLowerCase();
+    return status==='confirmed'?'Onaylandı':status==='rejected'?'Reddedildi':'Bekliyor';
+  }
+
+  function enhanceDesktopProgram(){
+    if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)return;
+    var title=document.querySelector('.n11-program-head h1');
+    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
+    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline)return;
+    var dateKey=selectedProgramDate();
+    if(!dateKey)return;
+    var slots=scheduleForDate(dateKey);
+    var appointments=readArray('no11-appointments').filter(function(item){
+      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
+    }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
+    appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
+    slots.sort();
+    var signature=dateKey+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
+    if(timeline.dataset.n11ScheduleSignature===signature)return;
+    timeline.dataset.n11ScheduleSignature=signature;
+    timeline.classList.add('n11-schedule-timeline');
+    function card(item){var status=normalizedStatus(item);return '<article class="n11-program-inline-card" data-n11-program-id="'+esc(item.id)+'"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small><em class="n11-program-inline-status '+esc(status)+'">'+statusText(status)+'</em></article>'}
+    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span>'+(found.length?'<div class="n11-program-slot-items">'+found.map(card).join('')+'</div>':'<small class="n11-program-available">Müsait</small>')+'</div>'}).join('')+'</div></div>'}
+    timeline.innerHTML=group('SABAH',slots.filter(function(x){return x<'12:00'}))+group('ÖĞLE',slots.filter(function(x){return x>='12:00'&&x<'15:00'}))+group('AKŞAM',slots.filter(function(x){return x>='15:00'}));
+    if(!slots.length)timeline.innerHTML='<div class="n11-empty"><h3>Kapalı gün</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
+  }
+
+  function enhanceMobileProgram(){
+    if(!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches))return;
+    var title=document.querySelector('.n11-program-head h1');
+    var timeline=document.querySelector('.n11-program-v4 .n11-timeline');
+    if(!title||title.textContent.trim()!=='Günlük Program'||!timeline)return;
+    var dateKey=selectedProgramDate();
+    if(!dateKey)return;
+    var slots=scheduleForDate(dateKey);
+    var appointments=readArray('no11-appointments').filter(function(item){
+      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
+    }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
+    appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
+    slots.sort();
+    var hours=readArray('no11-hours');
+    var date=new Date(dateKey+'T12:00:00');
+    var day=hours[(date.getDay()+6)%7];
+    var isClosed=!!(day&&day.closed);
+    var signature='mobile|'+dateKey+'|'+String(isClosed)+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
+    var expectedContent=isClosed?timeline.querySelector('.n11-mobile-closed'):timeline.querySelector('.n11-mobile-schedule-list');
+    if(timeline.dataset.n11ScheduleSignature===signature&&expectedContent)return;
+    timeline.dataset.n11ScheduleSignature=signature;
+    timeline.classList.remove('n11-schedule-timeline');
+    timeline.classList.add('n11-mobile-schedule');
+    if(isClosed){
+      timeline.innerHTML='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div></header><div class="n11-mobile-closed"><span class="n11-mobile-closed-icon">⌁</span><h3>Stüdyomuz kapalı</h3><p>Pazar günü hizmet vermiyoruz.</p></div>';
+      return;
+    }
+    function rows(slot){
+      var found=appointments.filter(function(item){return String(item.time)===slot});
+      if(!found.length)return '<div class="n11-mobile-schedule-row"><time>'+esc(slot)+'</time><i class="n11-mobile-schedule-dot"></i><div class="n11-mobile-schedule-copy"><b>Müsait</b><small>Randevu bulunmuyor</small></div><em class="n11-mobile-schedule-status">Boş</em></div>';
+      return found.map(function(item){var status=normalizedStatus(item);return '<article class="n11-mobile-schedule-row" data-n11-program-id="'+esc(item.id)+'"><time>'+esc(slot)+'</time><i class="n11-mobile-schedule-dot '+esc(status)+'"></i><div class="n11-mobile-schedule-copy"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small></div><em class="n11-mobile-schedule-status '+esc(status)+'">'+statusText(status)+'</em></article>'}).join('');
+    }
+    timeline.innerHTML='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div><small>Karta dokunarak detayı açın</small></header><div class="n11-mobile-schedule-list">'+slots.map(rows).join('')+'</div>';
+    if(!slots.length)timeline.innerHTML='<header class="n11-mobile-schedule-head"><div><p>GÜNÜN AKIŞI</p><h2>Ders saatleri</h2></div></header><div class="n11-mobile-closed"><span class="n11-mobile-closed-icon">⌁</span><h3>Saat bulunmuyor</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
   }
 
   function apply(){
     if(busy)return;busy=true;
     try{
+      injectEnhancementStyle();
       var title=document.querySelector('.n11-page-top h1');
       if(title&&title.textContent.trim()==='Genel Bakış'){
         var p=title.parentElement&&title.parentElement.querySelector('p');
-        if(p)p.textContent=label(new Date());
-      }
-      var program=document.querySelector('.n11-program-head h1');
-      if(program){
-        var switchLabel=document.querySelector('.n11-date-switch span');
-        if(switchLabel)switchLabel.textContent='▣  '+label(viewDate);
-        var calTitle=document.querySelector('.n11-calendar header h2');
-        if(calTitle)calTitle.textContent=monthTitle(viewDate);
-        buildCalendar(document.querySelector('.n11-cal-grid'),viewDate);
+        setText(p,label(new Date()));
       }
       renderMobileDashboard();
-      enhanceDesktopAppointments();
+      desktopMetrics();
+      enhanceAppointmentDateTimes();
+      enhanceManagerNote();
+      enhanceAppointmentMenus();
+      enhanceMobileProgram();
+      enhanceDesktopProgram();
     }finally{busy=false}
   }
 
   document.addEventListener('click',function(event){
+    var more=event.target.closest&&event.target.closest('[data-no11-appt-more]');
+    if(more){
+      event.preventDefault();
+      event.stopPropagation();
+      var menu=more.closest('.n11-appt-menu');
+      document.querySelectorAll('.n11-appt-menu.open').forEach(function(other){
+        if(other!==menu){
+          other.classList.remove('open');
+          var otherButton=other.querySelector('[data-no11-appt-more]');
+          if(otherButton)otherButton.setAttribute('aria-expanded','false');
+        }
+      });
+      var open=menu.classList.toggle('open');
+      more.setAttribute('aria-expanded',open?'true':'false');
+      return;
+    }
+    if(!(event.target.closest&&event.target.closest('.n11-appt-menu-panel'))){
+      document.querySelectorAll('.n11-appt-menu.open').forEach(function(menu){
+        menu.classList.remove('open');
+        var button=menu.querySelector('[data-no11-appt-more]');
+        if(button)button.setAttribute('aria-expanded','false');
+      });
+    }
     var finalPage=event.target.closest&&event.target.closest('[data-final-page]');
     if(finalPage){
       var target=document.querySelector('.n11-main-side [data-page="'+finalPage.dataset.finalPage+'"]');
       if(target)target.click();
       return;
     }
-    var monthButton=event.target.closest&&event.target.closest('[data-month]');
-    if(monthButton){
-      viewDate=new Date(viewDate.getFullYear(),viewDate.getMonth()+Number(monthButton.dataset.month||0),Math.min(viewDate.getDate(),28));
-      setTimeout(apply,0);return;
-    }
-    var day=event.target.closest&&event.target.closest('[data-no11-calendar-day]');
-    if(day){viewDate=new Date(viewDate.getFullYear(),viewDate.getMonth(),Number(day.dataset.no11CalendarDay));setTimeout(apply,0);return}
-    var switcher=event.target.closest&&event.target.closest('.n11-date-switch button');
-    if(switcher){
-      var buttons=Array.from(document.querySelectorAll('.n11-date-switch button'));
-      var delta=buttons.indexOf(switcher)===0?-1:1;
-      viewDate.setDate(viewDate.getDate()+delta);
-      setTimeout(apply,0);
+    var programCard=event.target.closest&&event.target.closest('[data-n11-program-id]');
+    if(programCard){
+      var original=document.querySelector('.n11-today-row[data-id="'+CSS.escape(programCard.dataset.n11ProgramId)+'"]');
+      if(original)original.click();
     }
   },true);
 
   window.addEventListener('resize',function(){setTimeout(apply,60)});
   window.addEventListener('storage',function(e){if(e.key==='no11-appointments'||e.key==='no11-appointment-slots')setTimeout(apply,0)});
+  window.addEventListener('no11-appointments-updated',function(){setTimeout(apply,0)});
   var observer=new MutationObserver(function(){setTimeout(apply,0)});
   function start(){if(document.body)observer.observe(document.body,{childList:true,subtree:true});apply()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
