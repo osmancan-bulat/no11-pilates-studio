@@ -9,12 +9,7 @@
   function closeEditor(){var old=document.getElementById(EDITOR_ID);if(old)old.remove()}
 
   function stripPremiumTeamEditHandlers(){
-    document.querySelectorAll('[data-edit-team]').forEach(function(btn){
-      btn.type='button';
-      btn.onclick=null;
-      btn.removeAttribute('form');
-    });
-    document.querySelectorAll('[data-remove-team]').forEach(function(btn){btn.type='button'});
+    document.querySelectorAll('[data-edit-team],[data-remove-team]').forEach(function(btn){btn.type='button'});
   }
 
   function closePremiumModal(){
@@ -79,15 +74,6 @@
     var first=form.querySelector('input[name=name]');if(first)first.focus();
   }
 
-  document.addEventListener('click',function(e){
-    var button=e.target&&e.target.closest&&e.target.closest('[data-edit-team]');
-    if(!button)return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    closePremiumModal();
-    openEditor(button.dataset.editTeam,button.closest('.n11-team-card'));
-  },true);
 
   stripPremiumTeamEditHandlers();
   new MutationObserver(stripPremiumTeamEditHandlers).observe(document.documentElement,{subtree:true,childList:true});
