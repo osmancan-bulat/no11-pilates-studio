@@ -83,6 +83,11 @@
   teamEditThemeGuard.defer = true;
   document.head.appendChild(teamEditThemeGuard);
 
+  var teamEditNativeFallback = document.createElement('script');
+  teamEditNativeFallback.src = '/no11-team-edit-native-fallback.js?v=20260922-1';
+  teamEditNativeFallback.defer = true;
+  document.head.appendChild(teamEditNativeFallback);
+
   var dateLabel = document.createElement('script');
   dateLabel.src = '/no11-appointments-date-label.js?v=20260916-1';
   dateLabel.defer = true;
