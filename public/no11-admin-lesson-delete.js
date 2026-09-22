@@ -21,7 +21,8 @@
       var form=modal&&modal.querySelector('form');
       if(!modal||!form||form.dataset.type!=='lesson'||!form.dataset.id)return;
       var footer=form.querySelector('.n11-modal-actions')||form;
-      if(form.querySelector('[data-delete-lesson]'))return;
+      var existing=form.querySelector('[data-delete-lesson]');
+      if(existing)existing.remove();
       var button=document.createElement('button');
       button.type='button';
       button.dataset.deleteLesson=form.dataset.id;
@@ -55,5 +56,7 @@
   document.addEventListener('click',function(event){
     var edit=event.target&&event.target.closest&&event.target.closest('[data-edit-lesson]');
     if(edit)addDeleteButton(edit);
+    var add=event.target&&event.target.closest&&event.target.closest('[data-open="lesson"]');
+    if(add)setTimeout(function(){var old=document.querySelector('[data-delete-lesson]');if(old)old.remove()},40);
   },true);
 })();
