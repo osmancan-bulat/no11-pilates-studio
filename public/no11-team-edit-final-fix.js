@@ -90,5 +90,5 @@
   },true);
 
   stripPremiumTeamEditHandlers();
-  new MutationObserver(function(){stripPremiumTeamEditHandlers();closePremiumModal()}).observe(document.documentElement,{subtree:true,childList:true});
+  new MutationObserver(stripPremiumTeamEditHandlers).observe(document.documentElement,{subtree:true,childList:true});
 })();
