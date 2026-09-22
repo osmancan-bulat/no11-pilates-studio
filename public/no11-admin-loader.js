@@ -83,6 +83,11 @@
   teamEditThemeGuard.defer = true;
   document.head.appendChild(teamEditThemeGuard);
 
+  var teamEditFinalFix = document.createElement('script');
+  teamEditFinalFix.src = '/no11-team-edit-final-fix.js?v=20260922-modal-scope-1';
+  teamEditFinalFix.defer = true;
+  document.head.appendChild(teamEditFinalFix);
+
   var dateLabel = document.createElement('script');
   dateLabel.src = '/no11-appointments-date-label.js?v=20260916-1';
   dateLabel.defer = true;
