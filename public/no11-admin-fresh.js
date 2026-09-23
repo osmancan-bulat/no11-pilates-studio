@@ -479,11 +479,12 @@
     appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
     slots.sort();
     var signature=dateKey+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
-    if(timeline.dataset.n11ScheduleSignature===signature)return;
+    var expectedContent=slots.length?timeline.querySelector('.n11-program-card, .n11-time-grid'):timeline.querySelector('.n11-empty');
+    if(timeline.dataset.n11ScheduleSignature===signature&&expectedContent)return;
     timeline.dataset.n11ScheduleSignature=signature;
     timeline.classList.add('n11-schedule-timeline');
-    function card(item){var status=normalizedStatus(item);return '<article class="n11-program-inline-card" data-n11-program-id="'+esc(item.id)+'"><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small><em class="n11-program-inline-status '+esc(status)+'">'+statusText(status)+'</em></article>'}
-    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span>'+(found.length?'<div class="n11-program-slot-items">'+found.map(card).join('')+'</div>':'<small class="n11-program-available">Müsait</small>')+'</div>'}).join('')+'</div></div>'}
+    function card(item){var status=normalizedStatus(item);return '<article class="n11-program-card" data-id="'+esc(item.id)+'" data-n11-program-id="'+esc(item.id)+'"><i class="n11-dot '+esc(status)+'"></i><div><b>'+esc(item.name||'İsimsiz')+'</b><small>'+esc(item.service||'Pilates')+'</small></div><span class="n11-status '+esc(status)+'">'+statusText(status)+'</span></article>'}
+    function group(name,list){if(!list.length)return '';return '<div class="n11-daypart"><h3>'+name+'</h3><div class="n11-time-grid">'+list.map(function(slot){var found=appointments.filter(function(item){return String(item.time)===slot});return found.length?found.map(function(item){return '<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span>'+card(item)+'</div>'}).join(''):'<div class="n11-time-line"><time>'+esc(slot)+'</time><span></span></div>'}).join('')+'</div></div>'}
     timeline.innerHTML=group('SABAH',slots.filter(function(x){return x<'12:00'}))+group('ÖĞLE',slots.filter(function(x){return x>='12:00'&&x<'15:00'}))+group('AKŞAM',slots.filter(function(x){return x>='15:00'}));
     if(!slots.length)timeline.innerHTML='<div class="n11-empty"><h3>Kapalı gün</h3><p>Bu gün için randevu saati belirlenmemiş.</p></div>';
   }
