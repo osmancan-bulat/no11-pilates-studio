@@ -8,7 +8,7 @@ import {
 } from '../../../lib/firebase-firestore.js';
 
 const LEGACY_ORIGIN =
-  'https://no11-pilates-studio-azukoqij1-osmancanbulat197-7442s-projects.vercel.app';
+  'https://no11-pilates-studio-2eta1urgj-osmancanbulat197-7442s-projects.vercel.app';
 
 export const dynamic = 'force-dynamic';
 
