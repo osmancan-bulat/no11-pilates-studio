@@ -187,7 +187,6 @@ async function proxy(request) {
 <link rel="stylesheet" href="/no11-admin-premium.css?v=31">
 <link rel="stylesheet" href="/no11-admin-calendar-fix.css?v=31">
 <script src="/no11-admin-firebase.js?v=3" defer></script>
-<script src="/no11-admin-fresh.js?v=1" defer></script>
 <script>window.__NO11_EXACT_ADMIN__=true;localStorage.setItem('no11-admin-theme','light')</script>
 <script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('.n11-side-logo,.n11-site-return,.n11-side-user');if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(!target.classList.contains('n11-side-logo'))location.assign('/')},true)</script>
 <script src="/no11-admin-live-sync.js?v=15" defer></script>
