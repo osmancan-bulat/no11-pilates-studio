@@ -539,7 +539,6 @@
       enhanceManagerNote();
       enhanceAppointmentMenus();
       enhanceMobileProgram();
-      enhanceDesktopProgram();
     }finally{busy=false}
   }
 
