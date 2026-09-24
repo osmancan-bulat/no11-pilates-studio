@@ -1021,3 +1021,10 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .quote-band>div h2{font-size:28px!important}
  .quote-band>div span{width:154px!important;max-width:39vw!important}
 }
+
+
+/* Mobile Bilemezsiniz — approved airy framing */
+@media(max-width:900px){
+ .quote-band{height:clamp(470px,132vw,560px)!important;min-height:0!important;max-height:560px!important;aspect-ratio:auto!important}
+ .quote-band>picture>img{object-fit:contain!important;object-position:center center!important}
+}
