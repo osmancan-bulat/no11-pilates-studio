@@ -1103,9 +1103,12 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  box-shadow:0 10px 24px rgba(82,57,45,.12)!important;
 }
 @media(min-width:761px){
- .experience{height:760px!important;min-height:760px!important;scroll-margin-top:82px!important}
+ html{scroll-padding-top:96px!important}
+ #hikaye,#deneyim,#studyo,#ekip,#randevu,#iletisim{scroll-margin-top:96px!important}
+ .experience{height:760px!important;min-height:760px!important}
  .experience img{height:760px!important;object-fit:cover!important;object-position:center top!important}
  .experience>div{height:760px!important;min-height:0!important}
+ .experience+.studio{padding-top:0!important}
 }
 @media(max-width:760px){
  .experience{grid-template-columns:1fr!important}
