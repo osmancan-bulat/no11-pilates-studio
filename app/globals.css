@@ -1025,7 +1025,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
 
 /* Approved Studio Experience composition */
 .experience{
- grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ grid-template-columns:minmax(0,43fr) minmax(0,57fr)!important;
  background:#f6f1ea!important;
  color:#252223!important;
 }
