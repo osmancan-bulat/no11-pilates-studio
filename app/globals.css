@@ -576,7 +576,10 @@
 
 /* Tighten mobile story gap between heading and first principle */
 @media(max-width:900px){
- .story .principles{margin-top:18px!important}
+ .story .principles{margin-top:18px!important;gap:10px!important}
+ .story .principles article{padding-top:12px}
+ .story .principles h3{margin:10px 0 6px}
+ .story .principles p{margin:0 0 10px}
 }
 
 

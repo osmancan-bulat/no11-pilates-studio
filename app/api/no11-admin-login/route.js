@@ -20,7 +20,6 @@ export async function POST(request) {
     if (!verifyAdminLogin(body?.username, body?.password)) {
       return json({ error: 'invalid_credentials' }, 401);
     }
-
     const response = json({ ok: true, authenticated: true });
     response.cookies.set(COOKIE_NAME, createAdminSession(), adminCookieOptions());
     return response;
