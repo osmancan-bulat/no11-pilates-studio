@@ -1104,12 +1104,12 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
 }
 @media(max-width:760px){
  .experience{grid-template-columns:1fr!important}
- .experience img{height:340px!important;object-position:center 38%!important}
+ .experience img{height:340px!important;object-position:center top!important}
  .experience>div{padding:36px 24px 42px!important}
  .experience .eyebrow{margin-bottom:15px!important;font-size:10px!important}
  .experience h2{margin-bottom:28px!important;font-size:clamp(40px,11.2vw,48px)!important;line-height:1!important;white-space:nowrap!important}
  .experience>div>p:last-of-type{font-size:16px!important;line-height:1.65!important}
  .experience a{max-width:none!important;margin-top:38px!important;padding-bottom:12px!important;font-size:15px!important}
  .experience a:before{width:150px!important}
- .experience a:after{width:58px!important;height:58px!important;margin-left:18px!important;font-size:27px!important}
+ .experience a:after{display:none!important}
 }
