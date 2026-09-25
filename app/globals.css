@@ -186,6 +186,7 @@
 }
 
 .no11-video-control{position:absolute;right:28px;bottom:28px;z-index:30;width:44px;height:44px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(255,255,255,.7);border-radius:50%;background:rgba(24,20,18,.38);color:#fff;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);cursor:pointer;font-size:14px;line-height:1;transition:background .2s ease,transform .2s ease,border-color .2s ease}.no11-video-control:hover{background:rgba(24,20,18,.55);transform:scale(1.04)}.hero-video::-webkit-media-controls,.hero-video::-webkit-media-controls-panel,.hero-video::-webkit-media-controls-play-button,.hero-video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none!important;opacity:0!important;pointer-events:none!important}.hero-video{pointer-events:none!important}@media(max-width:900px){.no11-video-control{display:none!important}}
+@media(min-width:901px){.no11-video-control{right:clamp(32px,3vw,48px);bottom:clamp(32px,3vw,48px)}}
 
 
 /* Desktop contact section — approved visual reference 2026-09-20. Mobile intentionally untouched. */
