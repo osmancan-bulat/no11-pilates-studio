@@ -1138,7 +1138,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    height:auto!important;
    min-height:0!important;
    max-height:none!important;
-   aspect-ratio:933/1360!important;
+   aspect-ratio:933/1355!important;
    overflow:hidden!important;
    background:#15120f!important;
  }
@@ -1150,7 +1150,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    height:100%!important;
  }
  .quote-band>picture>img{
-   object-fit:contain!important;
+   object-fit:cover!important;
    object-position:center top!important;
    transform:none!important;
    filter:none!important;
