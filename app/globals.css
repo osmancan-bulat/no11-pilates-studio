@@ -1105,6 +1105,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
 @media(min-width:761px){
  html{scroll-padding-top:96px!important}
  #hikaye,#deneyim,#studyo,#ekip,#randevu,#iletisim{scroll-margin-top:96px!important}
+ #deneyim{scroll-margin-top:0!important}
  .experience{grid-template-columns:min(42vw,560px) minmax(0,1fr)!important;height:auto!important;min-height:0!important;align-items:stretch!important}
  .experience img{width:100%!important;height:auto!important;object-fit:contain!important;object-position:center top!important}
  .experience>div{position:relative!important;height:auto!important;min-height:0!important;padding-right:clamp(150px,12vw,210px)!important;overflow:hidden!important;isolation:isolate!important}
