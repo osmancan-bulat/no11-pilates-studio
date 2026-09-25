@@ -1138,7 +1138,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    height:auto!important;
    min-height:0!important;
    max-height:none!important;
-   aspect-ratio:933/1400!important;
+   aspect-ratio:933/1360!important;
    overflow:hidden!important;
    background:#15120f!important;
  }
@@ -1166,7 +1166,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .quote-band>div{
    left:clamp(12px,4vw,18px)!important;
    right:auto!important;
-   top:clamp(16px,4.8vw,24px)!important;
+   top:clamp(20px,5.6vw,28px)!important;
    width:min(44vw,172px)!important;
    max-width:none!important;
    transform:none!important;
@@ -1175,13 +1175,13 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  }
  .quote-band>div p{
    margin:0 0 5px!important;
-   font-size:clamp(6px,1.8vw,8px)!important;
+   font-size:clamp(6.5px,1.9vw,8.5px)!important;
    line-height:1!important;
    letter-spacing:.28em!important;
  }
  .quote-band>div h2{
    margin:0 0 5px!important;
-   font-size:clamp(26px,7.4vw,34px)!important;
+   font-size:clamp(28px,7.8vw,36px)!important;
    line-height:.92!important;
    white-space:nowrap!important;
  }
@@ -1189,7 +1189,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
    display:block!important;
    width:min(43vw,168px)!important;
    max-width:none!important;
-   font-size:clamp(7px,2vw,9px)!important;
+   font-size:clamp(7.5px,2.1vw,9.5px)!important;
    line-height:1.25!important;
    white-space:nowrap!important;
  }
