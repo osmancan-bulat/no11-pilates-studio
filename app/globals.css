@@ -1135,3 +1135,68 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .experience a:before{width:150px!important}
  .experience a:after{display:none!important}
 }
+
+
+/* Mobile Bilemezsiniz: preserve the reference site and adjust only the mobile quote composition */
+@media(max-width:900px){
+ .quote-band{
+   width:100%!important;
+   height:auto!important;
+   min-height:0!important;
+   max-height:none!important;
+   aspect-ratio:933/1355!important;
+   overflow:hidden!important;
+   background:#15120f!important;
+ }
+ .quote-band>picture,
+ .quote-band>picture>img{
+   position:absolute!important;
+   inset:0!important;
+   width:100%!important;
+   height:100%!important;
+ }
+ .quote-band>picture>img{
+   object-fit:cover!important;
+   object-position:center top!important;
+   transform:none!important;
+   filter:none!important;
+ }
+ .quote-band:before{
+   content:none!important;
+   display:none!important;
+ }
+ .quote-band:after{
+   display:block!important;
+   background:linear-gradient(135deg,rgba(10,8,7,.3) 0%,rgba(10,8,7,.12) 26%,rgba(10,8,7,0) 48%)!important;
+ }
+ .quote-band>div{
+   left:clamp(12px,4vw,18px)!important;
+   right:auto!important;
+   top:clamp(20px,5.6vw,28px)!important;
+   width:min(44vw,172px)!important;
+   max-width:none!important;
+   transform:none!important;
+   border:0!important;
+   text-align:left!important;
+ }
+ .quote-band>div p{
+   margin:0 0 5px!important;
+   font-size:clamp(6.5px,1.9vw,8.5px)!important;
+   line-height:1!important;
+   letter-spacing:.28em!important;
+ }
+ .quote-band>div h2{
+   margin:0 0 5px!important;
+   font-size:clamp(28px,7.8vw,36px)!important;
+   line-height:.92!important;
+   white-space:nowrap!important;
+ }
+ .quote-band>div span{
+   display:block!important;
+   width:min(43vw,168px)!important;
+   max-width:none!important;
+   font-size:clamp(7.5px,2.1vw,9.5px)!important;
+   line-height:1.25!important;
+   white-space:nowrap!important;
+ }
+}
