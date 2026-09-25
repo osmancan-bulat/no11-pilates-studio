@@ -1024,7 +1024,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
 
 
 /* Approved Studio Experience composition */
-.studio-title-desktop{display:none!important}
+.studio-title-desktop,.team-eyebrow-desktop{display:none!important}
 .experience{
  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
  background:#f6f1ea!important;
@@ -1114,7 +1114,8 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .experience>div:after{content:"PILATES\A STUDIO"!important;position:absolute!important;right:clamp(34px,4vw,64px)!important;top:25%!important;bottom:13%!important;width:78px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:linear-gradient(rgba(184,135,93,.65),rgba(184,135,93,.65)) left top/1px 35% no-repeat,linear-gradient(rgba(184,135,93,.65),rgba(184,135,93,.65)) left bottom/1px 35% no-repeat!important;color:#b8875d!important;font:700 9px/1.75 Arial,sans-serif!important;letter-spacing:.22em!important;text-align:center!important;white-space:pre!important;pointer-events:none!important}
  .experience>div>*{position:relative!important;z-index:1!important}
  .experience+.studio{padding-top:68px!important}
- .studio-title-desktop{display:block!important;margin:0 0 54px!important;color:#252223!important;font:400 clamp(46px,4.6vw,68px)/1 Georgia,serif!important;letter-spacing:-.045em!important}
+ .studio-title-desktop,.team-eyebrow-desktop{display:block!important}
+ .team-eyebrow-mobile{display:none!important}
 }
 @media(max-width:760px){
  .experience{grid-template-columns:1fr!important}
