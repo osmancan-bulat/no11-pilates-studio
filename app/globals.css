@@ -1119,6 +1119,7 @@ body>main>.hero:first-of-type{margin:0!important;padding-top:0!important;top:0!i
  .team-eyebrow-mobile{display:none!important}
 }
 @media(max-width:760px){
+ .studio-title-desktop{display:block!important;margin:0 0 30px!important;color:#ad6042!important;font-size:10px!important;line-height:1.4!important;letter-spacing:.25em!important}
  .experience{grid-template-columns:1fr!important}
  .experience img{height:auto!important;object-fit:contain!important;object-position:center top!important}
  .experience>div{padding:36px 24px 42px!important}

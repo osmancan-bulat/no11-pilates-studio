@@ -5,7 +5,7 @@
 @media(max-width:900px){
   #ekip{display:block!important;padding:72px 20px 84px!important;background:#f4f0eb!important}
   #ekip>.eyebrow{margin:0 0 30px!important;color:#ad6042!important;font-size:10px!important;line-height:1.4!important;letter-spacing:.25em!important}
-  #ekip>.eyebrow:after{content:"Ekibimiz";display:block;margin-top:10px;color:#171310;font:400 clamp(45px,14vw,62px)/.98 Georgia,"Times New Roman",serif;letter-spacing:-.045em;text-transform:none}
+  #ekip>.eyebrow:after{content:"Ekibimiz";display:block;margin-top:10px;color:#171310;font:400 clamp(40px,11.5vw,50px)/.98 Georgia,"Times New Roman",serif;letter-spacing:-.045em;text-transform:none}
   #ekip .founder,#ekip .team-cards article{display:flex!important;flex-direction:column!important;width:100%!important;margin:0!important;padding:0!important;overflow:hidden!important;border:1px solid rgba(174,105,73,.38)!important;border-radius:18px!important;background:#faf8f5!important;box-shadow:0 12px 34px rgba(57,43,34,.055)!important}
   #ekip .founder-image,#ekip .team-cards article>img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:4/5!important;margin:0!important;border:0!important;border-radius:0!important;overflow:hidden!important;object-fit:cover!important;object-position:center top!important}
   #ekip .team-cards article:first-child>img{object-fit:contain!important;object-position:center center!important;background:#fff!important}
