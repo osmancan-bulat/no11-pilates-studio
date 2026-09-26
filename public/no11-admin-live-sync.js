@@ -238,6 +238,7 @@
       if(page&&page.dataset.page){rememberPage(page.dataset.page);if(page.dataset.page!=='program')rememberDetail('')}
     },true);
     restorePage();fetchRemote(true);setInterval(function(){fetchRemote(false)},30000);
+    window.addEventListener('no11-admin-authenticated',function(){fetchRemote(true)});
     document.addEventListener('visibilitychange',function(){if(!document.hidden)fetchRemote(false)});
     window.addEventListener('focus',function(){fetchRemote(false)});window.addEventListener('pageshow',function(){fetchRemote(false)});window.addEventListener('online',function(){fetchRemote(false)});
   }
