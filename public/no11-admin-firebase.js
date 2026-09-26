@@ -1,16 +1,6 @@
 (function(){
   'use strict';
 
-  var APPOINTMENTS_KEY='no11-appointments';
-  var syncing=false;
-  var authenticated=false;
-  var nativeSetItem=Storage.prototype.setItem;
-  var nativeRemoveItem=Storage.prototype.removeItem;
-
-  function parse(value){try{var data=JSON.parse(value||'[]');return Array.isArray(data)?data:[]}catch(e){return []}}
-  function same(a,b){try{return JSON.stringify(a)===JSON.stringify(b)}catch(e){return false}}
-  function byId(items){var out={};items.forEach(function(x){if(x&&x.id)out[String(x.id)]=x});return out}
-
   function request(url,options){
     options=options||{};
     options.headers=Object.assign({'content-type':'application/json'},options.headers||{});
@@ -23,60 +13,10 @@
     });
   }
 
-  function saveOne(item){
-    if(!item||!item.id||!authenticated)return Promise.resolve();
-    return request('/api/no11-appointments',{method:'PUT',body:JSON.stringify(item)}).catch(function(){});
-  }
-
-  function removeOne(id){
-    if(!id||!authenticated)return Promise.resolve();
-    return request('/api/no11-appointments?id='+encodeURIComponent(id),{method:'DELETE'}).catch(function(){});
-  }
-
-  function syncChange(previous,next){
-    if(syncing||!authenticated)return;
-    var before=byId(previous),after=byId(next);
-    Object.keys(after).forEach(function(id){if(!before[id]||!same(before[id],after[id]))saveOne(after[id])});
-    Object.keys(before).forEach(function(id){if(!after[id])removeOne(id)});
-  }
-
-  Storage.prototype.setItem=function(k,v){
-    if(this===localStorage&&k===APPOINTMENTS_KEY){
-      var previous=parse(localStorage.getItem(APPOINTMENTS_KEY));
-      nativeSetItem.call(this,k,v);
-      syncChange(previous,parse(v));
-      return;
-    }
-    return nativeSetItem.call(this,k,v);
-  };
-
-  Storage.prototype.removeItem=function(k){
-    if(this===localStorage&&k===APPOINTMENTS_KEY){
-      var previous=parse(localStorage.getItem(APPOINTMENTS_KEY));
-      nativeRemoveItem.call(this,k);
-      syncChange(previous,[]);
-      return;
-    }
-    return nativeRemoveItem.call(this,k);
-  };
-
-  function mergeAndMigrate(remote){
-    var local=parse(localStorage.getItem(APPOINTMENTS_KEY));
-    var remoteMap=byId(remote),merged=[];
-    remote.forEach(function(item){if(item&&item.id)merged.push(item)});
-    local.forEach(function(item){
-      if(!item||!item.id)return;
-      if(!remoteMap[String(item.id)]){merged.push(item);saveOne(item)}
-    });
-    syncing=true;
-    nativeSetItem.call(localStorage,APPOINTMENTS_KEY,JSON.stringify(merged));
-    syncing=false;
-  }
-
   function loadPremium(){
     if(document.querySelector('script[data-no11-premium-loader]'))return;
     var script=document.createElement('script');
-    script.src='/no11-admin-premium.js?v=31';
+    script.src='/no11-admin-premium.js?v=32';
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
     script.onload=function(){
@@ -130,10 +70,11 @@
       var data=new FormData(form);
       request('/api/no11-admin-login',{method:'POST',body:JSON.stringify({username:data.get('username'),password:data.get('password')})})
         .then(function(){
-          authenticated=true;
           overlay.remove();
           if(style.parentNode)style.remove();
-          return loadAppointments();
+          loadPremium();
+          window.dispatchEvent(new CustomEvent('no11-admin-authenticated'));
+          return Promise.resolve();
         })
         .catch(function(err){
           if(err&&err.status===401)errorBox.textContent='Kullanıcı adı veya şifre hatalı.';
@@ -143,21 +84,12 @@
     });
   }
 
-  function loadAppointments(){
-    return request('/api/no11-appointments?ts='+Date.now())
-      .then(function(data){
-        authenticated=true;
-        mergeAndMigrate(Array.isArray(data.appointments)?data.appointments:[]);
-        loadPremium();
-      })
-      .catch(function(err){
-        if(err&&err.status===401){authenticated=false;showLogin();return}
-        clearBoot();
-        loadPremium();
-      });
+  function checkSession(){
+    return request('/api/no11-admin-login')
+      .then(function(data){if(data&&data.authenticated){loadPremium();return}showLogin()})
+      .catch(function(){clearBoot();showLogin()});
   }
-
-  function boot(){loadAppointments()}
+  function boot(){checkSession()}
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
