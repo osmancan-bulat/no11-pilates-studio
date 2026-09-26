@@ -7,9 +7,6 @@ import {
   sendPushToAdmins,
 } from '../../../lib/firebase-firestore.js';
 
-const LEGACY_ORIGIN =
-  'https://no11-pilates-studio-azukoqij1-osmancanbulat197-7442s-projects.vercel.app';
-
 export const dynamic = 'force-dynamic';
 
 function json(data, status = 200) {
@@ -57,32 +54,9 @@ function istanbulNow() {
   return { date: `${values.year}-${values.month}-${values.day}`, time: `${values.hour}:${values.minute}` };
 }
 
-async function legacyAppointments() {
-  try {
-    const response = await fetch(new URL('/api/no11-appointments', LEGACY_ORIGIN), {
-      cache: 'no-store',
-    });
-    if (!response.ok) throw new Error(`legacy_get_${response.status}`);
-    const data = await response.json();
-    return Array.isArray(data?.appointments) ? data.appointments : [];
-  } catch (error) {
-    console.error('Legacy appointments GET failed:', error);
-    return [];
-  }
-}
-
 export async function GET() {
   try {
-    const [legacy, firebase] = await Promise.all([
-      legacyAppointments(),
-      firebaseConfigured() ? listAppointments() : Promise.resolve([]),
-    ]);
-    const merged = new Map();
-    legacy.forEach((item) => merged.set(String(item.id), item));
-    firebase.forEach((item) => merged.set(String(item.id), item));
-    const appointments = Array.from(merged.values()).sort((a, b) =>
-      String(b.createdAt || '').localeCompare(String(a.createdAt || '')),
-    );
+    const appointments = firebaseConfigured() ? await listAppointments() : [];
     return json({ appointments, persistent: true });
   } catch (error) {
     console.error('Appointments GET failed:', error);
@@ -103,11 +77,8 @@ export async function POST(request) {
     if (appointment.date < now.date || (appointment.date === now.date && appointment.time <= now.time)) {
       return json({ error: 'appointment_time_in_past' }, 409);
     }
-    const [legacy, firebase] = await Promise.all([
-      legacyAppointments(),
-      firebaseConfigured() ? listAppointments() : Promise.resolve([]),
-    ]);
-    const occupied = legacy.concat(firebase).some((item) =>
+    const firebase = firebaseConfigured() ? await listAppointments() : [];
+    const occupied = firebase.some((item) =>
       item?.date === appointment.date && item?.time === appointment.time && item?.status !== 'rejected',
     );
     if (occupied) return json({ error: 'appointment_slot_occupied' }, 409);
