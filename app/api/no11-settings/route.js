@@ -12,13 +12,34 @@ const DEFAULT_SETTINGS={
 function env(){return {url:process.env.UPSTASH_REDIS_REST_URL||process.env.KV_REST_API_URL,token:process.env.UPSTASH_REDIS_REST_TOKEN||process.env.KV_REST_API_TOKEN}}
 async function command(args){const e=env();if(!e.url||!e.token)throw new Error('storage');const response=await fetch(e.url,{method:'POST',headers:{authorization:'Bearer '+e.token,'content-type':'application/json'},body:JSON.stringify(args),cache:'no-store'});if(!response.ok)throw new Error('storage');return (await response.json()).result}
 function text(value,max){return String(value||'').trim().slice(0,max)}
+function mobileDigits(value){
+  let digits=String(value||'').replace(/\D/g,'');
+  if(digits.startsWith('00'))digits=digits.slice(2);
+  if(digits.length===12&&digits.startsWith('90'))digits=digits.slice(2);
+  if(digits.length===11&&digits.startsWith('0'))digits=digits.slice(1);
+  return /^5\d{9}$/.test(digits)?digits:'';
+}
+function instagramHandle(value){
+  const raw=String(value||'').trim();
+  const match=raw.match(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/([^/?#]+)\/?(?:[?#].*)?$/i);
+  const handle=(match?match[1]:raw).replace(/^@/,'');
+  return /^[A-Za-z0-9._]{1,30}$/.test(handle)&&!handle.includes('..')?handle:'';
+}
+function validationErrors(data){
+  const fields={};
+  if(!mobileDigits(data.phone))fields.phone='Geçerli bir telefon numarası girin.';
+  if(!mobileDigits(data.whatsapp))fields.whatsapp='Geçerli bir WhatsApp numarası girin.';
+  if(!instagramHandle(data.instagram))fields.instagram='Geçerli bir Instagram hesabı girin.';
+  if(data.address.length<5||!/[^\s.,;:!?\-_/]/u.test(data.address))fields.address='Geçerli bir adres girin.';
+  return fields;
+}
 function clean(body){
   if(!body||typeof body!=='object')throw new Error('invalid');
   const data={...DEFAULT_SETTINGS};
   data.businessName=text(body.businessName,100)||DEFAULT_SETTINGS.businessName;
   data.description=text(body.description,500);
   data.phone=text(body.phone,40);
-  data.whatsapp=text(body.whatsapp,40)||data.phone;
+  data.whatsapp=text(body.whatsapp,40);
   data.instagram=text(body.instagram,120);
   data.address=text(body.address,300);
   data.maps=text(body.maps,500);
@@ -27,7 +48,9 @@ function clean(body){
   data.contactVisible=body.contactVisible!==false;
   data.appointmentInterval=text(body.appointmentInterval,10)||'60';
   if(data.maps&&!/^https:\/\//i.test(data.maps))throw new Error('invalid maps');
+  const fields=validationErrors(data);
+  if(Object.keys(fields).length){const error=new Error('invalid settings');error.fields=fields;throw error}
   return data;
 }
 export async function GET(){try{const raw=await command(['GET',KEY]);const settings=raw?clean(JSON.parse(raw)):DEFAULT_SETTINGS;return Response.json({settings,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({settings:DEFAULT_SETTINGS,persistent:false},{headers:{'cache-control':'no-store'}})}}
-export async function PUT(request){try{const settings=clean(await request.json());await command(['SET',KEY,JSON.stringify(settings)]);return Response.json({ok:true,settings,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400,headers:{'cache-control':'no-store'}})}}
+export async function PUT(request){try{const settings=clean(await request.json());await command(['SET',KEY,JSON.stringify(settings)]);return Response.json({ok:true,settings,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed',fields:error&&error.fields||undefined},{status:400,headers:{'cache-control':'no-store'}})}}
