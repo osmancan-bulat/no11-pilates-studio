@@ -5,12 +5,17 @@
   function digits(value){var d=String(value||'').replace(/\D/g,'');if(d.indexOf('00')===0)d=d.slice(2);if(d.length===11&&d[0]==='0')d='90'+d.slice(1);if(d.length===10)d='90'+d;return d}
   function instagram(value){var raw=String(value||'').trim(),match=raw.match(/instagram\.com\/([^/?#]+)/i),handle=(match?match[1]:raw).replace(/^@/,'').replace(/\/$/,'');return {handle:handle,url:handle?'https://instagram.com/'+handle:''}}
   function addressHtml(value){return String(value||'').trim().replace(/\s*,\s*/g,'<br>').replace(/Nilüfer\s*\/\s*Bursa/i,'<span>Nilüfer / Bursa</span>')}
+  function applyAddress(value){
+    var text=String(value||'').trim(),address=document.querySelector('.footer-address address'),brand=document.querySelector('.footer-brand');
+    if(address&&text)address.innerHTML=addressHtml(text);
+    if(brand&&text){brand.setAttribute('data-no11-address',text);if(!document.getElementById('no11-live-address-style')){var style=document.createElement('style');style.id='no11-live-address-style';style.textContent='.footer-brand:after{content:attr(data-no11-address)!important;white-space:pre-wrap!important}';document.head.appendChild(style)}}
+  }
   function apply(){if(!settings)return;
     var phoneDigits=digits(settings.phone),waDigits=digits(settings.whatsapp||settings.phone),ig=instagram(settings.instagram);
     document.querySelectorAll('a[href^="tel:"]').forEach(function(a){a.href='tel:+'+phoneDigits;var strong=a.querySelector('strong');if(strong)strong.textContent=settings.phone});
     document.querySelectorAll('a[href*="wa.me"],a[href*="whatsapp.com"]').forEach(function(a){try{var u=new URL(a.href);u.hostname='wa.me';u.pathname='/'+waDigits;a.href=u.toString()}catch(e){a.href='https://wa.me/'+waDigits}});
     document.querySelectorAll('a[href*="instagram.com"]').forEach(function(a){if(ig.url)a.href=ig.url;var strong=a.querySelector('strong');if(strong)strong.textContent='@'+ig.handle});
-    var address=document.querySelector('.footer-address address');if(address&&settings.address)address.innerHTML=addressHtml(settings.address);
+    applyAddress(settings.address);
     var map=document.querySelector('a.footer-map');if(map)map.href=NO11_MAP_URL;
     var contact=document.querySelector('.footer-contact-grid');var links=document.querySelector('.footer-links');
     if(contact)contact.style.display=settings.contactVisible?'':'none';if(links)links.style.display=settings.contactVisible?'':'none';
@@ -52,8 +57,9 @@
     }).then(function(r){if(!r.ok)throw new Error('save');return r.json()});
   }
   function bookingMessage(form,message,error){
-    var node=form.querySelector('.n11-booking-message');
-    if(!node){node=document.createElement('p');node.className='n11-booking-message';node.style.cssText='margin:10px 0 0;font:600 13px/1.4 Arial,sans-serif';form.querySelector('button[type="submit"]').insertAdjacentElement('beforebegin',node)}
+    var activeForm=form&&form.isConnected?form:document.querySelector('#randevu form');if(!activeForm)return;
+    var node=activeForm.querySelector('.n11-booking-message');
+    if(!node){node=document.createElement('p');node.className='n11-booking-message';node.style.cssText='margin:10px 0 0;font:600 13px/1.4 Arial,sans-serif';var submit=activeForm.querySelector('button[type="submit"]');if(submit)submit.insertAdjacentElement('beforebegin',node);else activeForm.appendChild(node)}
     node.style.color=error?'#a3243f':'#367047';node.textContent=message;
   }
   function dateLabel(value){
@@ -91,8 +97,9 @@
       confirm.disabled=true;back.disabled=true;confirm.textContent='KAYDEDİLİYOR…';
       var wa=window.open(whatsappUrl(payload),'_blank','noopener,noreferrer');
       saveAppointment(payload).then(function(){
-        bookingMessage(form,'Randevu talebiniz başarıyla alındı.',false);
-        dismiss();form.reset();
+        var activeForm=form&&form.isConnected?form:document.querySelector('#randevu form');
+        bookingMessage(activeForm,'Randevu talebiniz başarıyla alındı.',false);
+        dismiss();if(activeForm)activeForm.reset();
       }).catch(function(){
         try{if(wa&&!wa.closed)wa.close()}catch(e){}
         confirm.disabled=false;back.disabled=false;confirm.textContent='RANDEVUYU ONAYLA';
