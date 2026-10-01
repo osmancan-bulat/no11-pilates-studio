@@ -178,6 +178,19 @@
 
   function applyRemote(items){syncing=true;nativeSetItem.call(localStorage,KEY,JSON.stringify(items));syncing=false;window.dispatchEvent(new CustomEvent('no11-appointments-updated'))}
 
+  window.no11DeleteAppointment=function(id){
+    var cleanId=String(id||'').trim();
+    if(!cleanId)return Promise.reject(new Error('missing_id'));
+    var current=parse(nativeGetItem.call(localStorage,KEY));
+    if(!current.some(function(item){return item&&String(item.id)===cleanId}))return Promise.reject(new Error('appointment_not_found'));
+    savingUntil=Date.now()+3500;
+    return request('/api/no11-appointments?id='+encodeURIComponent(cleanId),{method:'DELETE'}).then(function(result){
+      var next=parse(nativeGetItem.call(localStorage,KEY)).filter(function(item){return !item||String(item.id)!==cleanId});
+      knownSignature=signature(next);knownPending=pendingIds(next);rememberPending(knownPending);applyRemote(next);savingUntil=Date.now()+700;
+      return result;
+    }).catch(function(error){savingUntil=0;throw error});
+  };
+
   function saveChanges(previous,next){
     if(syncing||!ready)return;
     var before=byId(previous),after=byId(next),jobs=[];
