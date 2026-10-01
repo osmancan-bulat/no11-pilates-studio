@@ -184,7 +184,7 @@ async function proxy(request) {
 <meta name="robots" content="noindex,nofollow">
 <title>No.11 Yönetici Paneli</title>
 <style id="n11-admin-boot">body>*{visibility:hidden!important}body:before{content:'No.11';visibility:visible;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#f7f6f8;color:#2b212e;font:52px Georgia,serif;letter-spacing:-.04em}</style>
-<link rel="stylesheet" href="/no11-admin-premium.css?v=32">
+<link rel="stylesheet" href="/no11-admin-premium.css?v=33">
 <link rel="stylesheet" href="/no11-admin-calendar-fix.css?v=31">
 <script src="/no11-admin-firebase.js?v=4" defer></script>
 <script>window.__NO11_EXACT_ADMIN__=true;localStorage.setItem('no11-admin-theme','light')</script>

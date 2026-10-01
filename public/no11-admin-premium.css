@@ -526,6 +526,7 @@ body:has(.n11-v4.n11-dark){background:#171419!important}
   .n11-v4 .n11-native-mobile-detail:target>section{transform:none}
   .n11-v4 .n11-native-detail-close{position:absolute;right:16px;top:15px;width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--n11-line);border-radius:50%;background:var(--n11-bg);color:var(--n11-ink);text-decoration:none;font:25px/1 Arial}
   .n11-v4 .n11-native-mobile-detail .n11-detail-title-row{padding-right:52px;margin:4px 0 17px}
+  .n11-v4 .n11-native-mobile-detail .n11-detail-title-row>.n11-delete-appointment,.n11-v4 .n11-detail>.n11-detail-title-row>.n11-delete-appointment{position:absolute;top:21px;right:68px;z-index:3;min-height:28px;padding:0 9px;font-size:9px;white-space:nowrap}
   .n11-v4 .n11-native-mobile-detail>section>p{margin:5px 52px 17px 0;color:var(--n11-gold);font:700 9px/1 Arial;letter-spacing:.2em}
   .n11-v4 .n11-native-mobile-detail header{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-top:1px solid var(--n11-line);border-bottom:1px solid var(--n11-line)}
   .n11-v4 .n11-native-mobile-detail header time{font:32px Georgia}
