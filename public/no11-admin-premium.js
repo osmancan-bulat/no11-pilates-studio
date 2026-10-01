@@ -102,14 +102,39 @@
   document.addEventListener('change',function(e){var input=e.target&&e.target.closest&&e.target.closest('.n11-photo-select input[type=file]');if(!input||!input.files||!input.files[0])return;var fields=input.closest('.n11-modal-fields');openCropEditor(input.files[0],function(url){setCroppedTeamImage(url,fields);enhanceTeamPhotoEditor()})},true);
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.n11-theme-wrap'))return;document.querySelectorAll('.n11-theme-wrap.open').forEach(function(w){w.classList.remove('open');var b=w.querySelector('.n11-theme');if(b)b.setAttribute('aria-expanded','false')})});
   if(window.matchMedia){var colorScheme=window.matchMedia('(prefers-color-scheme: dark)'),onSchemeChange=function(){if(state.themeMode==='system'){applyThemeMode();render()}};if(colorScheme.addEventListener)colorScheme.addEventListener('change',onSchemeChange);else if(colorScheme.addListener)colorScheme.addListener(onSchemeChange)}
+  var deleteAppointmentId='',deleteAppointmentTrigger=null;
+  function deleteButton(id){var button=document.createElement('button');button.type='button';button.className='n11-delete-appointment';button.dataset.deleteAppointment=String(id);button.textContent='Randevuyu Sil';return button}
+  function ensureDeleteDialog(){
+    var dialog=document.querySelector('.n11-delete-confirm');
+    if(dialog)return dialog;
+    dialog=document.createElement('div');dialog.className='n11-delete-confirm';dialog.setAttribute('aria-hidden','true');dialog.innerHTML='<div class="n11-delete-confirm-backdrop" data-delete-cancel></div><section role="dialog" aria-modal="true" aria-labelledby="n11-delete-title" aria-describedby="n11-delete-description"><p>RANDEVU İŞLEMİ</p><h2 id="n11-delete-title">Randevuyu silmek istediğinize emin misiniz?</h2><span id="n11-delete-description">Bu işlem geri alınamaz.</span><div><button type="button" data-delete-cancel>Vazgeç</button><button type="button" class="danger" data-delete-confirm>Randevuyu Sil</button></div></section>';
+    dialog.querySelectorAll('[data-delete-cancel]').forEach(function(button){button.onclick=closeDeleteDialog});
+    dialog.querySelector('[data-delete-confirm]').onclick=function(){
+      var button=this,id=deleteAppointmentId;
+      if(!id||button.disabled)return;
+      button.disabled=true;button.textContent='Siliniyor…';
+      var operation=typeof window.no11DeleteAppointment==='function'?window.no11DeleteAppointment(id):Promise.reject(new Error('delete_unavailable'));
+      operation.then(function(){if(location.hash.indexOf('#n11-mobile-appointment-')===0)history.replaceState(null,'',location.pathname+location.search+'#n11-mobile-program-top');mobileProgramDetailOpen=false;closeDeleteDialog();toast('Randevu kalıcı olarak silindi')}).catch(function(){button.disabled=false;button.textContent='Randevuyu Sil';toast('Randevu silinemedi, tekrar deneyin','error')});
+    };
+    document.body.appendChild(dialog);return dialog;
+  }
+  function openDeleteDialog(id,trigger){deleteAppointmentId=String(id||'');deleteAppointmentTrigger=trigger||null;var dialog=ensureDeleteDialog();dialog.classList.add('open');dialog.setAttribute('aria-hidden','false');setTimeout(function(){var cancel=dialog.querySelector('[data-delete-cancel]:not(.n11-delete-confirm-backdrop)');if(cancel)cancel.focus()},20)}
+  function closeDeleteDialog(){var dialog=document.querySelector('.n11-delete-confirm');if(dialog){dialog.classList.remove('open');dialog.setAttribute('aria-hidden','true');var confirm=dialog.querySelector('[data-delete-confirm]');if(confirm){confirm.disabled=false;confirm.textContent='Randevuyu Sil'}}deleteAppointmentId='';if(deleteAppointmentTrigger&&document.contains(deleteAppointmentTrigger))deleteAppointmentTrigger.focus();deleteAppointmentTrigger=null}
+  function enhanceAppointmentDelete(){
+    var eyebrow=document.querySelector('.n11-detail>.n11-eyebrow');
+    if(eyebrow&&state.selected&&!eyebrow.closest('.n11-detail-title-row')){var row=document.createElement('div');row.className='n11-detail-title-row';eyebrow.parentNode.insertBefore(row,eyebrow);row.appendChild(eyebrow);row.appendChild(deleteButton(state.selected.id))}
+    document.querySelectorAll('.n11-native-mobile-detail>section>p').forEach(function(label){if(label.closest('.n11-detail-title-row'))return;var panel=label.closest('.n11-native-mobile-detail'),item=state.items.find(function(x){return 'n11-mobile-appointment-'+String(x.id).replace(/[^a-zA-Z0-9_-]/g,'-')===panel.id});if(!item)return;var nativeRow=document.createElement('div');nativeRow.className='n11-detail-title-row';label.parentNode.insertBefore(nativeRow,label);nativeRow.appendChild(label);nativeRow.appendChild(deleteButton(item.id))});
+  }
+  document.addEventListener('click',function(e){var button=e.target&&e.target.closest&&e.target.closest('[data-delete-appointment]');if(!button)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openDeleteDialog(button.dataset.deleteAppointment,button)},true);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.querySelector('.n11-delete-confirm.open'))closeDeleteDialog()});
   var mounted=false,watcher=null;
   function mount(){
     var main=document.querySelector('main');
     if(!main)return setTimeout(mount,250);
     if(!mounted){mounted=true;document.body.dataset.n11V4='1';load()}
     render();
-    setTimeout(function(){enhanceMobileSlotAdd();enhanceMobileAppointmentActions();enhanceAppointmentDates();enhanceProgramAppointmentDates();enhanceMobileProgramDatePicker()},0);
-    if(!watcher){watcher=new MutationObserver(function(){enhanceMobileSlotAdd();enhanceMobileAppointmentActions();enhanceAppointmentDates();enhanceProgramAppointmentDates();enhanceMobileProgramDatePicker();var current=document.querySelector('main');if(current&&!current.classList.contains('n11-premium-app'))setTimeout(render,20)});watcher.observe(document.body,{childList:true,subtree:true})}
+    setTimeout(function(){enhanceMobileSlotAdd();enhanceMobileAppointmentActions();enhanceAppointmentDates();enhanceProgramAppointmentDates();enhanceMobileProgramDatePicker();enhanceAppointmentDelete()},0);
+    if(!watcher){watcher=new MutationObserver(function(){enhanceMobileSlotAdd();enhanceMobileAppointmentActions();enhanceAppointmentDates();enhanceProgramAppointmentDates();enhanceMobileProgramDatePicker();enhanceAppointmentDelete();var current=document.querySelector('main');if(current&&!current.classList.contains('n11-premium-app'))setTimeout(render,20)});watcher.observe(document.body,{childList:true,subtree:true})}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
   window.addEventListener('no11-appointments-updated',function(){if(!mounted)return;var selectedId=state.selected&&state.selected.id;state.items=read(K.appointments,[]).map(function(x){return Object.assign({status:'pending',managerNote:'',studentNote:'',phone:''},x,{service:x.service||x.lesson||'Pilates'})});state.selected=state.items.find(function(x){return String(x.id)===String(selectedId)})||state.items[0]||null;if(state.page==='dashboard'||state.page==='program'||state.page==='appointments')render()});

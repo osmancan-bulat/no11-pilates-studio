@@ -16,7 +16,7 @@
   function loadPremium(){
     if(document.querySelector('script[data-no11-premium-loader]'))return;
     var script=document.createElement('script');
-    script.src='/no11-admin-premium.js?v=32';
+    script.src='/no11-admin-premium.js?v=33';
     script.defer=true;
     script.dataset.no11PremiumLoader='1';
     script.onload=function(){
