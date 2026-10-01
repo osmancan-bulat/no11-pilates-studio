@@ -505,7 +505,7 @@ body:has(.n11-v4.n11-dark){background:#171419!important}
 .n11-v4 .n11-detail-title-row>.n11-eyebrow,.n11-v4 .n11-detail-title-row>p{margin:0;color:var(--n11-gold);font:700 9px/1 Arial;letter-spacing:.2em}
 .n11-v4 .n11-delete-appointment{flex:none;min-height:28px;padding:0 10px;border:1px solid rgba(163,36,63,.3);border-radius:999px;background:rgba(163,36,63,.07);color:#a3243f;font:700 10px/1 Arial;letter-spacing:.02em;cursor:pointer}
 .n11-v4 .n11-delete-appointment:hover{background:rgba(163,36,63,.12)}
-.n11-delete-confirm{position:fixed;inset:0;z-index:2147483646;display:none;align-items:center;justify-content:center;padding:20px}
+.n11-delete-confirm{position:fixed;inset:0;z-index:2147483646;display:none;visibility:visible!important;align-items:center;justify-content:center;padding:20px}
 .n11-delete-confirm.open{display:flex}
 .n11-delete-confirm-backdrop{position:absolute;inset:0;background:rgba(25,18,28,.55);backdrop-filter:blur(5px)}
 .n11-delete-confirm>section{position:relative;width:min(440px,100%);box-sizing:border-box;padding:30px;border:1px solid var(--n11-line,#e4ddd7);border-radius:18px;background:var(--n11-card,#fff);color:var(--n11-ink,#2b212e);box-shadow:0 25px 70px rgba(0,0,0,.24)}
