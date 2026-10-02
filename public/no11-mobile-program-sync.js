@@ -30,7 +30,7 @@
     var key=dateKey();if(!key)return;
     var data=source(),date=new Date(key+'T12:00:00'),day=data.hours[(date.getDay()+6)%7],closed=!!(day&&day.closed);
     var slots=closed?[]:data.slots.filter(function(x){return !day||!day.open||!day.close||(x>=day.open&&x<day.close)});
-    var appointments=read('no11-appointments').filter(function(x){return String(x&&x.date||'')===key&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(x&&x.time||''))}).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
+    var appointments=read('no11-appointments').filter(function(x){return String(x&&x.date||'')===key&&String(x&&x.status||'pending').toLowerCase()!=='rejected'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(x&&x.time||''))}).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
     appointments.forEach(function(x){if(slots.indexOf(String(x.time))<0)slots.push(String(x.time))});slots.sort();
     var signature=key+'|'+closed+'|'+slots.join(',')+'|'+appointments.map(function(x){return [x.id,x.time,x.name,x.service,x.status].join(':')}).join('|');
     if(list.dataset.mobileProgramSync===signature&&list.querySelector('[data-mobile-program-row]'))return;

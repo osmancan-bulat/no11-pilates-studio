@@ -474,7 +474,7 @@
     if(!dateKey)return;
     var slots=scheduleForDate(dateKey);
     var appointments=readArray('no11-appointments').filter(function(item){
-      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
+      return String(item.date||'')===dateKey&&normalizedStatus(item)!=='rejected'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
     }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
     appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
     slots.sort();
@@ -497,7 +497,7 @@
     if(!dateKey)return;
     var slots=scheduleForDate(dateKey);
     var appointments=readArray('no11-appointments').filter(function(item){
-      return String(item.date||'')===dateKey&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
+      return String(item.date||'')===dateKey&&normalizedStatus(item)!=='rejected'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.time||''));
     }).sort(function(a,b){return String(a.time).localeCompare(String(b.time))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))});
     appointments.forEach(function(item){if(slots.indexOf(String(item.time))<0)slots.push(String(item.time))});
     slots.sort();
