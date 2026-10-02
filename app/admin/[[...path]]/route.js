@@ -188,7 +188,7 @@ async function proxy(request) {
 <link rel="stylesheet" href="/no11-admin-calendar-fix.css?v=31">
 <script src="/no11-admin-firebase.js?v=4" defer></script>
 <script>window.__NO11_EXACT_ADMIN__=true;localStorage.setItem('no11-admin-theme','light')</script>
-<script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('.n11-side-logo,.n11-site-return,.n11-side-user');if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(!target.classList.contains('n11-side-logo'))location.assign('/')},true)</script>
+<script id="n11-admin-exit-guard">document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('.n11-side-logo,.n11-site-return,.n11-side-user');if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(!target.classList.contains('n11-side-logo'))location.assign('https://no11pilates.com')},true)</script>
 <script src="/no11-admin-live-sync.js?v=17" defer></script>
 <script src="/no11-admin-fresh.js?v=14" defer></script>
 <script src="/no11-admin-loader.js?v=20260915-live-date-hit-1" defer></script>
