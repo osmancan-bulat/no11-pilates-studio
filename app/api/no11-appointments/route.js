@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 import {
@@ -35,7 +36,9 @@ function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
   const now = new Date().toISOString();
   const appointment = {
     ...input,
-    id: String(input.id || `apt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`),
+    id: publicCreate
+      ? `apt-${crypto.randomUUID()}`
+      : String(input.id || `apt-${crypto.randomUUID()}`),
     name: String(input.name || '').trim(),
     phone: String(input.phone || '').trim(),
     service: String(input.service || input.lesson || 'Pilates').trim(),
@@ -105,6 +108,7 @@ export async function POST(request) {
     );
     if (occupied) return json({ error: 'appointment_slot_occupied' }, 409);
     const saved = await saveAppointment(appointment, {
+      createOnly: true,
       rateLimit: { ...APPOINTMENT_RATE_LIMIT, key: identity.key },
     });
     let push = { sent: 0, failed: 0 };
