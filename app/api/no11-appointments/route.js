@@ -6,15 +6,29 @@ import {
   saveAppointment,
   deleteAppointment,
   sendPushToAdmins,
+  getRateLimitStatus,
 } from '../../../lib/firebase-firestore.js';
+import { rateLimitIdentity } from '../../../lib/no11-rate-limit.js';
 
 export const dynamic = 'force-dynamic';
+
+const APPOINTMENT_RATE_LIMIT = {
+  scope: 'appointment-create',
+  limit: 5,
+  windowMs: 30 * 60_000,
+};
 
 function json(data, status = 200) {
   return NextResponse.json(data, {
     status,
     headers: { 'cache-control': 'no-store, max-age=0' },
   });
+}
+
+function tooManyRequests(retryAfterSeconds) {
+  const response = json({ error: 'too_many_appointment_requests' }, 429);
+  response.headers.set('retry-after', String(retryAfterSeconds));
+  return response;
 }
 
 function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
@@ -72,6 +86,9 @@ export async function GET(request) {
 export async function POST(request) {
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
+    const identity = rateLimitIdentity(request, APPOINTMENT_RATE_LIMIT.scope);
+    const rateStatus = await getRateLimitStatus({ ...APPOINTMENT_RATE_LIMIT, key: identity.key });
+    if (!rateStatus.allowed) return tooManyRequests(rateStatus.retryAfterSeconds);
     const appointment = normalizeAppointment(await request.json(), { publicCreate: true });
     const validDate = /^\d{4}-\d{2}-\d{2}$/.test(appointment.date);
     const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(appointment.time);
@@ -87,7 +104,9 @@ export async function POST(request) {
       item?.date === appointment.date && item?.time === appointment.time && item?.status !== 'rejected',
     );
     if (occupied) return json({ error: 'appointment_slot_occupied' }, 409);
-    const saved = await saveAppointment(appointment);
+    const saved = await saveAppointment(appointment, {
+      rateLimit: { ...APPOINTMENT_RATE_LIMIT, key: identity.key },
+    });
     let push = { sent: 0, failed: 0 };
     try {
       push = await sendPushToAdmins(saved);
@@ -97,6 +116,9 @@ export async function POST(request) {
     }
     return json({ ok: true, appointment: saved, push }, 201);
   } catch (error) {
+    if (error?.code === 'rate_limit_exceeded') {
+      return tooManyRequests(error.retryAfterSeconds);
+    }
     if (error?.code === 'appointment_slot_occupied') {
       return json({ error: 'appointment_slot_occupied' }, 409);
     }
