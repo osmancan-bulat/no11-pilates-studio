@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
 import {
   clearRateLimit,
@@ -17,7 +18,11 @@ export async function POST(request) {
   if (!authorized(request)) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const appointments = await listAppointments();
   const tests = appointments.filter((item) => String(item?.name || '').startsWith(TEST_PREFIX));
-  return NextResponse.json({ appointments: tests });
+  const existing = appointments.filter((item) => !String(item?.name || '').startsWith(TEST_PREFIX));
+  const integrityHash = crypto.createHash('sha256')
+    .update(JSON.stringify(existing.sort((a, b) => String(a.id).localeCompare(String(b.id)))))
+    .digest('hex');
+  return NextResponse.json({ appointments: tests, existingCount: existing.length, integrityHash });
 }
 
 export async function DELETE(request) {
