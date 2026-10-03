@@ -1,3 +1,5 @@
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
+
 const KEY='no11:schedule';
 const DEFAULT_DATA={
   lessons:[{id:'lesson-1',name:'Birebir Pilates',duration:50},{id:'lesson-2',name:'Tanışma Dersi',duration:50},{id:'lesson-3',name:'Duet / İkili Pilates',duration:50},{id:'lesson-4',name:'Omurga Odaklı Pilates',duration:50},{id:'lesson-5',name:'Hamile Pilatesi',duration:50}],
@@ -15,4 +17,4 @@ function clean(body){
   if(!lessons.length||!slots.length)throw new Error('invalid');return {lessons,slots,hours};
 }
 export async function GET(){try{const raw=await command(['GET',KEY]);return Response.json(raw?JSON.parse(raw):DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}catch(error){return Response.json(DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}}
-export async function PUT(request){try{const data=clean(await request.json());await command(['SET',KEY,JSON.stringify(data)]);return Response.json({...data,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400})}}
+export async function PUT(request){if(!isAdminRequest(request))return Response.json({error:'unauthorized'},{status:401,headers:{'cache-control':'no-store'}});try{const data=clean(await request.json());await command(['SET',KEY,JSON.stringify(data)]);return Response.json({...data,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400})}}

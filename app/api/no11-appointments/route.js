@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 import {
   firebaseConfigured,
   listAppointments,
@@ -54,10 +55,14 @@ function istanbulNow() {
   return { date: `${values.year}-${values.month}-${values.day}`, time: `${values.hour}:${values.minute}` };
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
     const appointments = firebaseConfigured() ? await listAppointments() : [];
-    return json({ appointments, persistent: true });
+    if (isAdminRequest(request)) return json({ appointments, persistent: true });
+    const availability = appointments
+      .filter((item) => item?.status !== 'rejected')
+      .map((item) => ({ date: item?.date, time: item?.time, status: item?.status }));
+    return json({ appointments: availability, persistent: true });
   } catch (error) {
     console.error('Appointments GET failed:', error);
     return json({ error: 'appointments_load_failed' }, 500);
@@ -98,6 +103,7 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
+  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
@@ -119,6 +125,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
+  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const id = new URL(request.url).searchParams.get('id');
