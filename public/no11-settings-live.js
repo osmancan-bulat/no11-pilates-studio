@@ -4,10 +4,20 @@
   var NO11_MAP_URL='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('No.11 Pilates Studio, Balat, Alan Sk. No:9B, 16225 Nilüfer/Bursa');
   function digits(value){var d=String(value||'').replace(/\D/g,'');if(d.indexOf('00')===0)d=d.slice(2);if(d.length===11&&d[0]==='0')d='90'+d.slice(1);if(d.length===10)d='90'+d;return d}
   function instagram(value){var raw=String(value||'').trim(),match=raw.match(/instagram\.com\/([^/?#]+)/i),handle=(match?match[1]:raw).replace(/^@/,'').replace(/\/$/,'');return {handle:handle,url:handle?'https://instagram.com/'+handle:''}}
-  function addressHtml(value){return String(value||'').trim().replace(/\s*,\s*/g,'<br>').replace(/Nilüfer\s*\/\s*Bursa/i,'<span>Nilüfer / Bursa</span>')}
+  function renderAddress(node,value){
+    var lines=String(value||'').trim().split(/\s*,\s*/);node.textContent='';
+    lines.forEach(function(line,index){
+      if(index)node.appendChild(document.createElement('br'));
+      var match=line.match(/Nilüfer\s*\/\s*Bursa/i);
+      if(!match){node.appendChild(document.createTextNode(line));return}
+      node.appendChild(document.createTextNode(line.slice(0,match.index)));
+      var span=document.createElement('span');span.textContent='Nilüfer / Bursa';node.appendChild(span);
+      node.appendChild(document.createTextNode(line.slice(match.index+match[0].length)));
+    });
+  }
   function applyAddress(value){
     var text=String(value||'').trim(),address=document.querySelector('.footer-address address'),brand=document.querySelector('.footer-brand');
-    if(address&&text)address.innerHTML=addressHtml(text);
+    if(address&&text)renderAddress(address,text);
     if(brand&&text){brand.setAttribute('data-no11-address',text);if(!document.getElementById('no11-live-address-style')){var style=document.createElement('style');style.id='no11-live-address-style';style.textContent='.footer-brand:after{content:attr(data-no11-address)!important;white-space:pre-wrap!important}';document.head.appendChild(style)}}
   }
   function apply(){if(!settings)return;
