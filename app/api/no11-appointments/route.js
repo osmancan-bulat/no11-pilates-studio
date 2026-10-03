@@ -97,6 +97,9 @@ export async function POST(request) {
     }
     return json({ ok: true, appointment: saved, push }, 201);
   } catch (error) {
+    if (error?.code === 'appointment_slot_occupied') {
+      return json({ error: 'appointment_slot_occupied' }, 409);
+    }
     console.error('Appointments POST failed:', error);
     return json({ error: 'appointment_create_failed' }, 500);
   }
@@ -119,6 +122,9 @@ export async function PUT(request) {
     const saved = await saveAppointment(normalizeAppointment(body));
     return json({ ok: true, appointment: saved });
   } catch (error) {
+    if (error?.code === 'appointment_slot_occupied') {
+      return json({ error: 'appointment_slot_occupied' }, 409);
+    }
     console.error('Appointments PUT failed:', error);
     return json({ error: 'appointment_update_failed' }, 500);
   }
