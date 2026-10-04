@@ -29,6 +29,12 @@ function json(data, status = 200) {
   });
 }
 
+function publicAvailabilityJson(data) {
+  return NextResponse.json(data, {
+    headers: { 'cache-control': 'public, s-maxage=5, stale-while-revalidate=15' },
+  });
+}
+
 function tooManyRequests(retryAfterSeconds) {
   const response = json({ error: 'too_many_appointment_requests' }, 429);
   response.headers.set('retry-after', String(retryAfterSeconds));
@@ -107,6 +113,9 @@ export async function GET(request) {
       const appointments = firebaseConfigured() ? await listAppointments() : [];
       return json({ appointments, persistent: true });
     }
+    if (new URL(request.url).searchParams.get('availability') !== '1') {
+      return json({ error: 'availability_query_required' }, 400);
+    }
     let appointments = publicAvailabilityCache.appointments;
     if (!appointments || publicAvailabilityCache.expiresAt <= Date.now()) {
       appointments = firebaseConfigured() ? await listAppointments() : [];
@@ -115,7 +124,7 @@ export async function GET(request) {
     const availability = appointments
       .filter((item) => item?.status !== 'rejected')
       .map((item) => ({ date: item?.date, time: item?.time, status: item?.status }));
-    return json({ appointments: availability, persistent: true });
+    return publicAvailabilityJson({ appointments: availability, persistent: true });
   } catch (error) {
     console.error('Appointments GET failed:', error);
     return json({ error: 'appointments_load_failed' }, 500);
