@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
-import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
+import { isAdminMutationRequest, isAdminRequest } from '../../../lib/no11-admin-auth.js';
 import {
   firebaseConfigured,
   listAppointments,
@@ -18,6 +18,9 @@ const APPOINTMENT_RATE_LIMIT = {
   limit: 5,
   windowMs: 30 * 60_000,
 };
+const MAX_BODY_BYTES = 8 * 1024;
+const PUBLIC_CACHE_MS = 5_000;
+let publicAvailabilityCache = { expiresAt: 0, appointments: null };
 
 function json(data, status = 200) {
   return NextResponse.json(data, {
@@ -35,7 +38,7 @@ function tooManyRequests(retryAfterSeconds) {
 function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
   const now = new Date().toISOString();
   const appointment = {
-    ...input,
+    ...(publicCreate ? {} : input),
     id: publicCreate
       ? `apt-${crypto.randomUUID()}`
       : String(input.id || `apt-${crypto.randomUUID()}`),
@@ -58,6 +61,32 @@ function normalizeAppointment(input = {}, { publicCreate = false } = {}) {
   return appointment;
 }
 
+async function readJson(request, maxBytes) {
+  const declared = Number(request.headers.get('content-length') || 0);
+  if (declared > maxBytes) throw Object.assign(new Error('payload_too_large'), { code: 'payload_too_large' });
+  const raw = await request.text();
+  if (Buffer.byteLength(raw, 'utf8') > maxBytes) throw Object.assign(new Error('payload_too_large'), { code: 'payload_too_large' });
+  return JSON.parse(raw || '{}');
+}
+
+function normalizePhone(value) {
+  let digits = String(value || '').replace(/\D/g, '');
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  if (digits.length === 11 && digits.startsWith('0')) digits = `90${digits.slice(1)}`;
+  if (digits.length === 10 && digits.startsWith('5')) digits = `90${digits}`;
+  return /^905\d{9}$/.test(digits) ? digits : '';
+}
+
+function validatePublicAppointment(appointment) {
+  if (!appointment.name || appointment.name.length > 80 || /[\u0000-\u001f\u007f]/.test(appointment.name)) return 'invalid_name';
+  const phone = normalizePhone(appointment.phone);
+  if (!phone || String(appointment.phone).length > 32) return 'invalid_phone';
+  if (!appointment.service || appointment.service.length > 100 || /[\u0000-\u001f\u007f]/.test(appointment.service)) return 'invalid_service';
+  if (appointment.studentNote.length > 1000 || /[\u0000\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(appointment.studentNote)) return 'invalid_note';
+  appointment.phone = phone;
+  return '';
+}
+
 function istanbulNow() {
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Europe/Istanbul',
@@ -74,8 +103,15 @@ function istanbulNow() {
 
 export async function GET(request) {
   try {
-    const appointments = firebaseConfigured() ? await listAppointments() : [];
-    if (isAdminRequest(request)) return json({ appointments, persistent: true });
+    if (isAdminRequest(request)) {
+      const appointments = firebaseConfigured() ? await listAppointments() : [];
+      return json({ appointments, persistent: true });
+    }
+    let appointments = publicAvailabilityCache.appointments;
+    if (!appointments || publicAvailabilityCache.expiresAt <= Date.now()) {
+      appointments = firebaseConfigured() ? await listAppointments() : [];
+      publicAvailabilityCache = { appointments, expiresAt: Date.now() + PUBLIC_CACHE_MS };
+    }
     const availability = appointments
       .filter((item) => item?.status !== 'rejected')
       .map((item) => ({ date: item?.date, time: item?.time, status: item?.status }));
@@ -89,24 +125,19 @@ export async function GET(request) {
 export async function POST(request) {
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
+    const appointment = normalizeAppointment(await readJson(request, MAX_BODY_BYTES), { publicCreate: true });
+    const validationError = validatePublicAppointment(appointment);
+    if (validationError) return json({ error: validationError }, 400);
+    const validDate = /^\d{4}-\d{2}-\d{2}$/.test(appointment.date);
+    const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(appointment.time);
+    if (!validDate || !validTime) return json({ error: 'missing_required_fields' }, 400);
     const identity = rateLimitIdentity(request, APPOINTMENT_RATE_LIMIT.scope);
     const rateStatus = await getRateLimitStatus({ ...APPOINTMENT_RATE_LIMIT, key: identity.key });
     if (!rateStatus.allowed) return tooManyRequests(rateStatus.retryAfterSeconds);
-    const appointment = normalizeAppointment(await request.json(), { publicCreate: true });
-    const validDate = /^\d{4}-\d{2}-\d{2}$/.test(appointment.date);
-    const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(appointment.time);
-    if (!appointment.name || !appointment.phone || !validDate || !validTime) {
-      return json({ error: 'missing_required_fields' }, 400);
-    }
     const now = istanbulNow();
     if (appointment.date < now.date || (appointment.date === now.date && appointment.time <= now.time)) {
       return json({ error: 'appointment_time_in_past' }, 409);
     }
-    const firebase = firebaseConfigured() ? await listAppointments() : [];
-    const occupied = firebase.some((item) =>
-      item?.date === appointment.date && item?.time === appointment.time && item?.status !== 'rejected',
-    );
-    if (occupied) return json({ error: 'appointment_slot_occupied' }, 409);
     const saved = await saveAppointment(appointment, {
       createOnly: true,
       rateLimit: { ...APPOINTMENT_RATE_LIMIT, key: identity.key },
@@ -120,6 +151,7 @@ export async function POST(request) {
     }
     return json({ ok: true, appointment: saved, push }, 201);
   } catch (error) {
+    if (error?.code === 'payload_too_large') return json({ error: 'payload_too_large' }, 413);
     if (error?.code === 'rate_limit_exceeded') {
       return tooManyRequests(error.retryAfterSeconds);
     }
@@ -132,7 +164,7 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
+  if (!isAdminMutationRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const body = await request.json();
@@ -157,7 +189,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
-  if (!isAdminRequest(request)) return json({ error: 'unauthorized' }, 401);
+  if (!isAdminMutationRequest(request)) return json({ error: 'unauthorized' }, 401);
   if (!firebaseConfigured()) return json({ error: 'firebase_not_configured' }, 503);
   try {
     const id = new URL(request.url).searchParams.get('id');

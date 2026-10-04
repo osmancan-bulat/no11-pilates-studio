@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
+import { isAdminMutationRequest, isAdminRequest } from '../../../lib/no11-admin-auth.js';
 import { firebaseConfigured, savePushDevice, deletePushDeviceByToken } from '../../../lib/firebase-firestore.js';
 
 export const dynamic='force-dynamic';
@@ -10,7 +10,7 @@ export async function GET(request){
   return json({enabled:firebaseConfigured()&&Boolean(vapidKey&&process.env.WEB_PUSH_VAPID_PRIVATE_KEY),vapidKey});
 }
 export async function POST(request){
-  if(!isAdminRequest(request))return json({error:'unauthorized'},401);
+  if(!isAdminMutationRequest(request))return json({error:'unauthorized'},401);
   if(!firebaseConfigured())return json({error:'firebase_not_configured'},503);
   try{
     const body=await request.json();
@@ -21,6 +21,6 @@ export async function POST(request){
   }catch(error){console.error('Push subscribe failed:',error);return json({error:'push_subscribe_failed'},500);}
 }
 export async function DELETE(request){
-  if(!isAdminRequest(request))return json({error:'unauthorized'},401);
+  if(!isAdminMutationRequest(request))return json({error:'unauthorized'},401);
   try{const body=await request.json();await deletePushDeviceByToken(body?.token);return json({ok:true});}catch(error){console.error('Push unsubscribe failed:',error);return json({error:'push_unsubscribe_failed'},500);}
 }

@@ -1,4 +1,4 @@
-import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
+import { isAdminMutationRequest } from '../../../lib/no11-admin-auth.js';
 
 const KEY='no11:schedule';
 const DEFAULT_DATA={
@@ -17,4 +17,4 @@ function clean(body){
   if(!lessons.length||!slots.length)throw new Error('invalid');return {lessons,slots,hours};
 }
 export async function GET(){try{const raw=await command(['GET',KEY]);return Response.json(raw?JSON.parse(raw):DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}catch(error){return Response.json(DEFAULT_DATA,{headers:{'cache-control':'no-store'}})}}
-export async function PUT(request){if(!isAdminRequest(request))return Response.json({error:'unauthorized'},{status:401,headers:{'cache-control':'no-store'}});try{const data=clean(await request.json());await command(['SET',KEY,JSON.stringify(data)]);return Response.json({...data,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400})}}
+export async function PUT(request){if(!isAdminMutationRequest(request))return Response.json({error:'unauthorized'},{status:401,headers:{'cache-control':'no-store'}});try{const data=clean(await request.json());await command(['SET',KEY,JSON.stringify(data)]);return Response.json({...data,persistent:true},{headers:{'cache-control':'no-store'}})}catch(error){return Response.json({error:'save failed'},{status:400})}}

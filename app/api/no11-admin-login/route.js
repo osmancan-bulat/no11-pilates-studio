@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { COOKIE_NAME, adminCookieOptions, clearAdminCookieOptions, createAdminSession, isAdminRequest, verifyAdminLogin } from '../../../lib/no11-admin-auth.js';
+import { COOKIE_NAME, adminCookieOptions, clearAdminCookieOptions, createAdminSession, hasValidMutationOrigin, isAdminRequest, verifyAdminLogin } from '../../../lib/no11-admin-auth.js';
 import { consumeRateLimit, getRateLimitStatus } from '../../../lib/firebase-firestore.js';
 import { rateLimitIdentity } from '../../../lib/no11-rate-limit.js';
 
@@ -30,11 +30,12 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
+    if (!hasValidMutationOrigin(request)) return json({ error: 'invalid_origin' }, 403);
     const identity = rateLimitIdentity(request, LOGIN_RATE_LIMIT.scope);
     const status = await getRateLimitStatus({ ...LOGIN_RATE_LIMIT, key: identity.key });
     if (!status.allowed) return tooManyRequests(status.retryAfterSeconds);
     const body = await request.json();
-    if (!verifyAdminLogin(body?.username, body?.password)) {
+    if (!(await verifyAdminLogin(body?.username, body?.password))) {
       const attempt = await consumeRateLimit({ ...LOGIN_RATE_LIMIT, key: identity.key });
       if (!attempt.allowed) return tooManyRequests(attempt.retryAfterSeconds);
       return json({ error: 'invalid_credentials' }, 401);

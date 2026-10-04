@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
 import { firebaseConfigured, checkFirestore } from '../../../lib/firebase-firestore.js';
+import { isAdminRequest } from '../../../lib/no11-admin-auth.js';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json(
+      { ok: true },
+      { status: 200, headers: { 'cache-control': 'no-store, max-age=0' } },
+    );
+  }
   if (!firebaseConfigured()) {
     return NextResponse.json(
       { configured: false, firestore: false },
