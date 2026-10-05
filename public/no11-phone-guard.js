@@ -15,6 +15,7 @@
     proxy.contentEditable='true';
     proxy.setAttribute('role','textbox');
     proxy.setAttribute('aria-label','Telefon');
+    proxy.setAttribute('inputmode','tel');
     proxy.setAttribute('data-placeholder',original.placeholder||'Telefon numaranız');
     proxy.textContent=document.documentElement.dataset.no11BookingPhone||original.value||'';
     var computed=getComputedStyle(original);
